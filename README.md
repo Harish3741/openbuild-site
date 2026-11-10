@@ -4,7 +4,7 @@ Draft site for Open Build (Harish + Varun's Sydney go-between for uni societies 
 
 ## Status (10 Nov 2026)
 
-Two design directions are built with the same content. Harish hasn't picked one yet.
+**Decision (10 Nov):** go with A ("The Door") for everything, but use B's opening-doorway hero animation. `src/door.html` is now that merged version and is the main site. `src/after-hours.html` is kept for reference only.
 
 | Direction | Source | Live preview (private artifact) |
 |---|---|---|
