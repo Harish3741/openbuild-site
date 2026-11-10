@@ -1,0 +1,492 @@
+<title>Open Build</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Open Build connects Sydney's student builders with the companies and communities who want to build with them.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
+<style>
+/* Layout: an editorial single column on warm paper; the door mark is the one bold move (it swings open in the hero, and the two audience paths are drawn as doors). */
+:root{
+  --paper:#F2F0EB; --paper-2:#E6E4DF; --ink:#151515; --ink-2:#4a4844; --ink-3:#7a7770;
+  --lav:#B8B2F0; --lav-deep:#5b52b8; --lav-wash:#e4e1fa; --line:#d4d1ca; --card:#faf9f6;
+  --on-lav:#151515;
+  --f-display:"Bricolage Grotesque", "Avenir Next", system-ui, sans-serif;
+  --f-body:"Figtree", "Avenir Next", system-ui, sans-serif;
+  --f-mono:"JetBrains Mono", ui-monospace, Menlo, monospace;
+  --s-1:clamp(2.9rem, 1.6rem + 6vw, 6.4rem); --s-2:clamp(2rem, 1.3rem + 3vw, 3.6rem);
+  --s-3:clamp(1.3rem, 1.1rem + .8vw, 1.7rem); --s-body:1.0625rem; --s-small:.875rem;
+  --wrap:1180px; --r:14px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#151515; --paper-2:#1f1e1c; --ink:#F2F0EB; --ink-2:#c9c6bf; --ink-3:#8f8c85;
+  --lav:#B8B2F0; --lav-deep:#cfcaf7; --lav-wash:#26243a; --line:#33312e; --card:#1c1b19; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#151515; --paper-2:#1f1e1c; --ink:#F2F0EB; --ink-2:#c9c6bf; --ink-3:#8f8c85;
+  --lav:#B8B2F0; --lav-deep:#cfcaf7; --lav-wash:#26243a; --line:#33312e; --card:#1c1b19; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation:none!important;transition:none!important}}
+body{background:var(--paper);color:var(--ink);font:400 var(--s-body)/1.6 var(--f-body);-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--paper)}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--lav-deep);outline-offset:3px;border-radius:4px}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--f-display);font-weight:800;letter-spacing:-.025em;line-height:1;margin:0;text-wrap:balance}
+p{margin:0}
+.mono{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.06em;text-transform:uppercase}
+.eyebrow{color:var(--ink-3)}
+.lede{color:var(--ink-2);font-size:1.15rem;max-width:34em}
+section{padding-block:clamp(64px,9vw,120px)}
+.sec-head{display:grid;gap:14px;margin-bottom:clamp(32px,4vw,52px);max-width:44rem}
+.sec-head h2{font-size:var(--s-2)}
+
+/* Buttons */
+.btn{display:inline-flex;align-items:center;gap:10px;border-radius:999px;padding:13px 22px;font:600 1rem/1 var(--f-body);text-decoration:none;border:1.5px solid var(--ink);transition:transform .15s ease, background .15s ease}
+.btn:active{transform:scale(.97)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:var(--lav-deep);border-color:var(--lav-deep);color:var(--paper)}
+.btn-line{background:transparent;color:var(--ink)}
+.btn-line:hover{background:var(--paper-2)}
+.btn svg{width:.7em;height:1.15em}
+
+/* Header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .2s}
+header.top.scrolled{border-bottom-color:var(--line)}
+.nav{display:flex;align-items:center;gap:28px;height:68px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;color:var(--ink)}
+.logo svg{fill:currentColor}
+.logo .m{width:15px;height:25px;color:var(--lav)}
+.logo .w{width:104px;height:22px}
+.nav ul{display:flex;gap:26px;list-style:none;margin:0 0 0 auto;padding:0}
+.nav ul a{text-decoration:none;font-weight:500;color:var(--ink-2)}
+.nav ul a:hover{color:var(--ink)}
+.nav .btn{padding:10px 18px;font-size:.92rem}
+@media (max-width:860px){.nav ul{display:none}.nav .btn{margin-left:auto}}
+
+/* Hero */
+.hero{padding-block:clamp(40px,7vw,96px) clamp(48px,6vw,80px)}
+.hero-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(32px,5vw,72px);align-items:end}
+@media (max-width:900px){.hero-grid{grid-template-columns:1fr}}
+.hero h1{font-size:var(--s-1);letter-spacing:-.04em;line-height:.92}
+.hero h1 .door{display:inline-block;width:.42em;height:.7em;vertical-align:-.02em;margin-left:.08em;perspective:400px;color:var(--ink)}
+.hero h1 .door svg{width:100%;height:100%;overflow:visible}
+.hero h1 .door .leaf{transform-box:fill-box;transform-origin:0% 50%;fill:var(--lav);animation:swing 1.4s cubic-bezier(.2,.8,.2,1) .5s both}
+@keyframes swing{from{transform:scaleX(1.42) scaleY(.9)}to{transform:none}}
+.hero-copy{display:grid;gap:26px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:12px}
+.unis{display:flex;flex-wrap:wrap;gap:6px 18px;color:var(--ink-3)}
+
+.next{background:var(--lav);color:var(--on-lav);border-radius:22px;padding:26px;display:grid;gap:18px;position:relative}
+.next .when{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.next .pill{background:var(--on-lav);color:var(--lav);border-radius:999px;padding:6px 11px}
+.next h3{font-size:2rem;line-height:1.02}
+.next dl{display:grid;grid-template-columns:auto 1fr;gap:6px 16px;margin:0;font-size:.95rem}
+.next dt{font-family:var(--f-mono);font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;padding-top:.3em;opacity:.7}
+.next dd{margin:0}
+.next .btn{justify-self:start;background:var(--on-lav);color:#F2F0EB;border-color:var(--on-lav)}
+.next .btn:hover{background:#2a2a2a}
+.next small{font-size:.8rem;opacity:.75}
+
+/* Photo strip */
+.strip{display:grid;grid-template-columns:1.25fr 1fr .8fr;grid-auto-rows:clamp(200px,24vw,340px);gap:12px;margin-top:clamp(40px,6vw,72px)}
+.strip figure{margin:0;border-radius:var(--r);overflow:hidden;background:var(--paper-2)}
+.strip img{width:100%;height:100%;object-fit:cover;display:block}
+.strip-cap{margin-top:12px;color:var(--ink-3)}
+@media (max-width:700px){.strip{grid-template-columns:1fr 1fr;grid-auto-rows:clamp(150px,42vw,240px)}.strip figure:first-child{grid-column:1/-1}}
+
+/* Two doors */
+.doors{display:grid;grid-template-columns:1fr 1fr;gap:clamp(16px,2.5vw,28px)}
+@media (max-width:760px){.doors{grid-template-columns:1fr}}
+.door-card{position:relative;border:1.5px solid var(--ink);border-radius:var(--r) var(--r) 4px 4px;padding:clamp(26px,3.5vw,40px);display:grid;gap:20px;align-content:start;background:var(--card);transition:transform .25s cubic-bezier(.2,.8,.2,1)}
+.door-card:hover{transform:translateY(-4px)}
+.door-card::after{content:"";position:absolute;right:22px;top:50%;width:10px;height:10px;border-radius:50%;background:var(--ink)}
+.door-card.lav{background:var(--lav);color:var(--on-lav);border-color:var(--lav)}
+.door-card.lav::after{background:var(--on-lav)}
+.door-card h3{font-size:var(--s-3);line-height:1.1}
+.door-card .who{color:inherit;opacity:.65}
+.door-card ul{margin:0;padding:0;list-style:none;display:grid;gap:12px;padding-right:28px}
+.door-card li{display:grid;grid-template-columns:18px 1fr;gap:10px}
+.door-card li::before{content:"";width:10px;height:16px;margin-top:.3em;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='12 -1 40 66'%3E%3Cpath fill-rule='evenodd' d='M14 4H50V60H14Z M20 10H44V54H20Z'/%3E%3Cpath d='M17 7L36 1L36 63L17 57Z'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='12 -1 40 66'%3E%3Cpath fill-rule='evenodd' d='M14 4H50V60H14Z M20 10H44V54H20Z'/%3E%3Cpath d='M17 7L36 1L36 63L17 57Z'/%3E%3C/svg%3E") center/contain no-repeat;opacity:.8}
+.door-card .btn{justify-self:start}
+.door-card.lav .btn{background:var(--on-lav);color:#F2F0EB;border-color:var(--on-lav)}
+
+/* Committees diagram */
+.steady{background:var(--paper-2)}
+.steady-grid{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:clamp(32px,5vw,72px);align-items:center}
+@media (max-width:900px){.steady-grid{grid-template-columns:1fr}}
+.steady p+p{margin-top:14px}
+.timeline{display:grid;gap:14px;font-size:.85rem}
+.tl-years,.tl-row{display:grid;grid-template-columns:110px repeat(3,1fr);gap:6px;align-items:center}
+.tl-years span{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.06em}
+.tl-row .lab{font-weight:600;color:var(--ink-2);font-size:.82rem;line-height:1.2}
+.seg{height:30px;border-radius:6px;background:var(--card);border:1px solid var(--line);display:flex;align-items:center;padding-inline:10px;color:var(--ink-3);font-size:.75rem;white-space:nowrap;overflow:hidden}
+.tl-ob .seg{background:var(--lav);border-color:var(--lav);color:var(--on-lav);border-radius:0;font-weight:600}
+.tl-ob .seg:nth-child(2){border-radius:6px 0 0 6px}.tl-ob .seg:last-child{border-radius:0 6px 6px 0}
+.tl-ob{column-gap:0}
+.tl-ob .lab{margin-right:6px}
+.tl-note{color:var(--ink-3);font-size:.8rem;margin-top:4px}
+@media (max-width:520px){.tl-years,.tl-row{grid-template-columns:76px repeat(3,1fr)}.seg{font-size:0}}
+
+/* Steps */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(20px,3vw,40px);counter-reset:s}
+@media (max-width:760px){.steps{grid-template-columns:1fr}}
+.step{display:grid;gap:10px;border-top:1.5px solid var(--ink);padding-top:18px}
+.step .n{font-family:var(--f-display);font-weight:800;font-size:2.4rem;color:var(--lav-deep);line-height:1}
+.step h3{font-size:1.3rem;line-height:1.15}
+.step p{color:var(--ink-2)}
+
+/* Network */
+.unigrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}
+@media (max-width:980px){.unigrid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.unigrid{grid-template-columns:1fr}}
+.uni{display:grid;gap:10px;align-content:start}
+.uni h3{font-size:1.05rem;display:flex;justify-content:space-between;align-items:baseline;border-bottom:1.5px solid var(--ink);padding-bottom:10px}
+.uni h3 span{font-family:var(--f-mono);font-weight:500;font-size:.7rem;color:var(--ink-3);letter-spacing:.06em}
+.soc{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:4px}
+.soc b{font-weight:600}
+.soc span{color:var(--ink-3);font-size:.85rem;line-height:1.4}
+.soc.missing{background:transparent;border:1.5px dashed var(--ink-3);text-decoration:none;transition:border-color .15s,background .15s}
+.soc.missing:hover{border-color:var(--lav-deep);background:var(--lav-wash)}
+
+/* Record */
+.record{display:grid}
+.ev{display:grid;grid-template-columns:150px minmax(0,1.3fr) minmax(0,1fr) 120px;gap:20px;padding-block:20px;border-top:1px solid var(--line);align-items:baseline}
+.ev:last-child{border-bottom:1px solid var(--line)}
+.ev .d{font-family:var(--f-mono);font-size:.75rem;color:var(--ink-3);letter-spacing:.04em}
+.ev h3{font-size:1.25rem;line-height:1.15}
+.ev .with{color:var(--ink-2);font-size:.92rem}
+.ev .num{font-family:var(--f-display);font-weight:700;font-size:1.25rem;text-align:right;font-variant-numeric:tabular-nums}
+.ev .num small{display:block;font:500 .7rem var(--f-mono);color:var(--ink-3);letter-spacing:.05em;text-transform:uppercase}
+@media (max-width:760px){.ev{grid-template-columns:1fr auto;gap:6px 16px}.ev .d{grid-column:1/-1}.ev .with{grid-column:1/2}.ev .num{grid-row:2/4;grid-column:2}}
+.record-note{margin-top:16px;color:var(--ink-3);font-size:.9rem;max-width:46rem}
+
+/* Partners */
+.partners{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0;border-top:1px solid var(--line)}
+.partner{padding:20px 20px 20px 0;border-bottom:1px solid var(--line);display:grid;gap:4px}
+.partner b{font-family:var(--f-display);font-weight:700;font-size:1.25rem;letter-spacing:-.01em}
+.partner span{color:var(--ink-3);font-size:.88rem}
+
+/* Forms */
+.join{background:#1b1a18;color:#F2F0EB;border-block:1px solid #2c2b28}
+.join .eyebrow{color:#a6a39c}
+.join .lede{color:#c9c6bf}
+.tabs{display:inline-flex;background:#232220;border-radius:999px;padding:5px;gap:4px;margin-bottom:28px}
+.tabs button{border:0;background:transparent;color:#c9c6bf;font:600 .95rem var(--f-body);padding:10px 18px;border-radius:999px;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--lav);color:#151515}
+form{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px;max-width:820px}
+form .full{grid-column:1/-1}
+@media (max-width:640px){form{grid-template-columns:1fr}}
+label{display:grid;gap:7px;font-size:.88rem;font-weight:500;color:#d9d6cf}
+input,select,textarea{font:inherit;font-size:1rem;color:#F2F0EB;background:#232220;border:1px solid #3a3936;border-radius:10px;padding:12px 14px;width:100%}
+textarea{min-height:96px;resize:vertical}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--lav);outline-offset:1px;border-color:transparent}
+fieldset{border:0;padding:0;margin:0;display:grid;gap:9px}
+legend{font-size:.88rem;font-weight:500;color:#d9d6cf;margin-bottom:8px}
+.checks{display:flex;flex-wrap:wrap;gap:8px}
+.checks label{display:inline-flex;align-items:center;gap:8px;background:#232220;border:1px solid #3a3936;border-radius:999px;padding:8px 14px;cursor:pointer;color:#F2F0EB}
+.checks input{width:auto;accent-color:#B8B2F0}
+.hint{font-size:.8rem;color:#a6a39c;font-weight:400}
+.form-foot{display:flex;flex-wrap:wrap;align-items:center;gap:16px 24px}
+.form-foot .btn{background:var(--lav);border-color:var(--lav);color:#151515}
+.form-foot .btn:hover{background:#cfcaf7}
+.form-foot p{color:#a6a39c;font-size:.88rem}
+.sent{grid-column:1/-1;background:#232220;border:1px solid var(--lav);border-radius:12px;padding:16px 18px;color:#F2F0EB}
+
+/* Footer */
+footer{padding-block:clamp(64px,8vw,110px) 40px}
+.sign{font-family:var(--f-display);font-weight:800;font-size:clamp(2.4rem,1.2rem + 5.5vw,5.6rem);letter-spacing:-.04em;line-height:.95}
+.sign em{font-style:normal;color:var(--lav-deep)}
+.foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;margin-top:56px;padding-top:24px;border-top:1px solid var(--line);color:var(--ink-3);font-size:.9rem}
+.foot-row ul{display:flex;flex-wrap:wrap;gap:20px;list-style:none;margin:0;padding:0}
+.foot-row a{text-decoration:none}.foot-row a:hover{color:var(--ink)}
+.soon{font-family:var(--f-mono);font-size:.65rem;letter-spacing:.05em;border:1px solid var(--line);border-radius:999px;padding:2px 7px;margin-left:6px;vertical-align:1px}
+</style>
+
+<!--SPRITE-->
+
+<header class="top" id="top">
+  <div class="wrap nav">
+    <a class="logo" href="#top" aria-label="Open Build home">
+      <svg class="m" aria-hidden="true"><use href="#ob-mark"/></svg>
+      <svg class="w" fill="currentColor" aria-hidden="true"><use href="#ob-word"/></svg>
+    </a>
+    <ul>
+      <li><a href="#events">Events</a></li>
+      <li><a href="#network">Network</a></li>
+      <li><a href="#societies">For societies</a></li>
+      <li><a href="#partners">For partners</a></li>
+    </ul>
+    <a class="btn btn-ink" href="#join">Start a collab</a>
+  </div>
+</header>
+
+<main>
+<section class="hero">
+  <div class="wrap">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <p class="mono eyebrow">Sydney · student builders × companies &amp; communities</p>
+        <h1>Doors open.<br>Bring an idea<span class="door" aria-hidden="true"><svg viewBox="12 -1 40 66"><path fill="currentColor" fill-rule="evenodd" d="M14 4H50V60H14Z M20 10H44V54H20Z"/><path class="leaf" d="M17 7L36 1L36 63L17 57Z"/></svg></span></h1>
+        <p class="lede">Open Build connects Sydney's student builders with the companies and communities who want to build with them. We find the right uni societies, set up the collab, and keep it going when committees change.</p>
+        <div class="ctas">
+          <a class="btn btn-ink" href="#societies">I run a society</a>
+          <a class="btn btn-line" href="#partners">I'm a company or community</a>
+        </div>
+        <div class="unis mono"><span>UNSW</span><span>USYD</span><span>UTS</span><span>Macquarie</span></div>
+      </div>
+
+      <aside class="next" id="events" aria-label="Next event">
+        <div class="when mono"><span>Next up</span><span class="pill" id="countdown">4–5 Dec</span></div>
+        <h3>Random Hacks of Kindness</h3>
+        <dl>
+          <dt>When</dt><dd>Fri 4 Dec, 6pm – Sat 5 Dec, 9pm</dd>
+          <dt>Where</dt><dd>Stone &amp; Chalk, Sydney</dd>
+          <dt>Entry</dt><dd>Free and catered · 200 places</dd>
+          <dt>Final</dt><dd>Finalists pitch on the AI Engineer Sydney main stage, Mon 7 Dec</dd>
+        </dl>
+        <a class="btn" href="https://luma.com/n6q3mp7y" target="_blank" rel="noopener">RSVP on Luma <svg viewBox="12 -1 40 66" fill="currentColor" aria-hidden="true"><use href="#ob-mark"/></svg></a>
+        <small>Run by MLAI × Web Directions. Open Build is a supporting community.</small>
+      </aside>
+    </div>
+
+    <div class="strip">
+      <figure><img src="img/h4h-room.jpg" alt="Students building at long tables in a lecture theatre at UTS Central" loading="eager"></figure>
+      <figure><img src="img/h4h-tables.jpg" alt="Builders and mentors working on laptops at Hack for Humanity"></figure>
+      <figure><img src="img/h4h-pitch.jpg" alt="An organiser briefing a packed room of student teams"></figure>
+    </div>
+    <p class="strip-cap mono">Hack for Humanity · UTS Central · 5–6 Sep 2026 · 170 builders, 6 societies, 3 non-profits</p>
+  </div>
+</section>
+
+<section id="doors" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono eyebrow">Two doors in</p>
+      <h2>Pick the one that's yours.</h2>
+    </div>
+    <div class="doors">
+      <article class="door-card" id="societies">
+        <p class="mono who">For uni societies</p>
+        <h3>Partners, sponsors and speakers, without cold-emailing.</h3>
+        <ul>
+          <li>We bring companies and communities who already want to work with students.</li>
+          <li>Co-host with societies from other unis and reach students beyond your campus.</li>
+          <li>Your partnerships carry over when your committee hands over.</li>
+          <li>Free through 2026.</li>
+        </ul>
+        <a class="btn btn-ink" href="#join" data-tab="society">Join the network</a>
+      </article>
+      <article class="door-card lav" id="partners">
+        <p class="mono who">For companies &amp; communities</p>
+        <h3>Reach student builders at every Sydney uni, through one contact.</h3>
+        <ul>
+          <li>Tell us who you want to reach. We find the societies that fit.</li>
+          <li>We set up the event: hackathon, workshop, talk or build night.</li>
+          <li>One message reaches every society in the network at once.</li>
+          <li>We stay your contact next year, whoever is on the committee.</li>
+        </ul>
+        <a class="btn" href="#join" data-tab="partner">Start a collab</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="steady">
+  <div class="wrap steady-grid">
+    <div>
+      <p class="mono eyebrow" style="margin-bottom:14px">Why we exist</p>
+      <h2 style="font-size:var(--s-2);margin-bottom:22px">Committees change. We don't.</h2>
+      <p class="lede">Every society elects a new committee each year. The contacts, the half-planned events and the goodwill with sponsors often leave with the old one, so partners start from scratch.</p>
+      <p class="lede">Open Build holds the relationship in the middle. New committees inherit a partner who already knows them, and partners keep one contact across years.</p>
+    </div>
+    <div class="timeline" role="img" aria-label="Diagram: society committees change every year, while Open Build's relationship continues across 2026, 2027 and 2028.">
+      <div class="tl-years"><span></span><span>2026</span><span>2027</span><span>2028</span></div>
+      <div class="tl-row"><span class="lab">TechSoc</span><span class="seg">committee A</span><span class="seg">committee B</span><span class="seg">committee C</span></div>
+      <div class="tl-row"><span class="lab">SoftSoc</span><span class="seg">committee A</span><span class="seg">committee B</span><span class="seg">committee C</span></div>
+      <div class="tl-row"><span class="lab">MQAIS</span><span class="seg">committee A</span><span class="seg">committee B</span><span class="seg">committee C</span></div>
+      <div class="tl-row tl-ob"><span class="lab">Open Build</span><span class="seg">one contact</span><span class="seg">same contact</span><span class="seg">same contact</span></div>
+      <p class="tl-note">Every gap is an AGM handover.</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono eyebrow">How a collab works</p>
+      <h2>Three steps, then it repeats.</h2>
+    </div>
+    <div class="steps">
+      <div class="step"><span class="n">1</span><h3>Tell us what you want</h3><p>An audience, a tool to teach, a problem to hack on, or people to hire. Two lines is enough to start.</p></div>
+      <div class="step"><span class="n">2</span><h3>We bring the right societies</h3><p>We match you with societies whose members fit, line up rooms and dates, and share the plan with every society in the network.</p></div>
+      <div class="step"><span class="n">3</span><h3>We keep it going</h3><p>After the event we hand the next committee the contacts and notes, so the collab runs again next year without starting over.</p></div>
+    </div>
+  </div>
+</section>
+
+<section id="network" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono eyebrow">The network · founding societies</p>
+      <h2>Societies we've built with.</h2>
+      <p class="lede">These societies have co-hosted events with our team. The network is new and growing, one uni at a time.</p>
+    </div>
+    <div class="unigrid">
+      <div class="uni">
+        <h3>UNSW <span>4</span></h3>
+        <div class="soc"><b>No-Code Society</b><span>Ran Hack for Humanity, Debugged and the Base44 and Notion workshops</span></div>
+        <div class="soc"><b>Enactus UNSW</b><span>Hack for Humanity non-profit outreach; Base44 Workshop co-host</span></div>
+        <div class="soc"><b>AI Society (AISoc)</b><span>Debugged co-host: judges, prizes and crew</span></div>
+        <div class="soc"><b>RAPSOC</b><span>Joint socials and pub crawls</span></div>
+      </div>
+      <div class="uni">
+        <h3>USYD <span>2</span></h3>
+        <div class="soc"><b>SoftSoc</b><span>Hack for Humanity co-host; ran the Save the Children track</span></div>
+        <div class="soc"><b>Women in Tech (WIT USYD)</b><span>Hack for Humanity co-host</span></div>
+      </div>
+      <div class="uni">
+        <h3>UTS <span>1</span></h3>
+        <div class="soc"><b>TechSoc</b><span>Hack for Humanity venue, rooms and check-in at UTS Central</span></div>
+      </div>
+      <div class="uni">
+        <h3>Macquarie <span>1</span></h3>
+        <div class="soc"><b>AI &amp; Data Science Society (MQAIS)</b><span>Hack for Humanity co-host; ran the Bipolar Australia track</span></div>
+        <a class="soc missing" href="#join" data-tab="society"><b>Your society missing?</b><span>Join the network. It takes two minutes.</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono eyebrow">Track record</p>
+      <h2>Rooms we've filled.</h2>
+    </div>
+    <div class="record">
+      <div class="ev"><span class="d">5–6 Sep 2026</span><div><h3>Hack for Humanity</h3><p class="with">Student teams built tools for three non-profits over a weekend at UTS Central. Title sponsor Base44; Wix's CMO on the judging panel.</p></div><p class="with">NCS × UTS TechSoc × MQAIS × SoftSoc × WIT USYD × Enactus UNSW</p><p class="num">170<small>checked in</small></p></div>
+      <div class="ev"><span class="d">17–19 Jul 2026</span><div><h3>HealthHack Sydney</h3><p class="with">A two-day health hackathon at Stone &amp; Chalk Tech Central, presented by MLAI.</p></div><p class="with">MLAI × No-Code Society, with Base44</p><p class="num">126<small>attended</small></p></div>
+      <div class="ev"><span class="d">6 Oct 2026</span><div><h3>Base44 Workshop</h3><p class="with">A beginner build night: students built their own AI dashboard and Superagent.</p></div><p class="with">NCS × Enactus UNSW × UNSW Founders</p><p class="num">45<small>registered</small></p></div>
+      <div class="ev"><span class="d">6 Jun 2026</span><div><h3>Debugged</h3><p class="with">A one-day UNSW build sprint on the A1Zap platform, with user testing and pitches.</p></div><p class="with">A1Zap × NCS × UNSW Founders × AISoc</p><p class="num">1<small>day sprint</small></p></div>
+      <div class="ev"><span class="d">19 Mar 2026</span><div><h3>Build Your Notion Workspace</h3><p class="with">A hands-on workshop co-run with Notion.</p></div><p class="with">No-Code Society × Notion</p><p class="num">—<small>workshop</small></p></div>
+    </div>
+    <p class="record-note">Open Build was named in October 2026. These events were run by our team through No-Code Society and partner societies before then.</p>
+  </div>
+</section>
+
+<section style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono eyebrow">Companies &amp; communities</p>
+      <h2>Who's been in the room.</h2>
+    </div>
+    <div class="partners">
+      <div class="partner"><b>MLAI</b><span>Presented HealthHack; Random Hacks of Kindness</span></div>
+      <div class="partner"><b>Base44</b><span>Title sponsor, Hack for Humanity; HealthHack sponsor</span></div>
+      <div class="partner"><b>Web Directions</b><span>AI Engineer Sydney · Random Hacks of Kindness</span></div>
+      <div class="partner"><b>UNSW Founders</b><span>Debugged venue and judging; Base44 Workshop</span></div>
+      <div class="partner"><b>Notion</b><span>Co-run workshop</span></div>
+      <div class="partner"><b>A1Zap</b><span>Debugged platform, judges and prizes</span></div>
+      <div class="partner"><b>Wix</b><span>Hack for Humanity finals judge</span></div>
+      <div class="partner"><b>Crucible Ventures</b><span>Hack for Humanity judging</span></div>
+      <div class="partner"><b>Stone &amp; Chalk</b><span>HealthHack and Random Hacks of Kindness venue</span></div>
+      <div class="partner"><b>Collage</b><span>Cross-uni student events platform</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="join" id="join">
+  <div class="wrap">
+    <div class="sec-head">
+      <p class="mono eyebrow">Get in touch</p>
+      <h2>Knock on the door.</h2>
+      <p class="lede">Free through 2026. We reply within two working days.</p>
+    </div>
+    <div class="tabs" role="tablist" aria-label="Who are you?">
+      <button role="tab" id="tab-partner" aria-selected="true" aria-controls="form-partner">I'm a company or community</button>
+      <button role="tab" id="tab-society" aria-selected="false" aria-controls="form-society">I run a society</button>
+    </div>
+
+    <form id="form-partner" role="tabpanel" aria-labelledby="tab-partner">
+      <label for="p-name">Your name<input id="p-name" name="name" autocomplete="name" required></label>
+      <label for="p-email">Work email<input id="p-email" name="email" type="email" autocomplete="email" required></label>
+      <label for="p-org">Organisation<input id="p-org" name="org" autocomplete="organization" required></label>
+      <label for="p-type">You are a<select id="p-type" name="type"><option>Company</option><option>Community or meetup</option><option>Non-profit</option><option>Uni program or hub</option><option>Other</option></select></label>
+      <label for="p-want" class="full">What would you like to do?<select id="p-want" name="want"><option>Run a hackathon or build day</option><option>Run a workshop on our tool</option><option>Sponsor an event</option><option>Meet students to hire</option><option>Give a talk</option><option>Not sure yet</option></select></label>
+      <fieldset class="full"><legend>Which unis? <span class="hint">Pick any</span></legend>
+        <div class="checks">
+          <label for="pu-unsw"><input type="checkbox" id="pu-unsw" checked> UNSW</label>
+          <label for="pu-usyd"><input type="checkbox" id="pu-usyd" checked> USYD</label>
+          <label for="pu-uts"><input type="checkbox" id="pu-uts" checked> UTS</label>
+          <label for="pu-mq"><input type="checkbox" id="pu-mq" checked> Macquarie</label>
+        </div>
+      </fieldset>
+      <label for="p-when">Rough timing<input id="p-when" name="when" placeholder="e.g. March 2027, or O-Week"></label>
+      <label for="p-size">Expected size<select id="p-size" name="size"><option>Under 50</option><option>50–150</option><option>150+</option><option>Not sure</option></select></label>
+      <label for="p-notes" class="full">Anything else<textarea id="p-notes" name="notes" placeholder="Who you want to reach, what you can offer, links"></textarea></label>
+      <div class="form-foot full"><button class="btn" type="submit">Send to Open Build</button><p>We'll suggest societies and a format, then set up a call.</p></div>
+    </form>
+
+    <form id="form-society" role="tabpanel" aria-labelledby="tab-society" hidden>
+      <label for="s-soc">Society name<input id="s-soc" name="society" required></label>
+      <label for="s-uni">Uni<select id="s-uni" name="uni"><option>UNSW</option><option>USYD</option><option>UTS</option><option>Macquarie</option><option>WSU</option><option>Other</option></select></label>
+      <label for="s-name">Your name<input id="s-name" name="name" autocomplete="name" required></label>
+      <label for="s-role">Your role<input id="s-role" name="role" placeholder="e.g. President, Head of Events"></label>
+      <label for="s-email" class="full">Society email<input id="s-email" name="email" type="email" placeholder="the address that stays with the society" required></label>
+      <label for="s-handover" class="full">Next year's contact <span class="hint">Someone likely to be on next year's committee, so the partnership survives the handover</span><input id="s-handover" name="handover" placeholder="Name and email"></label>
+      <fieldset class="full"><legend>What are you after? <span class="hint">Pick any</span></legend>
+        <div class="checks">
+          <label for="sw-partners"><input type="checkbox" id="sw-partners" checked> Event partners</label>
+          <label for="sw-sponsors"><input type="checkbox" id="sw-sponsors"> Sponsors</label>
+          <label for="sw-speakers"><input type="checkbox" id="sw-speakers"> Speakers</label>
+          <label for="sw-cohost"><input type="checkbox" id="sw-cohost"> Co-hosts at other unis</label>
+        </div>
+      </fieldset>
+      <div class="form-foot full"><button class="btn" type="submit">Join the network</button><p>We'll add you to the society group chat and send the next partner event.</p></div>
+    </form>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p class="sign">Doors open 6pm.<br><em>Bring an idea.</em></p>
+    <div class="foot-row">
+      <span>Open Build · Sydney · openbuild.club</span>
+      <ul>
+        <li><a href="#events">Events calendar<span class="soon">Luma soon</span></a></li>
+        <li><a href="#join">Instagram<span class="soon">soon</span></a></li>
+        <li><a href="#join">LinkedIn<span class="soon">soon</span></a></li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<script>
+(()=>{
+  const h=document.getElementById('top');
+  const onScroll=()=>h.classList.toggle('scrolled',scrollY>8);
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  const start=new Date('2026-12-04T18:00:00+11:00');
+  const days=Math.ceil((start-Date.now())/864e5);
+  const cd=document.getElementById('countdown');
+  if(days>1)cd.textContent='in '+days+' days';else if(days===1)cd.textContent='tomorrow';else if(days===0)cd.textContent='tonight';
+
+  const tabs={partner:document.getElementById('tab-partner'),society:document.getElementById('tab-society')};
+  const forms={partner:document.getElementById('form-partner'),society:document.getElementById('form-society')};
+  const show=k=>{for(const x in tabs){const on=x===k;tabs[x].setAttribute('aria-selected',on);forms[x].hidden=!on;}};
+  tabs.partner.onclick=()=>show('partner');tabs.society.onclick=()=>show('society');
+  document.querySelectorAll('[data-tab]').forEach(a=>a.addEventListener('click',()=>show(a.dataset.tab)));
+
+  for(const f of Object.values(forms)){
+    f.addEventListener('submit',e=>{
+      e.preventDefault();
+      f.querySelector('.sent')?.remove();
+      const p=document.createElement('p');p.className='sent';p.setAttribute('role','status');
+      p.textContent='Thanks, we have your details. This is a preview of the site, so the form is not connected yet.';
+      f.append(p);
+    });
+  }
+})();
+</script>
