@@ -1,0 +1,146 @@
+(()=>{
+  const h=document.getElementById('top');
+  const onScroll=()=>h.classList.toggle('scrolled',scrollY>8);
+  addEventListener('scroll',onScroll,{passive:true});onScroll();
+
+  // Nav marks the section in view (only links to sections of this page; the current page's own link is marked in the markup)
+  const links=[...document.querySelectorAll('.nav ul a')].filter(a=>a.getAttribute('href').startsWith('#'));
+  const targets=links.map(a=>document.querySelector(a.hash));
+  const spy=()=>{
+    const y=innerHeight*.4;let cur=-1;
+    targets.forEach((t,i)=>{const r=t.getBoundingClientRect();if(r.top<y&&r.bottom>y)cur=i;});
+    links.forEach((a,i)=>i===cur?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current'));
+  };
+  addEventListener('scroll',spy,{passive:true});spy();
+
+  // Stages reveal once on scroll-in, and everything inside a stage starts together.
+  // A stage already scrolled past (a fast scroll or a nav jump) shows at once rather than waiting to be scrolled back to.
+  const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting||e.boundingClientRect.bottom<0){
+    const st=e.target;[st,...st.querySelectorAll('[data-reveal],.strip,.timeline')].forEach(el=>el.classList.add('in'));st.querySelector('.timeline')?.handovers?.();io.unobserve(st);
+  }},{rootMargin:'0px 0px -15% 0px'});
+  document.querySelectorAll('[data-stage]').forEach(el=>io.observe(el));
+
+  // The committee timeline (partners page only)
+  const tl=document.querySelector('.timeline');
+  if(tl){
+  // Size the timeline cover to the boxes (labels and years stay visible)
+  const cover=tl.querySelector('.tl-cover');
+  const fit=()=>{
+    const t=tl.getBoundingClientRect(),a=tl.querySelector('.seg').getBoundingClientRect(),z=tl.querySelector('.bar').getBoundingClientRect();
+    Object.assign(cover.style,{left:a.left-t.left-2+'px',top:a.top-t.top-8+'px',width:z.right-a.left+4+'px',height:z.bottom-a.top+16+'px'});
+  };
+  // Box outlines: rounded outer ends, zigzag on any side next to another box of the same row
+  const draw=()=>{
+    const A=6,N=4,R=6,p=.5;
+    tl.querySelectorAll('.tl-row:not(.tl-ob)').forEach(row=>{
+      const segs=[...row.querySelectorAll('.seg')];
+      segs.forEach((seg,i)=>{
+        const w=seg.offsetWidth,h=seg.offsetHeight,L=i>0,Rt=i<segs.length-1,y=k=>(p+k*(h-2*p)/N).toFixed(2);
+        // right side: even points out, odd in; left side is the same zigzag shifted in by A, so neighbours read as one torn line
+        const rx=k=>k%2?w-p-A:w-p, lx=k=>k%2?p:p+A;
+        let d=L?`M${lx(0)} ${y(0)}`:`M${p} ${p+R}Q${p} ${p} ${p+R} ${p}`;
+        d+=Rt?`L${rx(0)} ${y(0)}`:`L${w-p-R} ${p}Q${w-p} ${p} ${w-p} ${p+R}`;
+        if(Rt)for(let k=1;k<=N;k++)d+=`L${rx(k)} ${y(k)}`;else d+=`L${w-p} ${h-p-R}Q${w-p} ${h-p} ${w-p-R} ${h-p}`;
+        d+=L?`L${lx(N)} ${y(N)}`:`L${p+R} ${h-p}Q${p} ${h-p} ${p} ${h-p-R}`;
+        if(L)for(let k=N-1;k>=0;k--)d+=`L${lx(k)} ${y(k)}`;
+        seg.innerHTML=`<svg aria-hidden="true" viewBox="0 0 ${w} ${h}"><path d="${d}Z"/></svg>`;
+      });
+    });
+  };
+  const layout=()=>{fit();draw();};
+  layout();new ResizeObserver(layout).observe(tl);
+
+  // As the sweep reaches each break, the committee boxes either side of it jolt; the Open Build bar just glides on.
+  // The sweep runs --sweep on --ease-sweep (0.65,0,0.35,1), so invert that curve to find when the edge reaches each break.
+  const sweepTime=f=>{
+    const B=(t,p1,p2)=>3*p1*t*(1-t)**2+3*p2*t*t*(1-t)+t**3;
+    let lo=0,hi=1;for(let i=0;i<32;i++){const m=(lo+hi)/2;B(m,0,1)<f?lo=m:hi=m;}
+    return B(lo,.65,.35)*parseFloat(getComputedStyle(tl).getPropertyValue('--sweep'))*1000;
+  };
+  const jolt=[{transform:'none'},{transform:'translateX(-5px) rotate(-1.4deg)'},{transform:'translateX(5px) rotate(1.1deg)'},{transform:'translateX(-4px) rotate(-.7deg)'},{transform:'translateX(3px) rotate(.4deg)'},{transform:'translateX(-1px)'},{transform:'none'}];
+  tl.handovers=()=>{
+    if(matchMedia('(prefers-reduced-motion:reduce)').matches)return;
+    const c=cover.getBoundingClientRect();
+    tl.querySelectorAll('.tl-row:not(.tl-ob)').forEach(row=>{
+      const segs=[...row.querySelectorAll('.seg')];
+      for(let i=1;i<segs.length;i++){
+        const at=sweepTime((segs[i].getBoundingClientRect().left-c.left)/c.width);
+        for(const el of [segs[i-1],segs[i]])el.animate(jolt,{duration:800,delay:at,easing:'ease-out'});
+      }
+    });
+  };
+
+  }
+
+  // Walking through the door (home only). Scrolling the hero swings the door fully open and pours its light down onto the Next up card.
+  const hero=document.querySelector('.hero');
+  if(hero){
+  const doorway=hero.querySelector('.doorway'),frame=doorway.querySelector('.frame'),leaf=frame.querySelector('.leaf');
+  const floor=hero.querySelector('.floor'),card=hero.querySelector('.next'),beam=hero.querySelector('.beam'),ray=beam.firstElementChild;
+  const motionOK=matchMedia('(prefers-reduced-motion:no-preference)').matches;
+  let range=300,prog=motionOK?0:1,cur=64,tgt=64,v=0,raf=0,live=false;
+  const step=()=>{v=v*.78+(tgt-cur)*.06;cur+=v;leaf.style.transform='perspective(900px) rotateY('+cur.toFixed(2)+'deg)';raf=Math.abs(tgt-cur)>.02||Math.abs(v)>.02?requestAnimationFrame(step):0;};
+  const aim=()=>{if(!live)return;tgt=64+23*prog;if(!raf)raf=requestAnimationFrame(step);};
+  const through=()=>{
+    if(motionOK)prog=Math.min(1,Math.max(0,scrollY/range));
+    ray.style.setProperty('--p',prog.toFixed(3));card.style.setProperty('--lit',prog.toFixed(3));aim();
+  };
+  // The beam runs from the doorway's opening down to the card, widening as it goes (offsets, so the card's own entrance doesn't move it)
+  const fitBeam=()=>{
+    const fl=doorway.offsetLeft+frame.offsetLeft+10,fr=fl+frame.offsetWidth-20,top=floor.offsetTop+floor.offsetHeight,bot=card.offsetTop+2;
+    const cx=(fl+fr)/2,half=(fr-fl)*1.2,bl=Math.max(card.offsetLeft+20,cx-half),br=Math.min(card.offsetLeft+card.offsetWidth-20,cx+half);
+    const x0=Math.min(fl,bl),w=Math.max(fr,br)-x0;
+    Object.assign(beam.style,{left:x0+'px',top:top+'px',width:w+'px',height:bot-top+'px',clipPath:`polygon(${fl-x0}px 0,${fr-x0}px 0,${br-x0}px 100%,${bl-x0}px 100%)`});
+    range=Math.max(180,hero.getBoundingClientRect().top+scrollY+card.offsetTop-innerHeight*.55);
+    through();
+  };
+  fitBeam();new ResizeObserver(fitBeam).observe(hero);addEventListener('scroll',through,{passive:true});
+  if(motionOK)leaf.addEventListener('animationend',()=>{live=true;aim();},{once:true});
+
+  }
+
+  const tabs={},forms={};
+  for(const k of ['partner','society','student']){tabs[k]=document.getElementById('tab-'+k);forms[k]=document.getElementById('form-'+k);}
+  const joinH=document.querySelector('#join h2'),joinSub=document.querySelector('#join .sub'),joinHead={partner:[joinH.textContent,joinSub.textContent]};
+  joinHead.society=joinHead.partner;joinHead.student=["Hear about the next event.","Leave your email and we'll tell you when sign-ups open."];
+  const hi=document.querySelector('.tabs-hi'),row=hi.parentElement;
+  const place=()=>{
+    const b=row.querySelector('[aria-selected="true"]'),W=row.clientWidth,H=row.clientHeight;
+    hi.style.clipPath=`inset(${b.offsetTop}px ${W-b.offsetLeft-b.offsetWidth}px ${H-b.offsetTop-b.offsetHeight}px ${b.offsetLeft}px round 8px)`;
+  };
+  const show=k=>{
+    for(const x in tabs){const on=x===k;tabs[x].setAttribute('aria-selected',on);forms[x].hidden=!on;}
+    [joinH.textContent,joinSub.textContent]=joinHead[k];place();
+  };
+  for(const k in tabs)tabs[k].onclick=()=>show(k);
+  document.querySelectorAll('[data-tab]').forEach(a=>a.addEventListener('click',()=>show(a.dataset.tab)));
+  new ResizeObserver(place).observe(row);document.fonts?.ready.then(place);
+  // Each audience page opens the contact form on its own tab
+  const def=document.querySelector('main').dataset.tab;if(def)show(def);
+
+  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
+  const socs=document.querySelector('.socs');
+  if(socs){
+    const n=socs.children.length;
+    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
+    socs.style.setProperty('--loop',n*4+'s');
+    socs.parentElement.classList.add('loop');
+  }
+
+  // Past events: one case study open at a time.
+  const evRows=[...document.querySelectorAll('.ev-row')];
+  evRows.forEach(r=>r.addEventListener('click',()=>{
+    evRows.forEach(x=>{const on=x===r;x.setAttribute('aria-expanded',on);document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});
+    if(r.getBoundingClientRect().top<88)r.scrollIntoView();
+  }));
+
+  for(const f of Object.values(forms)){
+    f.addEventListener('submit',e=>{
+      e.preventDefault();
+      f.querySelector('.sent')?.remove();
+      const p=document.createElement('p');p.className='sent';p.setAttribute('role','status');
+      p.textContent='Thanks, we have your details. This is a preview of the site, so the form is not connected yet.';
+      f.append(p);
+    });
+  }
+})();

@@ -1,5 +1,6 @@
-"""Build: inject the logo sprite and the partner logo wall into src/*.html.
-Outputs <name>.html (artifact body, no skeleton) and preview/<name>.html (full document for local viewing)."""
+"""Build the site from src/parts (shared head, header, contact, footer, script) and src/pages (one body per page).
+Outputs door.html (the main page, an artifact body with no skeleton), societies.html and partners.html (whole documents
+published beside it) and preview/<name>.html (whole documents for local viewing)."""
 import math, pathlib, re
 root = pathlib.Path(__file__).parent
 sprite = (root / 'sprite.svg.html').read_text(encoding='utf8')
@@ -35,11 +36,59 @@ def logo_wall():
     items.append('<li class="add"><a href="#join" data-tab="partner">Partner with us <span class="arr" aria-hidden="true">→</span></a></li>')
     return '<ul class="logos" data-reveal>' + ''.join(items) + '</ul>'
 
+# The site is three pages built from shared parts (src/parts) and one body each (src/pages).
+# (output name, page body, <title>, description, contact tab opened by default)
+PAGES = [
+    ('door', 'home', 'Open Build',
+     "Open Build connects Sydney's uni societies with the companies and communities who want to build with them.", None),
+    ('societies', 'societies', 'Open Build Societies',
+     'For uni societies: sponsors, speakers and co-hosts through Open Build, and the societies we have built with.', 'society'),
+    ('partners', 'partners', 'Open Build Partners',
+     'For companies and communities: every Sydney uni through one contact, and who we have worked with.', 'partner'),
+]
+FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
+         '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
+         '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800'
+         '&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">\n')
+# What the Artifact tool wraps the main page in; the other pages and the previews are whole documents, so they carry it themselves.
+SKELETON = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
+            '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
+            '<style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);'
+            'padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}'
+            'body{margin:0}img{max-width:100%}</style>\n')
+
+def part(name):
+    return (root / 'src' / 'parts' / name).read_text(encoding='utf8')
+
+def page(out, body_name, title, desc, tab, home):
+    """Return (head, body). `home` is the link back to the main page ('' on the main page itself)."""
+    head = (f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
+            f'<meta name="description" content="{desc}">\n' + FONTS
+            + '<style>\n' + part('style.css') + '</style>\n'
+            "<script>document.documentElement.classList.add('js')</script>\n")
+    header = part('header.html').replace(f'href="{out}.html"', f'href="{out}.html" aria-current="page"')
+    main = (root / 'src' / 'pages' / f'{body_name}.html').read_text(encoding='utf8')
+    body = ('\n' + sprite + '\n' + header + f'\n<main{f" data-tab={chr(34)}{tab}{chr(34)}" if tab else ""}>\n' + main + '\n\n'
+            + part('contact.html') + '</main>\n\n' + part('footer.html')
+            + '\n<script>\n' + part('site.js') + '</script>\n')
+    body = body.replace('<!--PARTNERS-->', logo_wall() if '<!--PARTNERS-->' in body else '')
+    return head, body.replace('{{HOME}}', home)
+
 (root / 'preview').mkdir(exist_ok=True)
+for out, body_name, title, desc, tab in PAGES:
+    main_page = out == 'door'
+    # Published: the main page is index.html in the artifact, the others sit beside it
+    head, body = page(out, body_name, title, desc, tab, '' if main_page else 'index.html')
+    (root / f'{out}.html').write_text(head + body if main_page else SKELETON + head + '</head><body>' + body + '</body></html>\n', encoding='utf8')
+    # Local preview: whole documents in preview/, where the main page is door.html
+    head, body = page(out, body_name, title, desc, tab, '' if main_page else 'door.html')
+    doc = SKELETON + head + '</head><body>' + body + '</body></html>\n'
+    (root / 'preview' / f'{out}.html').write_text(doc.replace('src="img/', 'src="../img/'), encoding='utf8')
+    print('built', f'{out}.html')
+
+# Direction B ("After Hours") is one self-contained file, kept for reference
 for src in sorted((root / 'src').glob('*.html')):
     body = src.read_text(encoding='utf8').replace('<!--SPRITE-->', sprite)
-    if '<!--PARTNERS-->' in body:
-        body = body.replace('<!--PARTNERS-->', logo_wall())
     (root / src.name).write_text(body, encoding='utf8')
     head, _, rest = body.partition('</style>')
     doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
