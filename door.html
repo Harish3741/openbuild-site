@@ -82,13 +82,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .hero h1 .ln{display:block;overflow:hidden;padding-block:.06em .1em;margin-block:-.06em -.1em}
 .hero h1 .ln>span{display:block}
 .hero .sub{color:var(--ink-2);font-size:clamp(1.1rem,1rem + .4vw,1.3rem);max-width:26em}
-/* Audience picker: three shortcuts, each to that visitor's card (and the matching contact tab) */
-.pick{display:grid;gap:14px}
-.pick-q{font-weight:600;font-size:.95rem;color:var(--ink-3)}
-.pick-opts{display:flex;flex-wrap:wrap;gap:10px}
-.pick-opts a{font:600 1rem/1 var(--f-body);padding:14px 20px;border-radius:var(--r-btn);border:1.5px solid var(--ink);color:var(--ink);text-decoration:none;transition:transform .16s var(--ease-out),background-color .2s ease}
-.pick-opts a:active{transform:scale(.97)}
-@media (hover:hover) and (pointer:fine){.pick-opts a:hover{background:var(--paper-2)}}
 
 .doorway{position:relative;height:clamp(340px,40vw,500px);display:flex;justify-content:center;align-items:flex-end;clip-path:inset(-200px -600px 0 -600px)}
 @media (max-width:900px){.doorway{height:clamp(280px,75vw,400px)}}
@@ -265,7 +258,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 @keyframes settle{from{transform:scale(1.12)}}
 @keyframes unveil{to{transform:scaleX(0)}}
 .hero h1 .ln>span{animation:lineUp 1.4s var(--ease-out) .1s backwards}
-.hero .sub,.hero .pick{animation:rise 1.4s var(--ease-out) .1s backwards}
+.hero .sub{animation:rise 1.4s var(--ease-out) .1s backwards}
 .doorway .frame{animation:fade .9s ease .1s backwards}
 .doorway .leaf{animation:open 2.4s var(--ease-in-out) .1s backwards}
 .doorway .spill{animation:fade 2.4s ease .1s backwards}
@@ -302,15 +295,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   <div class="wrap hero-grid">
     <div class="hero-copy">
       <h1><span class="ln"><span>Doors open.</span></span><span class="ln"><span>Bring an idea.</span></span></h1>
-      <p class="sub">We match uni societies at UNSW, USYD, UTS and Macquarie with the companies and communities who want to build with students.</p>
-      <div class="pick" role="group" aria-labelledby="pick-q">
-        <p class="pick-q" id="pick-q">What brings you here?</p>
-        <div class="pick-opts">
-          <a href="#for-societies" data-tab="society">I run a society</a>
-          <a href="#for-partners" data-tab="partner">I'm a company or community</a>
-          <a href="#for-students" data-tab="student">I'm a student</a>
-        </div>
-      </div>
+      <p class="sub">Sydney's best builders are students, spread across every uni in rooms most companies never think to look. We find the societies that fit and open the door.</p>
     </div>
     <div class="doorway" aria-hidden="true">
       <div class="frame"><div class="light"></div><div class="leaf"></div></div>

@@ -30,7 +30,7 @@ Always edit `src/`, never the built files.
 
 ## Interactive pieces (11 Nov)
 
-- **Audience picker** (hero): society, company or student. Since the 12 Nov trim these are plain links: each jumps to that visitor's card and, through `data-tab`, preselects the matching contact tab. Nothing is remembered and the page no longer changes around the choice (no hero line or nav button swap, no "That's you" ring). Students also get a full-width card and their own contact tab.
+- **No audience picker** (12 Nov, Harish): the hero's "What brings you here?" buttons are gone. The hero line now follows the vibe of Julia's first LinkedIn draft ("Sydney's best builders are students…"). The cards below still carry each audience's way in.
 - **Door**: scrolling the hero opens the leaf fully and grows `.beam` down onto the Next up card (`through()` and `fitBeam()` in the script). The door no longer follows the cursor (12 Nov).
 - **Past events**: the three biggest only, by Harish's call on 11 Nov (Hack for Humanity, HealthHack Sydney, Debugged; Build Your Life and the Notion workshop were taken off). Each `.ev-row` button opens its `.ev-panel` (one open at a time; an accordion on small screens). Facts and photos come from the portfolio site (`portfolio-website/src/data/projects.js`); photos are picked to show a full room or people heads down working, not posed shots. To add an event: add a row + panel, bump `--n` and the `repeat(3,auto)` in `.evx`.
 - **No partner filter**: the "By event" filter on the logo wall was removed on 11 Nov (Harish: too complex). The wall is a plain grid again.
