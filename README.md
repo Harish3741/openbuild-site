@@ -62,3 +62,10 @@ Always edit `src/`, never the built files.
 4. Instagram and LinkedIn handles go in the footer.
 5. Buy **openbuild.club** at Porkbun (US$4.12 first year, US$15.96/yr renewal, checked 10 Nov 2026), then deploy (Vercel or Cloudflare Pages) and point DNS.
 6. Get partner name sign-offs (see above).
+
+## 12 Nov evening changes
+
+- **Section order:** hero → who we work with → events we've run → committees → societies → partners → contact. Societies sit right above the partner wall.
+- **Societies** are a ruled grid of equal cells (logo badge, name, uni), matching the partner wall. Badges live in `img/societies/` (sources in SOURCES.md) and are published as artifact files next to the event photos. Link under it: "Want to be on the list? Collab with us!"
+- **Events:** the Partners / Societies / Where list is gone from every event. On desktop all panels share one grid cell and closed ones stay laid out but invisible, so the box is always as tall as the tallest event.
+
