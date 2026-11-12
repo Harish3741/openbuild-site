@@ -1,5 +1,9 @@
 # Open Build website
 
+**Read first (13 Nov):** [notes/OVERNIGHT-12-NOV.md](notes/OVERNIGHT-12-NOV.md) has what was built overnight on 12 Nov, the choices made, the other options and what needs Harish's call.
+
+**Since 12 Nov the site is three pages** built from shared parts: `src/pages/home.html`, `societies.html` and `partners.html` (one body each) plus `src/parts/` (`style.css`, `header.html`, `contact.html`, `footer.html`, `site.js`). `python3 build.py` writes `door.html` (the main page, published as the artifact's index), `societies.html` and `partners.html` (whole documents published beside it as artifact files) and `preview/` copies for local viewing. `{{HOME}}` in a part or page is the link back to the main page. Older sections of this README that mention `src/door.html` describe the single-page version.
+
 Draft site for Open Build (Harish + Varun's Sydney go-between for uni societies and companies/communities). Background: `~/Documents/Societies/Open Build/ABOUT.md`. Research behind the design: `~/Documents/Societies/Open Build/Research/website/` (README.md is the summary).
 
 ## Status (10 Nov 2026)
@@ -11,7 +15,7 @@ Draft site for Open Build (Harish + Varun's Sydney go-between for uni societies 
 | A, "The Door": light, editorial, follows the system theme | `src/door.html` | https://claude.ai/artifact/D6ZtBxnj4FDkUa7dMMVq5m |
 | B, "After Hours": dark night-event poster, doorway of light | `src/after-hours.html` | https://claude.ai/artifact/FU8as8bP1RsWwMvcSrjz2T |
 
-To republish from another session, pass the artifact URL as `url` and publish the built file with `files` for `img/h4h-room.jpg`, `img/h4h-tables.jpg` and `img/h4h-pitch.jpg`.
+To republish from another session, pass the artifact URL as `url`, publish `door.html` and pass `files` for `societies.html`, `partners.html` and any image that changed (`img/*.jpg`, `img/societies/*.webp`).
 
 ## Build
 
