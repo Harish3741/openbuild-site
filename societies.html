@@ -459,6 +459,13 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 
 <script>
 (()=>{
+  // A new page starts at the top. The artifact viewer otherwise carries the last page's scroll position over, so a card clicked halfway down home would open the next page halfway down.
+  if(!location.hash){
+    try{history.scrollRestoration='manual';}catch{}
+    const top=()=>scrollTo(0,0);
+    top();addEventListener('load',top,{once:true});addEventListener('pageshow',top,{once:true});
+  }
+
   const h=document.getElementById('top');
   const onScroll=()=>h.classList.toggle('scrolled',scrollY>8);
   addEventListener('scroll',onScroll,{passive:true});onScroll();
