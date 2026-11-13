@@ -36,6 +36,13 @@ def logo_wall():
     items.append('<li class="add"><a href="#join" data-tab="partner">Partner with us <span class="arr" aria-hidden="true">→</span></a></li>')
     return '<ul class="logos" data-reveal>' + ''.join(items) + '</ul>'
 
+# Uni logos for the drawings: <!--UNI:slug x y w h--> becomes img/unis/<slug>.svg nested at that box, left-aligned and centred vertically.
+def uni_logo(m):
+    slug, x, y, w, h = m.group(1), *m.group(2).split()
+    svg = (root / 'img' / 'unis' / f'{slug}.svg').read_text(encoding='utf8').strip()
+    svg = re.sub(r' xmlns="[^"]*"', '', svg, count=1)
+    return svg.replace('<svg ', f'<svg class="d-uni" x="{x}" y="{y}" width="{w}" height="{h}" preserveAspectRatio="xMinYMid meet" ', 1)
+
 # The site is three pages built from shared parts (src/parts) and one body each (src/pages).
 # (output name, page body, <title>, description, contact tab opened by default)
 PAGES = [
@@ -72,6 +79,7 @@ def page(out, body_name, title, desc, tab, home):
             + part('contact.html') + '</main>\n\n' + part('footer.html')
             + '\n<script>\n' + part('site.js') + '</script>\n')
     body = body.replace('<!--PARTNERS-->', logo_wall() if '<!--PARTNERS-->' in body else '')
+    body = re.sub(r'<!--UNI:(\S+) ([\d. ]+)-->', uni_logo, body)
     return head, body.replace('{{HOME}}', home)
 
 (root / 'preview').mkdir(exist_ok=True)

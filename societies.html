@@ -164,8 +164,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 /* Drawings: flat figures in the page's own ink and lavender. Each one makes the point of the heading beside it.
    The .d- classes carry no ancestor in their selectors, so they also reach the copies a <use> makes of the sprite's figures. */
 .draw{margin:0}
-.draw svg{display:block;width:100%;height:auto;max-width:560px;margin-inline:auto;overflow:visible}
+.draw>svg{display:block;width:100%;height:auto;max-width:560px;margin-inline:auto;overflow:visible}
 .d-ink{fill:var(--ink)}
+.d-uni{color:var(--ink)}
 .d-you{fill:var(--lav-deep)}
 .d-onlav{fill:var(--on-lav)}
 .d-lav{fill:var(--lav)}
@@ -387,25 +388,29 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <a class="btn btn-ink" href="#join" data-tab="society">Add your society</a>
     </div>
     <figure class="draw" data-reveal>
-      <svg viewBox="0 0 520 372" role="img" aria-label="Drawing: cold emails pile up outside a shut door, while next to it a society walks through an open door to the people inside.">
-        <path class="d-ground" d="M10 300H510"/>
-        <!-- shut door, emails bouncing off it -->
-        <path class="d-leaf" d="M70 300V90H190V300Z"/><path class="d-frame" d="M70 300V90H190V300"/><circle cx="174" cy="200" r="4.5" fill="#86837c"/>
-        <path class="d-faint d-dash" d="M66 176C40 140 14 150 22 186"/>
-        <use href="#d-env" x="-4" y="184" width="48" height="34" transform="rotate(-22 20 201)"/>
-        <use href="#d-env" x="22" y="268" width="48" height="34" transform="rotate(-10 46 285)"/>
-        <use href="#d-env" x="92" y="270" width="48" height="34" transform="rotate(5 116 287)"/>
-        <use href="#d-env" x="150" y="264" width="48" height="34" transform="rotate(-16 174 281)"/>
-        <text x="130" y="340" text-anchor="middle">Cold emails</text>
-        <!-- open door, light on the floor, people inside -->
-        <path class="d-lav" opacity=".45" d="M330 300H450L500 352H292Z"/>
-        <path class="d-lav" d="M330 300V90H450V300Z"/>
-        <use href="#d-pawn" class="d-onlav" x="352" y="232" width="30.8" height="66"/><use href="#d-pawn" class="d-onlav" x="396" y="238" width="28" height="60"/>
-        <path class="d-frame" d="M330 300V90H450V300"/>
-        <path class="d-leaf" d="M330 90L288 104V318L330 300Z"/><path class="d-line" d="M330 90L288 104V318L330 300"/>
-        <use href="#d-pawn" class="d-you" x="222" y="240" width="28" height="60"/>
-        <path class="d-faint d-dash" d="M262 282H282"/>
-        <text x="390" y="340" text-anchor="middle">Open Build</text>
+      <svg viewBox="0 0 520 372" role="img" aria-label="Drawing: on one side, cold emails pile up outside a shut door. On the other, Open Build stands between a society and its sponsors and joins them up.">
+        <path class="d-ground" d="M6 300H514"/>
+        <!-- cold approach: emails bouncing off a shut door -->
+        <path class="d-leaf" d="M44 300V100H128V300Z"/><path class="d-frame" d="M44 300V100H128V300"/><circle cx="116" cy="206" r="4" fill="#86837c"/>
+        <path class="d-faint d-dash" d="M40 206C22 176 4 182 6 212"/>
+        <use href="#d-env" x="-14" y="214" width="42" height="30" transform="rotate(-22 7 229)"/>
+        <use href="#d-env" x="2" y="272" width="42" height="30" transform="rotate(-10 23 287)"/>
+        <use href="#d-env" x="56" y="274" width="42" height="30" transform="rotate(5 77 289)"/>
+        <use href="#d-env" x="100" y="268" width="42" height="30" transform="rotate(-16 121 283)"/>
+        <text x="86" y="340" text-anchor="middle">Cold emails</text>
+        <!-- through Open Build: the society and the sponsors joined up -->
+        <path class="d-lav" opacity=".45" d="M292 300H352L374 332H270Z"/>
+        <path class="d-lav" d="M292 300V100H352V300Z"/>
+        <path class="d-one" style="stroke:var(--on-lav)" d="M292 262H352"/>
+        <path class="d-frame" d="M292 300V100H352V300"/>
+        <path class="d-leaf" d="M352 100L378 110V314L352 300Z"/><path class="d-line" d="M352 100L378 110V314L352 300"/>
+        <use href="#d-pawn" class="d-you" x="206" y="240" width="28" height="60"/>
+        <use href="#d-pawn" class="d-ink" x="428" y="237" width="29.4" height="63"/><use href="#d-pawn" class="d-ink" x="466" y="240" width="28" height="60"/>
+        <path class="d-one" d="M246 262H288M378 262H416"/>
+        <circle class="d-you" cx="246" cy="262" r="4.5"/><circle class="d-you" cx="416" cy="262" r="4.5"/>
+        <text x="220" y="340" text-anchor="middle">You</text>
+        <text x="322" y="352" text-anchor="middle">Open Build</text>
+        <text x="461" y="340" text-anchor="middle">Sponsors</text>
       </svg>
     </figure>
   </div>

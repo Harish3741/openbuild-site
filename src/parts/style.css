@@ -156,8 +156,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 /* Drawings: flat figures in the page's own ink and lavender. Each one makes the point of the heading beside it.
    The .d- classes carry no ancestor in their selectors, so they also reach the copies a <use> makes of the sprite's figures. */
 .draw{margin:0}
-.draw svg{display:block;width:100%;height:auto;max-width:560px;margin-inline:auto;overflow:visible}
+.draw>svg{display:block;width:100%;height:auto;max-width:560px;margin-inline:auto;overflow:visible}
 .d-ink{fill:var(--ink)}
+.d-uni{color:var(--ink)}
 .d-you{fill:var(--lav-deep)}
 .d-onlav{fill:var(--on-lav)}
 .d-lav{fill:var(--lav)}
