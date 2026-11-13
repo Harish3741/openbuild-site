@@ -73,3 +73,11 @@ Always edit `src/`, never the built files.
 - **Societies** are a ruled grid of equal cells (logo badge, name, uni), matching the partner wall. Badges live in `img/societies/` (sources in SOURCES.md) and are published as artifact files next to the event photos. Link under it: "Want to be on the list? Collab with us!"
 - **Events:** the Partners / Societies / Where list is gone from every event. On desktop all panels share one grid cell and closed ones stay laid out but invisible, so the box is always as tall as the tallest event.
 
+
+## 13 Nov changes
+
+- Home: the two audience cards are plain buttons (`.door-btn`); "Who we are" is a carousel of placeholder portraits (`.stack`, `.face`, script in `site.js`).
+- Societies and companies pages: a drawing in the page head (`.draw`, figures `#d-pawn` and `#d-env` in `sprite.svg.html`), a "What you get" section and event blurbs with photos (`.shots`). Photo sources are in `img/PHOTOS.md`.
+- Pages open at the top at once: smooth scrolling waits for `html.ready`, and leaving a page fades out and resets the scroll first (`site.js`, top of the file).
+- Choices, other options and what needs Harish's call: `notes/ROUND-13-NOV.md`.
+- Publishing: send `door.html` to the artifact with `societies.html`, `partners.html` and any new `img/` files as extra files.

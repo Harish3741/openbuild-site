@@ -1,10 +1,28 @@
 (()=>{
-  // A new page starts at the top. The artifact viewer otherwise carries the last page's scroll position over, so a card clicked halfway down home would open the next page halfway down.
+  // A new page starts at the top, at once. The artifact viewer otherwise carries the last page's scroll position over, so a card clicked halfway down
+  // home would open the next page halfway down. Smooth scrolling is held back (html.ready) until the page has settled, or that reset would glide up from the bottom.
+  const root=document.documentElement,still=matchMedia('(prefers-reduced-motion:reduce)').matches;
   if(!location.hash){
     try{history.scrollRestoration='manual';}catch{}
-    const top=()=>scrollTo(0,0);
+    const top=()=>scrollTo({top:0,left:0,behavior:'instant'});
+    let guard=true;
+    const settle=()=>{guard=false;root.classList.add('ready');};
     top();addEventListener('load',top,{once:true});addEventListener('pageshow',top,{once:true});
-  }
+    // Until the visitor touches the page, any scroll is the viewer restoring the old position: undo it
+    addEventListener('scroll',()=>{if(guard&&scrollY)top();},{passive:true});
+    for(const t of ['wheel','touchstart','keydown','pointerdown'])addEventListener(t,settle,{once:true,passive:true});
+    setTimeout(settle,1500);
+  }else root.classList.add('ready');
+  // Leaving for another page: fade out and go to the top first, so the position carried over is the top
+  document.addEventListener('click',e=>{
+    const a=e.target.closest('a[href]');
+    if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target)return;
+    const u=new URL(a.href,location.href);
+    if(u.origin!==location.origin||u.pathname===location.pathname)return;
+    e.preventDefault();root.classList.add('leaving');
+    setTimeout(()=>{root.classList.remove('ready');scrollTo({top:0,left:0,behavior:'instant'});location.href=u.href;},still?0:170);
+  });
+  addEventListener('pageshow',()=>root.classList.remove('leaving'));
 
   const h=document.getElementById('top');
   const onScroll=()=>h.classList.toggle('scrolled',scrollY>8);
@@ -132,6 +150,34 @@
     for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
     socs.style.setProperty('--loop',n*4+'s');
     socs.parentElement.classList.add('loop');
+  }
+
+  // Who we are (home only): one person at the front of the stack. The names, the arrows, a swipe and the arrow keys all move it.
+  // It also steps on by itself while in view, until the visitor moves it once.
+  const stack=document.querySelector('.stack');
+  if(stack){
+    const faces=[...stack.children],names=[...document.querySelectorAll('.people button')],n=faces.length;
+    const who=document.querySelector('.team-who'),nav=document.querySelector('.team-nav'),count=nav.querySelector('.mono');
+    let at=0,timer=0;
+    const go=(i,byHand)=>{
+      at=(i+n)%n;
+      faces.forEach((f,k)=>{const pos=(k-at+n)%n;f.dataset.pos=pos<3?pos:9;});
+      names.forEach((b,k)=>b.setAttribute('aria-pressed',k===at));
+      who.innerHTML=names[at].innerHTML;count.textContent=at+1+' / '+n;
+      if(byHand){clearInterval(timer);timer=-1;}
+    };
+    nav.hidden=false;
+    names.forEach((b,k)=>b.addEventListener('click',()=>go(k,true)));
+    nav.querySelectorAll('button').forEach(b=>b.addEventListener('click',()=>go(at+ +b.dataset.step,true)));
+    document.getElementById('team').addEventListener('keydown',e=>{const d={ArrowLeft:-1,ArrowRight:1}[e.key];if(d){go(at+d,true);names[at].closest('.people').contains(document.activeElement)&&names[at].focus();}});
+    let x0=null;
+    stack.addEventListener('pointerdown',e=>{x0=e.clientX;});
+    stack.addEventListener('pointerup',e=>{if(x0!==null&&Math.abs(e.clientX-x0)>40)go(at+(e.clientX<x0?1:-1),true);x0=null;});
+    stack.addEventListener('pointercancel',()=>{x0=null;});
+    if(!still)new IntersectionObserver(([e])=>{
+      if(timer<0)return;
+      clearInterval(timer);timer=e.isIntersecting?setInterval(()=>{if(!stack.matches(':hover'))go(at+1);},4500):0;
+    },{threshold:.6}).observe(stack);
   }
 
   // Past events: one case study open at a time.

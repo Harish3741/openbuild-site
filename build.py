@@ -65,7 +65,7 @@ def page(out, body_name, title, desc, tab, home):
     head = (f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
             f'<meta name="description" content="{desc}">\n' + FONTS
             + '<style>\n' + part('style.css') + '</style>\n'
-            "<script>document.documentElement.classList.add('js')</script>\n")
+            "<script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>\n")
     header = part('header.html').replace(f'href="{out}.html"', f'href="{out}.html" aria-current="page"')
     main = (root / 'src' / 'pages' / f'{body_name}.html').read_text(encoding='utf8')
     body = ('\n' + sprite + '\n' + header + f'\n<main{f" data-tab={chr(34)}{tab}{chr(34)}" if tab else ""}>\n' + main + '\n\n'
