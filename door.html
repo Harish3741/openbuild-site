@@ -124,10 +124,10 @@ header.top.scrolled{border-bottom-color:var(--line)}
 /* Two doors: one big button per audience, each opening its own page. Only the name, a small drawing and the arrow. */
 .doors{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,32px)}
 @media (max-width:760px){.doors{grid-template-columns:1fr}}
-.door-btn{display:grid;grid-template-columns:1fr auto;align-items:end;gap:20px 24px;min-height:clamp(190px,19vw,250px);padding:clamp(24px,3.2vw,40px);border:1.5px solid var(--ink);border-radius:var(--r) var(--r) 4px 4px;background:var(--card);color:var(--ink);text-decoration:none;transition:transform .3s var(--ease-out)}
-.door-btn svg{grid-column:1/-1;align-self:start;width:auto;height:clamp(56px,6vw,72px);display:block}
-.door-btn .lbl{font:800 clamp(1.7rem,1.2rem + 1.9vw,2.7rem)/1.02 var(--f-display);letter-spacing:-.03em;text-wrap:balance}
-.door-btn .arr{font-size:1.6rem;line-height:1.2;transition:transform .25s var(--ease-out)}
+.door-btn{display:grid;grid-template-columns:1fr auto;align-items:end;gap:14px 20px;min-height:clamp(130px,12vw,165px);padding:clamp(20px,2.2vw,28px);border:1.5px solid var(--ink);border-radius:var(--r) var(--r) 4px 4px;background:var(--card);color:var(--ink);text-decoration:none;transition:transform .3s var(--ease-out)}
+.door-btn svg{grid-column:1/-1;align-self:start;width:auto;height:clamp(36px,3.6vw,46px);display:block}
+.door-btn .lbl{font:800 clamp(1.35rem,1.1rem + 1vw,1.9rem)/1.05 var(--f-display);letter-spacing:-.03em;text-wrap:balance}
+.door-btn .arr{font-size:1.3rem;line-height:1.2;transition:transform .25s var(--ease-out)}
 .door-btn.lav{background:var(--lav);border-color:var(--lav);color:var(--on-lav)}
 .door-btn:active{transform:scale(.985)}
 @media (hover:hover) and (pointer:fine){.door-btn:hover{transform:translateY(-4px)}.door-btn:hover .arr{transform:translateX(6px)}}
@@ -464,9 +464,9 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <h2>Events we've run.</h2>
     </div>
     <ul class="shots">
-      <li><figure><img src="img/ev-h4h.jpg" alt="The main floor at Hack for Humanity, every table full of teams building" loading="lazy"></figure><p class="mono">Sep 2026</p><h3>Hack for Humanity</h3><p>Two days building tools with real non-profits.</p></li>
-      <li><figure><img src="img/ev-healthhack.jpg" alt="Teams heads down on their laptops at HealthHack Sydney" loading="lazy"></figure><p class="mono">Jul 2026</p><h3>HealthHack Sydney</h3><p>A weekend on real healthcare problems.</p></li>
-      <li><figure><img src="img/ev-debugged.jpg" alt="Teams building their apps on the floor at Debugged" loading="lazy"></figure><p class="mono">Jun 2026</p><h3>Debugged</h3><p>A one-day build sprint, from problem to pitch.</p></li>
+      <li><figure><img src="img/ev-h4h.jpg" alt="The main floor at Hack for Humanity, every table full of teams building"></figure><p class="mono">Sep 2026</p><h3>Hack for Humanity</h3><p>Two days building tools with real non-profits.</p></li>
+      <li><figure><img src="img/ev-healthhack.jpg" alt="Teams heads down on their laptops at HealthHack Sydney"></figure><p class="mono">Jul 2026</p><h3>HealthHack Sydney</h3><p>A weekend on real healthcare problems.</p></li>
+      <li><figure><img src="img/ev-debugged.jpg" alt="Teams building their apps on the floor at Debugged"></figure><p class="mono">Jun 2026</p><h3>Debugged</h3><p>A one-day build sprint, from problem to pitch.</p></li>
     </ul>
   </div>
 </section>
