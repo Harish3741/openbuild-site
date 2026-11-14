@@ -123,16 +123,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .door-btn.lav{background:var(--lav);border-color:var(--lav);color:var(--on-lav)}
 .door-btn:active{transform:scale(.985)}
 @media (hover:hover) and (pointer:fine){.door-btn:hover{transform:translateY(-4px)}.door-btn:hover .arr{transform:translateX(6px)}}
-.door-card{position:relative;border:1.5px solid var(--ink);padding:clamp(32px,4.5vw,56px);display:grid;gap:28px;background:var(--card)}
 .who{font-weight:600;font-size:.95rem;color:var(--ink-3)}
-.door-card h3{font-size:var(--s-h3);line-height:1.12;max-width:16em}
-/* Students: a third, full-width way in */
-.door-card.wide{grid-column:1/-1;grid-template-rows:none;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr) auto;align-items:center;gap:20px clamp(28px,4vw,56px);padding-block:clamp(28px,3.4vw,40px);border-radius:var(--r);background:var(--ink);border-color:var(--ink);color:var(--paper)}
-@media (max-width:900px){.door-card.wide{grid-template-columns:1fr}}
-.door-card.wide .head{display:grid;gap:12px}
-.door-card.wide .who{color:var(--paper);opacity:.7}
-.door-card.wide .btn{background:var(--lav);border-color:var(--lav);color:#151515}
-@media (hover:hover) and (pointer:fine){.door-card.wide .btn:hover{background:var(--lav-hi);border-color:var(--lav-hi)}}
 
 /* Plain statements in a row, each under one rule: what we do (home), the steps (audience pages, numbered because they are a sequence) and what we've run */
 .value{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,3vw,40px);list-style:none;margin:0;padding:0}
@@ -140,6 +131,8 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .value li{display:grid;gap:10px;align-content:start;border-top:1.5px solid var(--ink);padding-top:20px}
 .value h3{font-size:var(--s-h3);line-height:1.12}
 .value li>p:not(.mono){color:var(--ink-2)}
+.value .draw{margin-bottom:10px}
+.value .draw>svg{max-width:none}
 .steps{counter-reset:step}
 .steps li{counter-increment:step}
 .steps li::before{content:counter(step);font:500 .75rem var(--f-mono);color:var(--ink-3)}
@@ -169,6 +162,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-dash{stroke-dasharray:2 7}
 .d-ground{fill:none;stroke:var(--line);stroke-width:1.5}
 .d-one{fill:none;stroke:var(--lav-deep);stroke-width:3.5;stroke-linecap:round}
+.d-box{fill:var(--card);stroke:var(--ink-3);stroke-width:1.5}
+.d-glass{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}
+.d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 
 /* Photo cards: what the page promises, each beside a photo of it happening (audience pages) */
@@ -243,22 +239,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .missing{margin-top:clamp(40px,5vw,56px)}
 .missing .lbl span{font-weight:400;color:var(--ink-3)}
 
-/* Past events: a list on the left, the open event's case study on the right. On small screens the same markup stacks into an accordion. */
-.evx{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);grid-template-rows:repeat(3,auto) 1fr;column-gap:clamp(32px,5vw,72px);border-bottom:1.5px solid var(--line)}
-.ev-row{grid-column:1;grid-row:var(--n);display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:12px;width:100%;padding:20px 0;border:0;border-top:1.5px solid var(--line);background:none;color:var(--ink-3);font:inherit;text-align:left;cursor:pointer;transition:color .2s ease,border-color .2s ease}
-.ev-row .nm{font:800 1.3rem/1.1 var(--f-display);letter-spacing:-.02em}
-.ev-row .mono{color:inherit}
-@media (hover:hover) and (pointer:fine){.ev-row:hover{color:var(--ink)}}
-.ev-row[aria-expanded="true"]{color:var(--ink);border-top-color:var(--ink)}
-.ev-panel{grid-column:2;grid-row:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:clamp(24px,3vw,40px);align-items:start;padding-block:20px 32px;border-top:1.5px solid var(--ink)}
-.ev-panel:not([hidden]){animation:formIn .5s var(--ease-out)}
-.ev-panel figure{margin:0;border-radius:var(--r);overflow:hidden;aspect-ratio:4/3;background:var(--paper-2)}
-.ev-panel img{width:100%;height:100%;object-fit:cover;display:block}
-.ev-body{display:grid;gap:18px;align-content:start}
-.ev-body>p{color:var(--ink-2)}
-/* All panels share one grid cell; closed ones stay laid out but invisible, so every event is as tall as the tallest */
-@media (min-width:821px){.evx .ev-panel[hidden]{display:grid!important;visibility:hidden}}
-@media (max-width:820px){.evx{display:block}.ev-panel{grid-template-columns:1fr;border-top:0;padding-top:0}}
 
 /* Partner filter: pick an event and the logos that were part of it stay lit */
 

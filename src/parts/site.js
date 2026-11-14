@@ -171,13 +171,6 @@
     },{threshold:.6}).observe(stack);
   }
 
-  // Past events: one case study open at a time.
-  const evRows=[...document.querySelectorAll('.ev-row')];
-  evRows.forEach(r=>r.addEventListener('click',()=>{
-    evRows.forEach(x=>{const on=x===r;x.setAttribute('aria-expanded',on);document.getElementById(x.getAttribute('aria-controls')).hidden=!on;});
-    if(r.getBoundingClientRect().top<88)r.scrollIntoView();
-  }));
-
   for(const f of Object.values(forms)){
     f.addEventListener('submit',e=>{
       e.preventDefault();
