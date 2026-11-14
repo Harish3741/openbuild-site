@@ -106,6 +106,11 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .next dd{margin:0}
 .next .btn{background:var(--on-lav);color:#F2F0EB;border-color:var(--on-lav);justify-self:start}
 @media (hover:hover) and (pointer:fine){.next .btn:hover{background:#2e2d2a;border-color:#2e2d2a}}
+.next-form{display:flex;flex-wrap:wrap;gap:10px;max-width:none;width:min(100%,440px)}
+.next-form input{flex:1 1 200px;min-width:0;background:var(--paper);color:var(--ink);border-color:transparent}
+.next-form input::placeholder{color:var(--ink-3)}
+.next-form input:focus{outline-color:var(--on-lav)}
+.next-form .sent{flex:1 1 100%}
 
 
 /* Two doors: one big button per audience, each opening its own page. Only the name, a small drawing and the arrow. */
@@ -165,15 +170,29 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 /* The labels are drawn in the SVG's own units, so on a phone they shrink with the drawing: make them bigger there */
+.draw text.d-lab{font-size:14.5px;fill:var(--ink-2)}
 @media (max-width:560px){.draw text{font-size:15px}}
 
 /* Photo cards: what the page promises, each beside a photo of it happening (audience pages) */
-.shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,3vw,40px) clamp(20px,2.4vw,32px);list-style:none;margin:0;padding:0}
+.shots{--rg:clamp(28px,3vw,40px);--cg:clamp(20px,2.4vw,32px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--rg) var(--cg);list-style:none;margin:0;padding:0}
 @media (max-width:760px){.shots{grid-template-columns:1fr}}
 .shots li{display:grid;gap:8px;align-content:start}
 /* Photo cards come in one after another, not all at once (Harish, 14 Nov). site.js staggers the ones that scroll in together. */
 @media (prefers-reduced-motion:no-preference){.js .shots>li:not(.in){opacity:0}}
 .shots>li.in{animation:rise 1.3s var(--ease-out) backwards}
+/* What you get: the cards hang off one rail with a dot each, so the row reads as a timeline. Each stretch of rail draws in with its card.
+   On a phone the rail runs down the left. */
+.rail>li{position:relative;padding-top:40px}
+.rail>li::before{content:"";position:absolute;top:6px;left:0;right:calc(-1 * var(--cg));height:1.5px;background:var(--ink);transform-origin:left}
+.rail>li:last-child::before{right:0}
+.rail>li::after{content:"";position:absolute;top:0;left:0;width:14px;height:14px;border-radius:50%;background:var(--lav-deep);box-shadow:0 0 0 5px var(--paper)}
+@media (prefers-reduced-motion:no-preference){.rail>li.in::before{animation:draw 1.2s var(--ease-out) backwards;animation-delay:inherit}}
+@media (max-width:760px){
+  .rail>li{padding:0 0 0 36px}
+  .rail>li::before{left:6px;right:auto;bottom:calc(-1 * var(--rg));width:1.5px;height:auto;transform-origin:top}
+  .rail>li:last-child::before{right:auto;bottom:0}
+  .rail>li.in::before{animation-name:drawY}
+}
 .shots figure{margin:0 0 10px;aspect-ratio:4/3;max-width:100%;border-radius:var(--r);overflow:hidden;background:var(--paper-2)}
 .shots img{width:100%;height:100%;object-fit:cover;object-position:var(--at,50% 50%);display:block}
 .shots h3{font-size:var(--s-h3);line-height:1.12}
@@ -238,6 +257,22 @@ header.top.scrolled{border-bottom-color:var(--line)}
 @media (max-width:520px){.tl-years,.tl-row{grid-template-columns:80px repeat(3,1fr)}}
 
 /* Network */
+/* Societies: a slow, endless carousel of equal cards. JS clones the list once so the loop is seamless (the track moves exactly one copy's width), and sets --loop from the count.
+   Hover pauses it. Without JS or with reduced motion it is a plain row you can scroll sideways. */
+.socs-rail{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.socs-rail::-webkit-scrollbar{display:none}
+.socs{display:flex;width:max-content;list-style:none;margin:0;padding:4px 0}
+.socs li{flex:none;width:clamp(184px,18vw,224px);margin-right:16px;display:grid;gap:16px;align-content:start;padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.socs img{width:72px;height:72px;border-radius:18px;box-shadow:0 0 0 1px var(--line)}
+.socs .nm{display:grid;gap:6px;font-weight:600;line-height:1.25;min-height:2.5em}
+.socs .mono{font-size:.7rem}
+.socs-rail.loop{overflow:hidden}
+.socs-rail.loop .socs{animation:marquee var(--loop,40s) linear infinite}
+@media (hover:hover) and (pointer:fine){.socs-rail.loop:hover .socs{animation-play-state:paused}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+/* As a plain scrolling row (no JS, or reduced motion) the cards start at the page gutter */
+.socs-rail:not(.loop) .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}
+@media (prefers-reduced-motion:reduce){.socs-rail.loop{overflow-x:auto}.socs-rail.loop .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}.socs [aria-hidden]{display:none}}
 .missing{margin-top:clamp(40px,5vw,56px)}
 .missing .lbl span{font-weight:400;color:var(--ink-3)}
 
@@ -248,10 +283,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));list-style:none;margin:0;padding:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
 @media (max-width:760px){.logos{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .logos li{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.logos a,.logos .cell{display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;height:clamp(104px,11vw,148px);padding:0 20px;color:var(--ink-2);transition:color .2s ease,background-color .2s ease,opacity .35s ease}
+.logos a{display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;height:clamp(104px,11vw,148px);padding:0 20px;color:var(--ink-2);transition:color .2s ease,background-color .2s ease,opacity .35s ease}
 .logos svg{height:var(--h);width:calc(var(--h) * var(--r));max-width:100%;display:block;transition:transform .3s var(--ease-out)}
 @media (hover:hover) and (pointer:fine){.logos a:hover{color:var(--ink);background:var(--card)}.logos a:hover svg{transform:scale(1.04)}}
-.logos .cell{color:var(--ink)}
 .logos .add a{font-weight:600;color:var(--ink-3);gap:8px}
 .logos .add .arr{display:inline-block;transition:transform .2s var(--ease-out)}
 @media (hover:hover) and (pointer:fine){.logos .add a:hover{color:var(--lav-deep);background:var(--lav-wash)}.logos .add a:hover .arr{transform:translateX(3px)}}
@@ -260,12 +294,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 /* Contact + footer: one dark closing block, the same in both themes */
 .join{background:var(--night);color:#F2F0EB}
 .join .sec-head .sub{color:#c9c6bf}
-.tabs{position:relative;display:inline-flex;flex-wrap:wrap;background:var(--night-2);border-radius:12px;padding:5px;gap:4px;margin-bottom:36px}
-.tabs button,.tabs-hi span{border:0;background:transparent;color:#c9c6bf;font:600 .95rem/1.2 var(--f-body);padding:11px 18px;border-radius:8px;cursor:pointer;transition:color .2s ease}
-@media (hover:hover) and (pointer:fine){.tabs button:hover{color:#F2F0EB}}
 /* The selected look is a copy of the tab row, clipped to the active tab; moving the clip slides the highlight with no colour timing to juggle */
-.tabs-hi{position:absolute;inset:0;padding:5px;display:inline-flex;flex-wrap:wrap;gap:4px;background:#B8B2F0;border-radius:12px;pointer-events:none;clip-path:inset(5px 50% 5px 5px round 8px);transition:clip-path .25s var(--ease-in-out)}
-.tabs-hi span{color:#151515;cursor:default}
 form{display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;max-width:760px}
 form .full{grid-column:1/-1}
 form:not([hidden]){animation:formIn .25s var(--ease-out)}
@@ -297,6 +326,8 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 /* Motion. The hero plays once on load. Below it the page is split into stages ([data-stage]); when a stage scrolls in, everything in it starts at the same moment, with no stagger.
    All of it is skipped under reduced motion (rule at the top). */
 @keyframes lineUp{from{transform:translateY(108%)}}
+@keyframes draw{from{transform:scaleX(0)}}
+@keyframes drawY{from{transform:scaleY(0)}}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}}
 @keyframes open{from{transform:perspective(900px) rotateY(0)}}
 @keyframes fade{from{opacity:0}}

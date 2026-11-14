@@ -4,15 +4,9 @@
       <h2>Tell us what you're planning.</h2>
       <p class="sub">Free through 2026. We reply within two working days.</p>
     </div>
-    <div class="tabs" role="tablist" aria-label="Who are you?" data-reveal>
-      <button role="tab" id="tab-partner" aria-selected="true" aria-controls="form-partner">I'm a company or community</button>
-      <button role="tab" id="tab-society" aria-selected="false" aria-controls="form-society">I run a society</button>
-      <button role="tab" id="tab-student" aria-selected="false" aria-controls="form-student">I'm a student</button>
-      <div class="tabs-hi" aria-hidden="true"><span>I'm a company or community</span><span>I run a society</span><span>I'm a student</span></div>
-    </div>
-
     <div class="forms" data-reveal>
-      <form id="form-partner" role="tabpanel" aria-labelledby="tab-partner">
+<!--partner-->
+      <form id="form-partner">
         <label for="p-name">Your name<input id="p-name" name="name" autocomplete="name" required></label>
         <label for="p-email">Work email<input id="p-email" name="email" type="email" autocomplete="email" required></label>
         <label for="p-org">Organisation<input id="p-org" name="org" autocomplete="organization" required></label>
@@ -20,8 +14,9 @@
         <label for="p-notes" class="full">Anything else<textarea id="p-notes" name="notes" placeholder="Who you want to reach, rough timing, links"></textarea></label>
         <div class="form-foot full"><button class="btn" type="submit">Send</button></div>
       </form>
-
-      <form id="form-society" role="tabpanel" aria-labelledby="tab-society" hidden>
+<!--/partner-->
+<!--society-->
+      <form id="form-society">
         <label for="s-soc">Society<input id="s-soc" name="society" required></label>
         <label for="s-uni">Uni<select id="s-uni" name="uni"><option>UNSW</option><option>USYD</option><option>UTS</option><option>Macquarie</option><option>Other</option></select></label>
         <label for="s-email" class="full">Society email<input id="s-email" name="email" type="email" placeholder="One that stays with the society" required></label>
@@ -29,14 +24,7 @@
         <label for="s-handover" class="full">Next year's contact <span class="hint">So the partnership survives the handover</span><input id="s-handover" name="handover" placeholder="Name and email"></label>
         <div class="form-foot full"><button class="btn" type="submit">Add our society</button></div>
       </form>
-
-      <form id="form-student" role="tabpanel" aria-labelledby="tab-student" hidden>
-        <label for="u-name">Your name<input id="u-name" name="name" autocomplete="name" required></label>
-        <label for="u-email">Email<input id="u-email" name="email" type="email" autocomplete="email" required></label>
-        <label for="u-uni">Uni<select id="u-uni" name="uni"><option>UNSW</option><option>USYD</option><option>UTS</option><option>Macquarie</option><option>Another uni</option><option>Not at uni</option></select></label>
-        <label for="u-into">Tell me about<select id="u-into" name="into"><option>Hackathons and workshops</option><option>Hackathons</option><option>Workshops</option></select></label>
-        <div class="form-foot full"><button class="btn" type="submit">Keep me posted</button></div>
-      </form>
+<!--/society-->
     </div>
 
   </div>

@@ -36,19 +36,6 @@ def logo_wall():
     items.append('<li class="add"><a href="#join" data-tab="partner">Partner with us <span class="arr" aria-hidden="true">→</span></a></li>')
     return '<ul class="logos" data-reveal>' + ''.join(items) + '</ul>'
 
-# The four unis as a logo row on the societies page (societies themselves are never named), in the same grid as the partner wall
-UNIS = [('unsw', 'UNSW Sydney', 1.3), ('usyd', 'The University of Sydney', 1.3), ('uts', 'University of Technology Sydney', 1.3), ('macquarie', 'Macquarie University', 1.3)]
-def uni_wall():
-    items = []
-    for slug, name, weight in UNIS:
-        svg = (root / 'img' / 'unis' / f'{slug}.svg').read_text(encoding='utf8').strip()
-        w, h = map(float, re.search(r'viewBox="[-\d.]+ [-\d.]+ ([\d.]+) ([\d.]+)"', svg).groups())
-        r = w / h
-        hh = min(H0 * r ** -K, 44) * weight
-        svg = re.sub(r' xmlns="[^"]*"', '', svg, count=1).replace('<svg ', f'<svg role="img" aria-label="{name}" style="--h:{hh:.1f}px;--r:{r:.3f}" ', 1)
-        items.append(f'<li><span class="cell">{svg}</span></li>')
-    return '<ul class="logos" data-reveal>' + ''.join(items) + '</ul>'
-
 # Uni logos for the drawings: <!--UNI:slug x y w h--> becomes img/unis/<slug>.svg nested at that box, left-aligned and centred vertically.
 def uni_logo(m):
     slug, x, y, w, h = m.group(1), *m.group(2).split()
@@ -57,14 +44,14 @@ def uni_logo(m):
     return svg.replace('<svg ', f'<svg class="d-uni" x="{x}" y="{y}" width="{w}" height="{h}" preserveAspectRatio="xMinYMid meet" ', 1)
 
 # The site is three pages built from shared parts (src/parts) and one body each (src/pages).
-# (output name, page body, <title>, description, contact tab opened by default)
+# (output name, page body, <title>, description, which contact form the page carries; the home page has none)
 PAGES = [
     ('door', 'home', 'Open Build',
      "Open Build connects Sydney's uni societies with the companies and communities who want to build with them.", None),
     ('societies', 'societies', 'Open Build Societies',
      'For uni societies: sponsors, speakers and co-hosts through Open Build, and the societies we have built with.', 'society'),
     ('partners', 'partners', 'Open Build Partners',
-     'For companies and communities: every Sydney uni through one contact, and who we have worked with.', 'partner'),
+     'For companies and communities: every uni through one contact, and who we have worked with.', 'partner'),
 ]
 FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
@@ -88,11 +75,16 @@ def page(out, body_name, title, desc, tab, home):
             "<script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>\n")
     header = part('header.html').replace(f'href="{out}.html"', f'href="{out}.html" aria-current="page"')
     main = (root / 'src' / 'pages' / f'{body_name}.html').read_text(encoding='utf8')
-    body = ('\n' + sprite + '\n' + header + f'\n<main{f" data-tab={chr(34)}{tab}{chr(34)}" if tab else ""}>\n' + main + '\n\n'
-            + part('contact.html') + '</main>\n\n' + part('footer.html')
+    # Anything between <!--HIDDEN ...--> and <!--/HIDDEN--> is left out of the built page
+    main = re.sub(r'<!--HIDDEN.*?<!--/HIDDEN-->\n?', '', main, flags=re.S)
+    # Each audience page ends on its own contact form; the other audience's form is cut
+    contact = re.sub(r'<!--(\w+)-->\n(.*?)<!--/\1-->\n', lambda m: m.group(2) if m.group(1) == tab else '', part('contact.html'), flags=re.S) if tab else ''
+    body = ('\n' + sprite + '\n' + header + '\n<main>\n' + main + '\n\n'
+            + contact + '</main>\n\n' + part('footer.html')
             + '\n<script>\n' + part('site.js') + '</script>\n')
+    # "Get in touch" goes to the page's form, or on the home page to the two audience buttons
+    body = body.replace('{{CONTACT}}', '#join' if tab else '#who')
     body = body.replace('<!--PARTNERS-->', logo_wall() if '<!--PARTNERS-->' in body else '')
-    body = body.replace('<!--UNIS-->', uni_wall() if '<!--UNIS-->' in body else '')
     body = re.sub(r'<!--UNI:(\S+) ([\d. ]+)-->', uni_logo, body)
     return head, body.replace('{{HOME}}', home)
 

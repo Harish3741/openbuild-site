@@ -129,24 +129,14 @@
 
   }
 
-  const tabs={},forms={};
-  for(const k of ['partner','society','student']){tabs[k]=document.getElementById('tab-'+k);forms[k]=document.getElementById('form-'+k);}
-  const joinH=document.querySelector('#join h2'),joinSub=document.querySelector('#join .sub'),joinHead={partner:[joinH.textContent,joinSub.textContent]};
-  joinHead.society=joinHead.partner;joinHead.student=["Hear about the next event.","Leave your email and we'll tell you when sign-ups open."];
-  const hi=document.querySelector('.tabs-hi'),row=hi.parentElement;
-  const place=()=>{
-    const b=row.querySelector('[aria-selected="true"]'),W=row.clientWidth,H=row.clientHeight;
-    hi.style.clipPath=`inset(${b.offsetTop}px ${W-b.offsetLeft-b.offsetWidth}px ${H-b.offsetTop-b.offsetHeight}px ${b.offsetLeft}px round 8px)`;
-  };
-  const show=k=>{
-    for(const x in tabs){const on=x===k;tabs[x].setAttribute('aria-selected',on);forms[x].hidden=!on;}
-    [joinH.textContent,joinSub.textContent]=joinHead[k];place();
-  };
-  for(const k in tabs)tabs[k].onclick=()=>show(k);
-  document.querySelectorAll('[data-tab]').forEach(a=>a.addEventListener('click',()=>show(a.dataset.tab)));
-  new ResizeObserver(place).observe(row);document.fonts?.ready.then(place);
-  // Each audience page opens the contact form on its own tab
-  const def=document.querySelector('main').dataset.tab;if(def)show(def);
+  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
+  const socs=document.querySelector('.socs');
+  if(socs){
+    const n=socs.children.length;
+    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
+    socs.style.setProperty('--loop',n*4+'s');
+    socs.parentElement.classList.add('loop');
+  }
 
   // Who we are (home only): one person at the front of the stack. The names, the arrows, a swipe and the arrow keys all move it.
   // It also steps on by itself while in view, until the visitor moves it once.
@@ -176,7 +166,7 @@
     },{threshold:.6}).observe(stack);
   }
 
-  for(const f of Object.values(forms)){
+  for(const f of document.querySelectorAll('form')){
     f.addEventListener('submit',e=>{
       e.preventDefault();
       f.querySelector('.sent')?.remove();

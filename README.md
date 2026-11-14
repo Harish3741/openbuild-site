@@ -38,10 +38,10 @@ Always edit `src/`, never the built files.
 - **Door**: scrolling the hero opens the leaf fully and grows `.beam` down onto the Next up card (`through()` and `fitBeam()` in the script). The door no longer follows the cursor (12 Nov).
 - **Events live on home only** (Harish, 14 Nov): "Events we've run" is a row of `.shots` photo cards (date, name, one short line) after "Who we work with"; the societies and partners pages no longer have their own events sections. Home order: hero + Next up → Sydney's best builders (drawings) → Who we work with → Events → Who we are → contact.
 - **"Sydney's best builders are students" drawings** (14 Nov, redrawn as one matched set in the clean-up pass): one inline SVG per point, all flat fills on the same 320×132 box, ground line and figure size: a row of people with a magnifying glass on one (searching), two people shaking hands, society ink and partner lavender (steady; hands drawn on their own, open or as fists, were both rejected, so use the people figures), and a partner and a student either side of a stack of blocks (together). Harish wants drawings simple, not cluttered. Classes `.d-glass`, `.d-lens`, `.d-arm`, `.d-block`.
-- **Clean-up pass (14 Nov):** every drawn door now opens the way the logo's does (leaf hinged left, swinging toward you) and has the same proportions; drawing labels share one baseline and grow on phones (`@media (max-width:560px){.draw text}`); the partners "What you get" cards lost their captions to match the societies page; "Societies we've built with" shows the four uni logos in the partner-wall grid (`<!--UNIS-->` → `uni_wall()` in build.py; unis only, societies are never named); team placeholders use the site's own figure (`#d-pawn`).
+- **Clean-up pass (14 Nov):** every drawn door now opens the way the logo's does (leaf hinged left, swinging toward you) and has the same proportions; drawing labels share one baseline and grow on phones (`@media (max-width:560px){.draw text}`); the partners "What you get" cards lost their captions to match the societies page; "Societies we've built with" shows the four uni logos (undone the same evening: Harish wanted the society logo carousel back); team placeholders use the site's own figure (`#d-pawn`).
 - **No partner filter**: the "By event" filter on the logo wall was removed on 11 Nov (Harish: too complex). The wall is a plain grid again.
-- **No "Find your match"**: the optional matcher beside the contact form was removed on 12 Nov (unchecked data, sat above the form on phones). The contact section is the tabs and the form only.
-- **No students card** (Harish, 14 Nov). Student sign-up is the Next up card's "Get event news" button and the student contact tab.
+- **No "Find your match"**: the optional matcher beside the contact form was removed on 12 Nov (unchecked data, sat above the form on phones). The contact section is now one form per audience page (see the 14 Nov evening round).
+- **No students card** (Harish, 14 Nov). Student sign-up is the email field in the Next up card.
 - **Nav "Events"** goes to "Events we've run" (`#past`). The footer's Events link still points at `#events` (the Next up card) until the Luma link arrives.
 
 ## Content decisions
@@ -55,10 +55,10 @@ Always edit `src/`, never the built files.
   - EPIS × DevSoc: they invited NCS to a Shark Tank workshop, but there's no record it ran.
   - MSA MedSoc: listed as a HealthHack partner, but its uni is unclear.
 - **Partner logo wall (11 Nov):** Base44, MLAI, Web Directions, UNSW Founders, Notion, Wix, A1Zap, Crucible Ventures (crucibleventures.vc, Nandit Shah's Sydney studio, not the US crucibleventures.com), arrayah (arrayah.city), Stone & Chalk, Collage, in brand colours from `img/logos/` (sources in `img/logos/SOURCES.md`). `build.py` inlines them at `<!--PARTNERS-->`, sizes them by aspect ratio and fills the last cell with a "Partner with us" link; edit the `PARTNERS` list there to add, drop or reorder. **Confirm each partner is OK being named before the site goes public.**
-- **Next up card:** names no event for now ("We're planning the next one." + a "Get event news" button that opens the student tab). Random Hacks of Kindness is kept off the whole site while it is still being organised (Harish, 11 Nov). The old card is saved in `notes/next-up-rhok.html`; putting it back also needs the countdown lines (`const start=new Date('2026-12-04T18:00:00+11:00')` … `cd.textContent`) and dropping the `tba` class.
+- **Next up card:** names no event for now ("We're planning the next one." + an email field with a "Get event news" button). Random Hacks of Kindness is kept off the whole site while it is still being organised (Harish, 11 Nov). The old card is saved in `notes/next-up-rhok.html`; putting it back also needs the countdown lines (`const start=new Date('2026-12-04T18:00:00+11:00')` … `cd.textContent`) and dropping the `tba` class.
 - **Track record:** H4H (170 checked in), HealthHack (126), Debugged on the page. Base44 Workshop / Build Your Life (45 registered) and the Notion workshop were run too but are not shown. Labelled as run through NCS before Open Build was named.
 - **Photos:** hero strip is H4H (`img/h4h-*.jpg`, from `Societies/Hack for Humanity/Photos`); event panels use `img/ev-*.jpg` from the portfolio's `img/personal/` (hack-for-humanity-2, healthack-2, debugged-hacking-2).
-- **Forms:** partner and society. They're UI only; submit shows a "preview, not connected" note.
+- **Forms:** partner (partners page), society (societies page) and the Next up email field (home). They're UI only; submit shows a "preview, not connected" note.
 
 ## To do
 
@@ -72,7 +72,14 @@ Always edit `src/`, never the built files.
 ## 12 Nov evening changes
 
 - **Section order:** hero → who we work with → events we've run → committees → societies → partners → contact. Societies sit right above the partner wall.
-- **No society is named anywhere on the site** (Harish, 14 Nov): no society names, logos or society-specific stats, and photos must not show society names on screens. The societies page says "Nine societies across UNSW, USYD, UTS and Macquarie" with no list; the committees diagram uses Society A/B/C; team members show only their uni. Event stats (builder counts, prizes) were removed too.
+- **Society names: only in "Societies we've built with"** (Harish, 14 Nov, corrected the same day). That section on the societies page is the logo carousel of all nine societies (`.socs`, `img/societies/`), and he wants it kept. Everywhere else stays generic: the committees diagram uses Society A/B/C, team members show only their uni, events carry no society names or society-specific stats, and photos don't show society names on screens.
+- **Round of 14 Nov, evening (Harish):**
+  - "Who we are" is **off the site for launch**. Its markup stays in `src/pages/home.html` between `<!--HIDDEN ...-->` and `<!--/HIDDEN-->`, which `build.py` leaves out; delete the two marker lines to bring it back.
+  - **No contact section on home.** Each audience page ends on its own form only (no tabs, no student form): `contact.html` holds both forms between `<!--partner-->` / `<!--society-->` markers and `build.py` keeps the page's one. "Get in touch" and the footer's "soon" links use `{{CONTACT}}`: `#join` on the audience pages, `#who` (the two audience buttons) on home.
+  - **Next up card** now has its own email field (`.next-form`), since the student form it used to open is gone.
+  - **"What you get" reads as a timeline** on both audience pages: `.shots.rail` puts the cards on one rail with a dot each, and each stretch of rail draws in with its card (down the left on phones).
+  - **Headlines:** partners "Every uni through one contact.", societies "Sponsors and speakers through one contact." (the cold-emails line and its two-door drawing were too confusing). The societies drawing now mirrors the partners one: sponsors, speakers, judges and co-hosts → the door → You.
+  - Other ways to draw "We keep it steady" and "We build together" were sent to Harish as an options sheet (S1-S3, T1-T3); the generator is not in the repo. Nothing changes on the site until he picks.
 - **Events:** the Partners / Societies / Where list is gone from every event. On desktop all panels share one grid cell and closed ones stay laid out but invisible, so the box is always as tall as the tallest event.
 
 

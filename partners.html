@@ -1,7 +1,7 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0}img{max-width:100%}</style>
 <title>Open Build Partners</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="For companies and communities: every Sydney uni through one contact, and who we have worked with.">
+<meta name="description" content="For companies and communities: every uni through one contact, and who we have worked with.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
@@ -114,6 +114,11 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .next dd{margin:0}
 .next .btn{background:var(--on-lav);color:#F2F0EB;border-color:var(--on-lav);justify-self:start}
 @media (hover:hover) and (pointer:fine){.next .btn:hover{background:#2e2d2a;border-color:#2e2d2a}}
+.next-form{display:flex;flex-wrap:wrap;gap:10px;max-width:none;width:min(100%,440px)}
+.next-form input{flex:1 1 200px;min-width:0;background:var(--paper);color:var(--ink);border-color:transparent}
+.next-form input::placeholder{color:var(--ink-3)}
+.next-form input:focus{outline-color:var(--on-lav)}
+.next-form .sent{flex:1 1 100%}
 
 
 /* Two doors: one big button per audience, each opening its own page. Only the name, a small drawing and the arrow. */
@@ -173,15 +178,29 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 /* The labels are drawn in the SVG's own units, so on a phone they shrink with the drawing: make them bigger there */
+.draw text.d-lab{font-size:14.5px;fill:var(--ink-2)}
 @media (max-width:560px){.draw text{font-size:15px}}
 
 /* Photo cards: what the page promises, each beside a photo of it happening (audience pages) */
-.shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,3vw,40px) clamp(20px,2.4vw,32px);list-style:none;margin:0;padding:0}
+.shots{--rg:clamp(28px,3vw,40px);--cg:clamp(20px,2.4vw,32px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--rg) var(--cg);list-style:none;margin:0;padding:0}
 @media (max-width:760px){.shots{grid-template-columns:1fr}}
 .shots li{display:grid;gap:8px;align-content:start}
 /* Photo cards come in one after another, not all at once (Harish, 14 Nov). site.js staggers the ones that scroll in together. */
 @media (prefers-reduced-motion:no-preference){.js .shots>li:not(.in){opacity:0}}
 .shots>li.in{animation:rise 1.3s var(--ease-out) backwards}
+/* What you get: the cards hang off one rail with a dot each, so the row reads as a timeline. Each stretch of rail draws in with its card.
+   On a phone the rail runs down the left. */
+.rail>li{position:relative;padding-top:40px}
+.rail>li::before{content:"";position:absolute;top:6px;left:0;right:calc(-1 * var(--cg));height:1.5px;background:var(--ink);transform-origin:left}
+.rail>li:last-child::before{right:0}
+.rail>li::after{content:"";position:absolute;top:0;left:0;width:14px;height:14px;border-radius:50%;background:var(--lav-deep);box-shadow:0 0 0 5px var(--paper)}
+@media (prefers-reduced-motion:no-preference){.rail>li.in::before{animation:draw 1.2s var(--ease-out) backwards;animation-delay:inherit}}
+@media (max-width:760px){
+  .rail>li{padding:0 0 0 36px}
+  .rail>li::before{left:6px;right:auto;bottom:calc(-1 * var(--rg));width:1.5px;height:auto;transform-origin:top}
+  .rail>li:last-child::before{right:auto;bottom:0}
+  .rail>li.in::before{animation-name:drawY}
+}
 .shots figure{margin:0 0 10px;aspect-ratio:4/3;max-width:100%;border-radius:var(--r);overflow:hidden;background:var(--paper-2)}
 .shots img{width:100%;height:100%;object-fit:cover;object-position:var(--at,50% 50%);display:block}
 .shots h3{font-size:var(--s-h3);line-height:1.12}
@@ -246,6 +265,22 @@ header.top.scrolled{border-bottom-color:var(--line)}
 @media (max-width:520px){.tl-years,.tl-row{grid-template-columns:80px repeat(3,1fr)}}
 
 /* Network */
+/* Societies: a slow, endless carousel of equal cards. JS clones the list once so the loop is seamless (the track moves exactly one copy's width), and sets --loop from the count.
+   Hover pauses it. Without JS or with reduced motion it is a plain row you can scroll sideways. */
+.socs-rail{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.socs-rail::-webkit-scrollbar{display:none}
+.socs{display:flex;width:max-content;list-style:none;margin:0;padding:4px 0}
+.socs li{flex:none;width:clamp(184px,18vw,224px);margin-right:16px;display:grid;gap:16px;align-content:start;padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
+.socs img{width:72px;height:72px;border-radius:18px;box-shadow:0 0 0 1px var(--line)}
+.socs .nm{display:grid;gap:6px;font-weight:600;line-height:1.25;min-height:2.5em}
+.socs .mono{font-size:.7rem}
+.socs-rail.loop{overflow:hidden}
+.socs-rail.loop .socs{animation:marquee var(--loop,40s) linear infinite}
+@media (hover:hover) and (pointer:fine){.socs-rail.loop:hover .socs{animation-play-state:paused}}
+@keyframes marquee{to{transform:translateX(-50%)}}
+/* As a plain scrolling row (no JS, or reduced motion) the cards start at the page gutter */
+.socs-rail:not(.loop) .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}
+@media (prefers-reduced-motion:reduce){.socs-rail.loop{overflow-x:auto}.socs-rail.loop .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}.socs [aria-hidden]{display:none}}
 .missing{margin-top:clamp(40px,5vw,56px)}
 .missing .lbl span{font-weight:400;color:var(--ink-3)}
 
@@ -256,10 +291,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));list-style:none;margin:0;padding:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
 @media (max-width:760px){.logos{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .logos li{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.logos a,.logos .cell{display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;height:clamp(104px,11vw,148px);padding:0 20px;color:var(--ink-2);transition:color .2s ease,background-color .2s ease,opacity .35s ease}
+.logos a{display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;height:clamp(104px,11vw,148px);padding:0 20px;color:var(--ink-2);transition:color .2s ease,background-color .2s ease,opacity .35s ease}
 .logos svg{height:var(--h);width:calc(var(--h) * var(--r));max-width:100%;display:block;transition:transform .3s var(--ease-out)}
 @media (hover:hover) and (pointer:fine){.logos a:hover{color:var(--ink);background:var(--card)}.logos a:hover svg{transform:scale(1.04)}}
-.logos .cell{color:var(--ink)}
 .logos .add a{font-weight:600;color:var(--ink-3);gap:8px}
 .logos .add .arr{display:inline-block;transition:transform .2s var(--ease-out)}
 @media (hover:hover) and (pointer:fine){.logos .add a:hover{color:var(--lav-deep);background:var(--lav-wash)}.logos .add a:hover .arr{transform:translateX(3px)}}
@@ -268,12 +302,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 /* Contact + footer: one dark closing block, the same in both themes */
 .join{background:var(--night);color:#F2F0EB}
 .join .sec-head .sub{color:#c9c6bf}
-.tabs{position:relative;display:inline-flex;flex-wrap:wrap;background:var(--night-2);border-radius:12px;padding:5px;gap:4px;margin-bottom:36px}
-.tabs button,.tabs-hi span{border:0;background:transparent;color:#c9c6bf;font:600 .95rem/1.2 var(--f-body);padding:11px 18px;border-radius:8px;cursor:pointer;transition:color .2s ease}
-@media (hover:hover) and (pointer:fine){.tabs button:hover{color:#F2F0EB}}
 /* The selected look is a copy of the tab row, clipped to the active tab; moving the clip slides the highlight with no colour timing to juggle */
-.tabs-hi{position:absolute;inset:0;padding:5px;display:inline-flex;flex-wrap:wrap;gap:4px;background:#B8B2F0;border-radius:12px;pointer-events:none;clip-path:inset(5px 50% 5px 5px round 8px);transition:clip-path .25s var(--ease-in-out)}
-.tabs-hi span{color:#151515;cursor:default}
 form{display:grid;grid-template-columns:1fr 1fr;gap:22px 24px;max-width:760px}
 form .full{grid-column:1/-1}
 form:not([hidden]){animation:formIn .25s var(--ease-out)}
@@ -305,6 +334,8 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 /* Motion. The hero plays once on load. Below it the page is split into stages ([data-stage]); when a stage scrolls in, everything in it starts at the same moment, with no stagger.
    All of it is skipped under reduced motion (rule at the top). */
 @keyframes lineUp{from{transform:translateY(108%)}}
+@keyframes draw{from{transform:scaleX(0)}}
+@keyframes drawY{from{transform:scaleY(0)}}
 @keyframes rise{from{opacity:0;transform:translateY(24px)}}
 @keyframes open{from{transform:perspective(900px) rotateY(0)}}
 @keyframes fade{from{opacity:0}}
@@ -337,13 +368,13 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   </div>
 </header>
 
-<main data-tab="partner">
+<main>
 <section class="page-head">
   <div class="wrap" data-stage>
     <div class="lead" data-reveal>
       <p class="who">For companies and communities</p>
-      <h1>Every Sydney uni, through one contact.</h1>
-      <a class="btn btn-ink" href="#join" data-tab="partner">Start a collab</a>
+      <h1>Every uni through one contact.</h1>
+      <a class="btn btn-ink" href="#join">Start a collab</a>
     </div>
     <figure class="draw" data-reveal>
       <svg viewBox="0 16 520 312" role="img" aria-label="Drawing: students at UNSW, USYD, UTS and Macquarie all reach you through one door, Open Build.">
@@ -440,7 +471,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
     <div class="sec-head" data-reveal>
       <h2>What you get.</h2>
     </div>
-    <ul class="shots">
+    <ul class="shots rail">
       <li><figure><img src="img/par-room.jpg" alt="A packed lecture theatre of students at Hack for Humanity" loading="lazy" style="--at:50% 70%"></figure><h3>We pick the societies that fit your audience.</h3></li>
       <li><figure><img src="img/par-workshop.jpg" alt="A presenter from Crucible Ventures teaching a pitching workshop in front of his slides" loading="lazy" style="--at:80% 50%"></figure><h3>We help plan, promote and run the day.</h3></li>
       <li><figure><img src="img/par-nonprofit.jpg" alt="A Bipolar Australia representative talking a student team through their brief at a computer" loading="lazy" style="--at:30% 50%"></figure><h3>You meet students who build, technical or not.</h3></li>
@@ -494,38 +525,14 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <h2>Tell us what you're planning.</h2>
       <p class="sub">Free through 2026. We reply within two working days.</p>
     </div>
-    <div class="tabs" role="tablist" aria-label="Who are you?" data-reveal>
-      <button role="tab" id="tab-partner" aria-selected="true" aria-controls="form-partner">I'm a company or community</button>
-      <button role="tab" id="tab-society" aria-selected="false" aria-controls="form-society">I run a society</button>
-      <button role="tab" id="tab-student" aria-selected="false" aria-controls="form-student">I'm a student</button>
-      <div class="tabs-hi" aria-hidden="true"><span>I'm a company or community</span><span>I run a society</span><span>I'm a student</span></div>
-    </div>
-
     <div class="forms" data-reveal>
-      <form id="form-partner" role="tabpanel" aria-labelledby="tab-partner">
+      <form id="form-partner">
         <label for="p-name">Your name<input id="p-name" name="name" autocomplete="name" required></label>
         <label for="p-email">Work email<input id="p-email" name="email" type="email" autocomplete="email" required></label>
         <label for="p-org">Organisation<input id="p-org" name="org" autocomplete="organization" required></label>
         <label for="p-want">You'd like to<select id="p-want" name="want"><option>Run a hackathon or build day</option><option>Run a workshop</option><option>Sponsor an event</option><option>Meet students to hire</option><option>Not sure yet</option></select></label>
         <label for="p-notes" class="full">Anything else<textarea id="p-notes" name="notes" placeholder="Who you want to reach, rough timing, links"></textarea></label>
         <div class="form-foot full"><button class="btn" type="submit">Send</button></div>
-      </form>
-
-      <form id="form-society" role="tabpanel" aria-labelledby="tab-society" hidden>
-        <label for="s-soc">Society<input id="s-soc" name="society" required></label>
-        <label for="s-uni">Uni<select id="s-uni" name="uni"><option>UNSW</option><option>USYD</option><option>UTS</option><option>Macquarie</option><option>Other</option></select></label>
-        <label for="s-email" class="full">Society email<input id="s-email" name="email" type="email" placeholder="One that stays with the society" required></label>
-        <label for="s-need" class="full">What you're after<input id="s-need" name="need" placeholder="A sponsor, judges, a venue, a co-host"></label>
-        <label for="s-handover" class="full">Next year's contact <span class="hint">So the partnership survives the handover</span><input id="s-handover" name="handover" placeholder="Name and email"></label>
-        <div class="form-foot full"><button class="btn" type="submit">Add our society</button></div>
-      </form>
-
-      <form id="form-student" role="tabpanel" aria-labelledby="tab-student" hidden>
-        <label for="u-name">Your name<input id="u-name" name="name" autocomplete="name" required></label>
-        <label for="u-email">Email<input id="u-email" name="email" type="email" autocomplete="email" required></label>
-        <label for="u-uni">Uni<select id="u-uni" name="uni"><option>UNSW</option><option>USYD</option><option>UTS</option><option>Macquarie</option><option>Another uni</option><option>Not at uni</option></select></label>
-        <label for="u-into">Tell me about<select id="u-into" name="into"><option>Hackathons and workshops</option><option>Hackathons</option><option>Workshops</option></select></label>
-        <div class="form-foot full"><button class="btn" type="submit">Keep me posted</button></div>
       </form>
     </div>
 
@@ -679,24 +686,14 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 
   }
 
-  const tabs={},forms={};
-  for(const k of ['partner','society','student']){tabs[k]=document.getElementById('tab-'+k);forms[k]=document.getElementById('form-'+k);}
-  const joinH=document.querySelector('#join h2'),joinSub=document.querySelector('#join .sub'),joinHead={partner:[joinH.textContent,joinSub.textContent]};
-  joinHead.society=joinHead.partner;joinHead.student=["Hear about the next event.","Leave your email and we'll tell you when sign-ups open."];
-  const hi=document.querySelector('.tabs-hi'),row=hi.parentElement;
-  const place=()=>{
-    const b=row.querySelector('[aria-selected="true"]'),W=row.clientWidth,H=row.clientHeight;
-    hi.style.clipPath=`inset(${b.offsetTop}px ${W-b.offsetLeft-b.offsetWidth}px ${H-b.offsetTop-b.offsetHeight}px ${b.offsetLeft}px round 8px)`;
-  };
-  const show=k=>{
-    for(const x in tabs){const on=x===k;tabs[x].setAttribute('aria-selected',on);forms[x].hidden=!on;}
-    [joinH.textContent,joinSub.textContent]=joinHead[k];place();
-  };
-  for(const k in tabs)tabs[k].onclick=()=>show(k);
-  document.querySelectorAll('[data-tab]').forEach(a=>a.addEventListener('click',()=>show(a.dataset.tab)));
-  new ResizeObserver(place).observe(row);document.fonts?.ready.then(place);
-  // Each audience page opens the contact form on its own tab
-  const def=document.querySelector('main').dataset.tab;if(def)show(def);
+  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
+  const socs=document.querySelector('.socs');
+  if(socs){
+    const n=socs.children.length;
+    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
+    socs.style.setProperty('--loop',n*4+'s');
+    socs.parentElement.classList.add('loop');
+  }
 
   // Who we are (home only): one person at the front of the stack. The names, the arrows, a swipe and the arrow keys all move it.
   // It also steps on by itself while in view, until the visitor moves it once.
@@ -726,7 +723,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
     },{threshold:.6}).observe(stack);
   }
 
-  for(const f of Object.values(forms)){
+  for(const f of document.querySelectorAll('form')){
     f.addEventListener('submit',e=>{
       e.preventDefault();
       f.querySelector('.sent')?.remove();
