@@ -4,6 +4,7 @@ Brand-colour SVGs. Brand colours are fixed; parts that are black in the original
 
 | File | Source | How |
 |---|---|---|
+| builders-world.svg | thebuilders.world site icon (1024 px PNG) + header | Three-piece mark traced as vectors with its pink, blue and green gradients (the soft highlight is left out); "Buildersworld" set in Inter Bold, as their header does. Added 14 Nov 2026 |
 | base44.svg | base44.com header SVG | Official vector; orange kept |
 | notion.svg | notion.com footer wordmark SVG | Official vector; white cube with black lines kept |
 | web-directions.svg | webdirections.org/wp-content/themes/wd/images/wdlogo.svg | Official vector (their logo is all black) |

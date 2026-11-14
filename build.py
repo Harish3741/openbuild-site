@@ -11,6 +11,7 @@ sprite = (root / 'sprite.svg.html').read_text(encoding='utf8')
 PARTNERS = [
     ('base44', 'Base44', 'https://base44.com', 1.0),
     ('mlai', 'MLAI', 'https://mlai.au', 1.15),
+    ('builders-world', 'Builders World', 'https://thebuilders.world', 1.0),
     ('web-directions', 'Web Directions', 'https://webdirections.org', 1.05),
     ('unsw-founders', 'UNSW Founders', 'https://unswfounders.com', .95),
     ('notion', 'Notion', 'https://www.notion.com', 1.0),
@@ -24,6 +25,7 @@ PARTNERS = [
 H0, K = 52, .4  # height = H0 * aspect^-K: wide wordmarks shrink less than pure equal-area would
 
 def logo_wall():
+    """Two carousel rows of partner logos, the second running the other way. Add a partner to PARTNERS and it joins a row."""
     items = []
     for slug, name, url, weight in PARTNERS:
         svg = (root / 'img' / 'logos' / f'{slug}.svg').read_text(encoding='utf8').strip()
@@ -32,9 +34,10 @@ def logo_wall():
         hh = min(H0 * r ** -K, 44) * weight
         svg = svg.replace('<svg ', f'<svg aria-hidden="true" focusable="false" style="--h:{hh:.1f}px;--r:{r:.3f}" ', 1)
         items.append(f'<li><a href="{url}" target="_blank" rel="noopener" aria-label="{name.replace("&", "&amp;")}">{svg}</a></li>')
-    # Fill the last grid row with an invitation rather than leaving a hole
-    items.append('<li class="add"><a href="#join" data-tab="partner">Partner with us <span class="arr" aria-hidden="true">→</span></a></li>')
-    return '<ul class="logos" data-reveal>' + ''.join(items) + '</ul>'
+    half = math.ceil(len(items) / 2)
+    rows = [('', items[:half]), (' rev', items[half:])]
+    return '\n'.join(f'<div class="socs-rail" data-reveal role="region" aria-label="Partners, row {i}"><ul class="socs plogos{cls}">{"".join(row)}</ul></div>'
+                     for i, (cls, row) in enumerate(rows, 1))
 
 # Uni logos for the drawings: <!--UNI:slug x y w h--> becomes img/unis/<slug>.svg nested at that box, left-aligned and centred vertically.
 def uni_logo(m):

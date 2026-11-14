@@ -129,12 +129,14 @@
 
   }
 
-  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
-  const socs=document.querySelector('.socs');
-  if(socs){
-    const n=socs.children.length;
-    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
-    socs.style.setProperty('--loop',n*4+'s');
+  // Logo carousels (societies, partner rows): repeat each row until half of it covers the widest screen, so the loop has no seam.
+  // About 4s of travel per card.
+  for(const socs of document.querySelectorAll('.socs')){
+    const set=[...socs.children],n=set.length;
+    const w=set[n-1].getBoundingClientRect().right-set[0].getBoundingClientRect().left;
+    const m=Math.max(1,Math.ceil(Math.max(innerWidth,screen.width)/w));
+    for(let k=1;k<2*m;k++)for(const li of set){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');for(const a of c.querySelectorAll('a'))a.tabIndex=-1;socs.append(c);}
+    socs.style.setProperty('--loop',n*m*4+'s');
     socs.parentElement.classList.add('loop');
   }
 

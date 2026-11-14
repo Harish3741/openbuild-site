@@ -92,3 +92,5 @@ Always edit `src/`, never the built files.
 - Publishing: send `door.html` to the artifact with `societies.html`, `partners.html` and any new `img/` files as extra files.
 
 **Societies head drawing (14 Nov, late):** each of the four figures now shows what it is: sponsor with a coin, speaker with a speech bubble, judge holding up a "10" score card, co-hosts as a pair (ink + lavender, `.d-halo` separates them). Symbols inside the props use `.draw text.d-sym`.
+
+**Partners carousel (14 Nov, late):** "Who we've worked with." is now the same carousel as the societies, in two rows (`ul.socs.plogos`, second row `.rev` runs the other way). `logo_wall()` in build.py splits `PARTNERS` in half, so adding a partner is one line there plus its SVG in `img/logos/`. The "Partner with us" grid cell became the link under the rows. site.js repeats each row until it covers the widest screen. Builders World (thebuilders.world) added, 12 partners. Societies drawing badges are ink only, one per figure, so lavender stays for "You".
