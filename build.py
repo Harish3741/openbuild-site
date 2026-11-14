@@ -1,5 +1,5 @@
 """Build the site from src/parts (shared head, header, contact, footer, script) and src/pages (one body per page).
-Outputs door.html (the main page, an artifact body with no skeleton), societies.html and partners.html (whole documents
+Outputs door.html (the main page, an artifact body with no skeleton), index.html (the same page as a whole document, for GitHub Pages), societies.html and partners.html (whole documents
 published beside it) and preview/<name>.html (whole documents for local viewing)."""
 import math, pathlib, re
 root = pathlib.Path(__file__).parent
@@ -88,6 +88,9 @@ for out, body_name, title, desc, tab in PAGES:
     # Published: the main page is index.html in the artifact, the others sit beside it
     head, body = page(out, body_name, title, desc, tab, '' if main_page else 'index.html')
     (root / f'{out}.html').write_text(head + body if main_page else SKELETON + head + '</head><body>' + body + '</body></html>\n', encoding='utf8')
+    # GitHub Pages: the main page again as a whole document at index.html
+    if main_page:
+        (root / 'index.html').write_text(SKELETON + head + '</head><body>' + body + '</body></html>\n', encoding='utf8')
     # Local preview: whole documents in preview/, where the main page is door.html
     head, body = page(out, body_name, title, desc, tab, '' if main_page else 'door.html')
     doc = SKELETON + head + '</head><body>' + body + '</body></html>\n'
