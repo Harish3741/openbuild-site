@@ -98,3 +98,5 @@ Always edit `src/`, never the built files.
 **Societies drawing icons (14 Nov, late):** the four left-hand figures are gone; each row is one ink icon and its label (coin, speech bubble, "10" score card, microphone for co-hosts). Harish's call.
 
 **One page colour (14 Nov, late):** no section has its own tint any more. "Committees change" on the partners page lost its `--paper-2` band (and the hidden team section would too), so every page is the page colour until the dark form and footer, like the home page. Sections after the first use `padding-top:0`, so the gaps match.
+
+**Phone pass (14 Nov, late):** the hero door keeps a door's proportions at every width (`--dh` on `.doorway` sets the frame and the light on the floor; it used to go square on phones), less gap under the heading, nav and footer links have 38px+ tap areas, and the societies drawing's icons and labels are bigger (labels grow again under 560px). Checked at 320, 390, 768, 1000 and 1280px: no sideways scroll.

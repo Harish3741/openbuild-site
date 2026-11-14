@@ -117,7 +117,7 @@
   };
   // The beam runs from the doorway's opening down to the card, widening as it goes (offsets, so the card's own entrance doesn't move it)
   const fitBeam=()=>{
-    const fl=doorway.offsetLeft+frame.offsetLeft+10,fr=fl+frame.offsetWidth-20,top=floor.offsetTop+floor.offsetHeight,bot=card.offsetTop+2;
+    const fl=doorway.offsetLeft+frame.offsetLeft+frame.clientLeft,fr=fl+frame.clientWidth,top=floor.offsetTop+floor.offsetHeight,bot=card.offsetTop+2;
     const cx=(fl+fr)/2,half=(fr-fl)*1.2,bl=Math.max(card.offsetLeft+20,cx-half),br=Math.min(card.offsetLeft+card.offsetWidth-20,cx+half);
     const x0=Math.min(fl,bl),w=Math.max(fr,br)-x0;
     Object.assign(beam.style,{left:x0+'px',top:top+'px',width:w+'px',height:bot-top+'px',clipPath:`polygon(${fl-x0}px 0,${fr-x0}px 0,${br-x0}px 100%,${bl-x0}px 100%)`});

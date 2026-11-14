@@ -76,7 +76,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 @media (hover:hover) and (pointer:fine){.nav ul a:hover{color:var(--ink)}}
 .nav .btn{padding:11px 18px;font-size:.92rem}
 /* On small screens the page links drop to their own row under the logo, since they are the only way between pages */
-@media (max-width:860px){.nav{flex-wrap:wrap;height:auto;gap:0 20px;padding-block:14px 0}.nav .btn{margin-left:auto}.nav ul{order:3;width:100%;margin:0;gap:24px;padding-block:14px 16px;font-size:.95rem}section,[id]{scroll-margin-top:128px}}
+@media (max-width:860px){.nav{flex-wrap:wrap;height:auto;gap:0 20px;padding-block:14px 0}.nav .btn{margin-left:auto}.nav ul{order:3;width:100%;margin:0;gap:24px;padding-block:4px 6px;font-size:.95rem}.nav ul a{display:block;padding-block:10px}.nav ul a::after{bottom:4px}section,[id]{scroll-margin-top:128px}}
 
 /* Hero */
 .hero{position:relative;padding-block:clamp(56px,8vw,120px) 0;overflow:hidden}
@@ -87,13 +87,14 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .hero h1 .ln{display:block;overflow:hidden;padding-block:.06em .1em;margin-block:-.06em -.1em}
 .hero h1 .ln>span{display:block}
 
-.doorway{position:relative;height:clamp(340px,40vw,500px);display:flex;justify-content:center;align-items:flex-end;clip-path:inset(-200px -600px 0 -600px)}
-@media (max-width:900px){.doorway{height:clamp(280px,75vw,400px)}}
-.doorway .frame{position:relative;width:min(78%,250px);height:84%;border:10px solid var(--ink);border-bottom:0;z-index:2}
+/* --dh drives the frame and the light on the floor, so the door keeps a door's proportions at every width */
+.doorway{--dh:clamp(340px,40vw,500px);position:relative;height:var(--dh);display:flex;justify-content:center;align-items:flex-end;clip-path:inset(-200px -600px 0 -600px)}
+@media (max-width:900px){.doorway{--dh:clamp(300px,88vw,400px)}.hero-grid{gap:0}.hero-copy{padding-bottom:28px}}
+.doorway .frame{position:relative;width:calc(var(--dh) * .5);height:84%;border:clamp(7px,calc(var(--dh) * .02),10px) solid var(--ink);border-bottom:0;z-index:2}
 .doorway .light{position:absolute;inset:0;background:linear-gradient(180deg,var(--lav-hi),var(--lav) 70%)}
 .doorway .leaf{position:absolute;inset:0;background:var(--leaf);transform-origin:left center;transform:perspective(900px) rotateY(64deg);box-shadow:inset -18px 0 30px rgba(0,0,0,.3);will-change:transform}
 .doorway .leaf::after{content:"";position:absolute;right:16px;top:52%;width:9px;height:9px;border-radius:50%;background:#86837c}
-.doorway .spill{position:absolute;bottom:0;left:50%;width:min(140%,600px);height:34%;transform:translateX(-50%);background:linear-gradient(180deg,color-mix(in srgb,var(--lav) 60%,transparent),transparent 92%);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);z-index:1}
+.doorway .spill{position:absolute;bottom:0;left:50%;width:calc(var(--dh) * 1.16);height:34%;transform:translateX(-50%);background:linear-gradient(180deg,color-mix(in srgb,var(--lav) 60%,transparent),transparent 92%);clip-path:polygon(28% 0,72% 0,100% 100%,0 100%);z-index:1}
 .floor{height:1px;background:var(--line)}
 /* Light from the doorway, poured down onto the Next up card as the hero scrolls. JS places it and sets its length. */
 .beam{position:absolute;z-index:1;pointer-events:none}
@@ -176,9 +177,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-hole{fill:var(--paper)}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 /* The labels are drawn in the SVG's own units, so on a phone they shrink with the drawing: make them bigger there */
-.draw text.d-lab{font-size:14.5px;fill:var(--ink-2)}
+.draw text.d-lab{font-size:16px;fill:var(--ink-2)}
 .draw text.d-sym{font:700 13px var(--f-body);letter-spacing:0;fill:var(--paper)}
-@media (max-width:560px){.draw text{font-size:15px}}
+@media (max-width:560px){.draw text{font-size:15px}.draw text.d-lab{font-size:19.5px}}
 
 /* Photo cards: what the page promises, each beside a photo of it happening (audience pages) */
 .shots{--rg:clamp(28px,3vw,40px);--cg:clamp(20px,2.4vw,32px);display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--rg) var(--cg);list-style:none;margin:0;padding:0}
@@ -336,7 +337,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 .sign em{font-style:normal;color:#B8B2F0}
 .foot-row{display:flex;flex-wrap:wrap;justify-content:space-between;gap:24px;margin-top:72px;padding-top:28px;border-top:1px solid var(--night-line);color:#a6a39c;font-size:.92rem}
 .foot-row ul{display:flex;flex-wrap:wrap;gap:24px;list-style:none;margin:0;padding:0}
-.foot-row a{text-decoration:none;transition:color .2s ease}
+.foot-row a{display:inline-block;padding-block:8px;text-decoration:none;transition:color .2s ease}
 @media (hover:hover) and (pointer:fine){.foot-row a:hover{color:#F2F0EB}}
 .soon{font-family:var(--f-mono);font-size:.65rem;letter-spacing:.05em;border:1px solid #3a3936;border-radius:4px;padding:2px 6px;margin-left:8px;vertical-align:1px}
 
@@ -675,7 +676,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   };
   // The beam runs from the doorway's opening down to the card, widening as it goes (offsets, so the card's own entrance doesn't move it)
   const fitBeam=()=>{
-    const fl=doorway.offsetLeft+frame.offsetLeft+10,fr=fl+frame.offsetWidth-20,top=floor.offsetTop+floor.offsetHeight,bot=card.offsetTop+2;
+    const fl=doorway.offsetLeft+frame.offsetLeft+frame.clientLeft,fr=fl+frame.clientWidth,top=floor.offsetTop+floor.offsetHeight,bot=card.offsetTop+2;
     const cx=(fl+fr)/2,half=(fr-fl)*1.2,bl=Math.max(card.offsetLeft+20,cx-half),br=Math.min(card.offsetLeft+card.offsetWidth-20,cx+half);
     const x0=Math.min(fl,bl),w=Math.max(fr,br)-x0;
     Object.assign(beam.style,{left:x0+'px',top:top+'px',width:w+'px',height:bot-top+'px',clipPath:`polygon(${fl-x0}px 0,${fr-x0}px 0,${br-x0}px 100%,${bl-x0}px 100%)`});
