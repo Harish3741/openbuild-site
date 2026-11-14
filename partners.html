@@ -219,7 +219,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 
 /* Who we are: one person at a time. A stack of photo cards on the left (the next two peek out behind), names on the right.
    Arrows, the names themselves, swipe and the arrow keys all move it. Without JS it is the first card and the plain list of names. */
-.team{background:var(--paper-2)}
+.team{padding-top:0}
 .team-grid{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1fr);gap:clamp(40px,7vw,112px);align-items:center}
 @media (max-width:900px){.team-grid{grid-template-columns:1fr}.team-show{order:2;max-width:420px}}
 .team .sec-head{margin-bottom:clamp(28px,3vw,40px)}
@@ -242,7 +242,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .team-nav .mono{margin-right:6px;font-variant-numeric:tabular-nums}
 .team-nav button{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;border:1.5px solid var(--ink);background:none;color:var(--ink);font:500 1.1rem/1 var(--f-body);cursor:pointer;transition:transform .16s var(--ease-out),background-color .2s ease,color .2s ease}
 .team-nav button:active{transform:scale(.94)}
-@media (hover:hover) and (pointer:fine){.team-nav button:hover{background:var(--ink);color:var(--paper-2)}}
+@media (hover:hover) and (pointer:fine){.team-nav button:hover{background:var(--ink);color:var(--paper)}}
 .people{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px 24px;list-style:none;margin:0;padding:0}
 @media (max-width:520px){.people{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .people button{display:grid;gap:2px;width:100%;text-align:left;font:inherit;color:var(--ink-3);background:none;border:0;border-top:1.5px solid var(--line);padding:12px 0 0;cursor:pointer;transition:color .2s ease,border-color .2s ease}
@@ -253,13 +253,14 @@ header.top.scrolled{border-bottom-color:var(--line)}
 @media (hover:hover) and (pointer:fine){.people button:hover{color:var(--ink)}}
 
 /* Committees */
-.steady{background:var(--paper-2)}
+/* No tinted band: every section sits on the page colour, as on the home page; only the form and footer go dark */
+.steady{padding-top:0}
 .steady-grid{display:grid;grid-template-columns:minmax(0,.85fr) minmax(0,1.15fr);gap:clamp(40px,6vw,96px);align-items:center}
 @media (max-width:900px){.steady-grid{grid-template-columns:1fr}}
 .steady .sec-head{margin-bottom:0}
 .timeline{position:relative;display:grid;gap:12px;--sweep:3.6s}
 /* Covers the boxes and slides off to the right, so the whole diagram is revealed by one left-to-right sweep. JS sizes it to the boxes. */
-.tl-cover{position:absolute;background:var(--paper-2);transform-origin:right center;pointer-events:none}
+.tl-cover{position:absolute;background:var(--paper);transform-origin:right center;pointer-events:none}
 @media (prefers-reduced-motion:reduce){.tl-cover{display:none}}
 .tl-years,.tl-row{display:grid;grid-template-columns:104px repeat(3,1fr);gap:8px 14px;align-items:center}
 .tl-years span{font-family:var(--f-mono);font-size:.72rem;color:var(--ink-3);letter-spacing:.06em}
@@ -505,7 +506,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   </div>
 </section>
 
-<section class="partners" id="partners" data-stage>
+<section class="partners" id="partners" data-stage style="padding-top:0">
   <div class="wrap">
     <div class="sec-head" data-reveal>
       <h2>Who we've worked with.</h2>

@@ -96,3 +96,5 @@ Always edit `src/`, never the built files.
 **Partners carousel (14 Nov, late):** "Who we've worked with." is now the same carousel as the societies, in two rows (`ul.socs.plogos`, second row `.rev` runs the other way). `logo_wall()` in build.py splits `PARTNERS` in half, so adding a partner is one line there plus its SVG in `img/logos/`. The "Partner with us" grid cell became the link under the rows. site.js repeats each row until it covers the widest screen. Builders World (thebuilders.world) added, 12 partners. Societies drawing badges are ink only, one per figure, so lavender stays for "You".
 
 **Societies drawing icons (14 Nov, late):** the four left-hand figures are gone; each row is one ink icon and its label (coin, speech bubble, "10" score card, microphone for co-hosts). Harish's call.
+
+**One page colour (14 Nov, late):** no section has its own tint any more. "Committees change" on the partners page lost its `--paper-2` band (and the hidden team section would too), so every page is the page colour until the dark form and footer, like the home page. Sections after the first use `padding-top:0`, so the gaps match.
