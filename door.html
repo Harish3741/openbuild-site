@@ -175,7 +175,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-lk2{stroke:var(--lav-deep)}
 .d-lkgap{stroke:var(--paper);stroke-width:21}
 .d-lens{fill:var(--lav-wash)}
-.d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.d-hole{fill:var(--paper)}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 /* The labels are drawn in the SVG's own units, so on a phone they shrink with the drawing: make them bigger there */
 .draw text.d-lab{font-size:14.5px;fill:var(--ink-2)}
@@ -420,11 +420,10 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
         </svg></figure>
         <h3>We keep it steady.</h3><p>Committees change every year. The relationship doesn't.</p></li>
       <li>
-        <figure class="draw"><svg viewBox="0 34 320 132" role="img" aria-label="Drawing: a partner and a student either side of one stack of blocks they are building together.">
-          <path class="d-ground" d="M6 148H314"/>
-          <use href="#d-pawn" class="d-ink" x="66.5" y="90" width="27.1" height="58"/>
-          <rect class="d-block" x="129" y="117" width="30" height="30" rx="3"/><rect class="d-block" x="161" y="117" width="30" height="30" rx="3"/><rect class="d-block" x="145" y="85" width="30" height="30" rx="3"/>
-          <use href="#d-pawn" class="d-you" x="226.5" y="90" width="27.1" height="58"/>
+        <figure class="draw"><svg viewBox="0 34 320 132" role="img" aria-label="Drawing: two gears turning together, a large one and a small one.">
+          <!-- the small gear sits up and to the right, with a gap between its teeth facing the large gear's tooth -->
+          <g class="d-ink"><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(66 132 108.0)"/><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(111 132 108.0)"/><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(156 132 108.0)"/><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(201 132 108.0)"/><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(246 132 108.0)"/><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(291 132 108.0)"/><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(336 132 108.0)"/><rect x="125.5" y="65.0" width="13" height="13" rx="2.5" transform="rotate(381 132 108.0)"/><circle cx="132" cy="108.0" r="34"/></g><circle class="d-hole" cx="132" cy="108.0" r="11"/>
+          <g class="d-you"><rect x="187.6" y="47.3" width="13" height="13" rx="2.5" transform="rotate(276 194.1 80.3)"/><rect x="187.6" y="47.3" width="13" height="13" rx="2.5" transform="rotate(336 194.1 80.3)"/><rect x="187.6" y="47.3" width="13" height="13" rx="2.5" transform="rotate(396 194.1 80.3)"/><rect x="187.6" y="47.3" width="13" height="13" rx="2.5" transform="rotate(456 194.1 80.3)"/><rect x="187.6" y="47.3" width="13" height="13" rx="2.5" transform="rotate(516 194.1 80.3)"/><rect x="187.6" y="47.3" width="13" height="13" rx="2.5" transform="rotate(576 194.1 80.3)"/><circle cx="194.1" cy="80.3" r="24"/></g><circle class="d-hole" cx="194.1" cy="80.3" r="8"/>
         </svg></figure>
         <h3>We build together.</h3><p>Events where students build alongside the people backing them, technical or not.</p></li>
     </ul>

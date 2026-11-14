@@ -168,7 +168,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-lk2{stroke:var(--lav-deep)}
 .d-lkgap{stroke:var(--paper);stroke-width:21}
 .d-lens{fill:var(--lav-wash)}
-.d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
+.d-hole{fill:var(--paper)}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 /* The labels are drawn in the SVG's own units, so on a phone they shrink with the drawing: make them bigger there */
 .draw text.d-lab{font-size:14.5px;fill:var(--ink-2)}
