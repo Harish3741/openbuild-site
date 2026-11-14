@@ -249,22 +249,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 @media (max-width:520px){.tl-years,.tl-row{grid-template-columns:80px repeat(3,1fr)}}
 
 /* Network */
-/* Societies: a slow, endless carousel of equal cards. JS clones the list once so the loop is seamless (the track moves exactly one copy's width), and sets --loop from the count.
-   Hover pauses it. Without JS or with reduced motion it is a plain row you can scroll sideways. */
-.socs-rail{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.socs-rail::-webkit-scrollbar{display:none}
-.socs{display:flex;width:max-content;list-style:none;margin:0;padding:4px 0}
-.socs li{flex:none;width:clamp(184px,18vw,224px);margin-right:16px;display:grid;gap:16px;align-content:start;padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
-.socs img{width:72px;height:72px;border-radius:18px;box-shadow:0 0 0 1px var(--line)}
-.socs .nm{display:grid;gap:6px;font-weight:600;line-height:1.25;min-height:2.5em}
-.socs .mono{font-size:.7rem}
-.socs-rail.loop{overflow:hidden}
-.socs-rail.loop .socs{animation:marquee var(--loop,40s) linear infinite}
-@media (hover:hover) and (pointer:fine){.socs-rail.loop:hover .socs{animation-play-state:paused}}
-@keyframes marquee{to{transform:translateX(-50%)}}
-/* As a plain scrolling row (no JS, or reduced motion) the cards start at the page gutter */
-.socs-rail:not(.loop) .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}
-@media (prefers-reduced-motion:reduce){.socs-rail.loop{overflow-x:auto}.socs-rail.loop .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}.socs [aria-hidden]{display:none}}
 .missing{margin-top:clamp(40px,5vw,56px)}
 .missing .lbl span{font-weight:400;color:var(--ink-3)}
 
@@ -281,9 +265,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .ev-panel img{width:100%;height:100%;object-fit:cover;display:block}
 .ev-body{display:grid;gap:18px;align-content:start}
 .ev-body>p{color:var(--ink-2)}
-.ev-stats{display:flex;flex-wrap:wrap;gap:10px 28px}
-.ev-stats span{display:grid;gap:6px;font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.ev-stats b{font:800 clamp(2.2rem,1.6rem + 1.6vw,3.2rem)/.9 var(--f-display);letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums;text-transform:none}
 /* All panels share one grid cell; closed ones stay laid out but invisible, so every event is as tall as the tallest */
 @media (min-width:821px){.evx .ev-panel[hidden]{display:grid!important;visibility:hidden}}
 @media (max-width:820px){.evx{display:block}.ev-panel{grid-template-columns:1fr;border-top:0;padding-top:0}}
@@ -484,7 +465,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <h2>What you get.</h2>
     </div>
     <ul class="shots" data-reveal>
-      <li><figure><img src="img/par-room.jpg" alt="A packed lecture theatre of students at Hack for Humanity" loading="lazy" style="--at:50% 70%"></figure><h3>We pick the societies that fit your audience.</h3><p class="cap">170 builders from six societies at Hack for Humanity.</p></li>
+      <li><figure><img src="img/par-room.jpg" alt="A packed lecture theatre of students at Hack for Humanity" loading="lazy" style="--at:50% 70%"></figure><h3>We pick the societies that fit your audience.</h3><p class="cap">A full room at Hack for Humanity.</p></li>
       <li><figure><img src="img/par-workshop.jpg" alt="A presenter from Crucible Ventures teaching a pitching workshop in front of his slides" loading="lazy" style="--at:80% 50%"></figure><h3>We help plan, promote and run the day.</h3><p class="cap">Crucible Ventures teaching pitching on day two of Hack for Humanity.</p></li>
       <li><figure><img src="img/par-nonprofit.jpg" alt="A Bipolar Australia representative talking a student team through their brief at a computer" loading="lazy" style="--at:30% 50%"></figure><h3>You meet students who build, technical or not.</h3><p class="cap">Bipolar Australia briefing a team at Hack for Humanity.</p></li>
     </ul>
@@ -512,9 +493,9 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
     </div>
     <div class="timeline" role="img" aria-label="Diagram: each society's committee changes every year, while Open Build stays the same across 2026, 2027 and 2028.">
       <div class="tl-years"><span></span><span>2026</span><span>2027</span><span>2028</span></div>
-      <div class="tl-row"><span class="lab">TechSoc</span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
-      <div class="tl-row"><span class="lab">SoftSoc</span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
-      <div class="tl-row"><span class="lab">MQAIS</span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+      <div class="tl-row"><span class="lab">Society A</span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+      <div class="tl-row"><span class="lab">Society B</span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
+      <div class="tl-row"><span class="lab">Society C</span><span class="seg"></span><span class="seg"></span><span class="seg"></span></div>
       <div class="tl-row tl-ob"><span class="lab">Open Build</span><span class="bar"></span></div>
       <p class="tl-note">Each gap is a committee handover.</p>
       <div class="tl-cover" aria-hidden="true"></div>
@@ -528,9 +509,9 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <h2>What we've run with partners.</h2>
     </div>
     <ul class="shots" data-reveal>
-      <li><figure><img src="img/par-ev-h4h.jpg" alt="The judges' row watching final pitches at Hack for Humanity, with the room full behind them" loading="lazy"></figure><p class="mono">Sep 2026</p><h3>Hack for Humanity</h3><p>With Base44, Crucible Ventures and Wix. 170 builders from six societies made tools for three non-profits.</p></li>
-      <li><figure><img src="img/par-ev-healthhack.jpg" alt="A StatDoctor speaker addressing the audience at Stone &amp; Chalk during HealthHack Sydney" loading="lazy"></figure><p class="mono">Jul 2026</p><h3>HealthHack Sydney</h3><p>With MLAI and StatDoctor at Stone &amp; Chalk. 126 builders and US$15K+ in prizes.</p></li>
-      <li><figure><img src="img/par-ev-debugged.jpg" alt="A speaker with a microphone talking to teams at UNSW Founders during Debugged" loading="lazy"></figure><p class="mono">Jun 2026</p><h3>Debugged</h3><p>With A1Zap and UNSW Founders. Teams built a working campus mini-app in a day.</p></li>
+      <li><figure><img src="img/par-ev-h4h.jpg" alt="The judges' row watching final pitches at Hack for Humanity, with the room full behind them" loading="lazy"></figure><p class="mono">Sep 2026</p><h3>Hack for Humanity</h3><p>With Base44, Crucible Ventures and Wix.</p></li>
+      <li><figure><img src="img/par-ev-healthhack.jpg" alt="A StatDoctor speaker addressing the audience at Stone &amp; Chalk during HealthHack Sydney" loading="lazy"></figure><p class="mono">Jul 2026</p><h3>HealthHack Sydney</h3><p>With MLAI and StatDoctor at Stone &amp; Chalk.</p></li>
+      <li><figure><img src="img/par-ev-debugged.jpg" alt="A speaker with a microphone talking to teams at UNSW Founders during Debugged" loading="lazy"></figure><p class="mono">Jun 2026</p><h3>Debugged</h3><p>With A1Zap and UNSW Founders.</p></li>
     </ul>
     <a class="txt-link missing" data-reveal href="index.html#past"><span class="lbl">See the events</span><span class="arr" aria-hidden="true">→</span></a>
   </div>
@@ -749,15 +730,6 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   new ResizeObserver(place).observe(row);document.fonts?.ready.then(place);
   // Each audience page opens the contact form on its own tab
   const def=document.querySelector('main').dataset.tab;if(def)show(def);
-
-  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
-  const socs=document.querySelector('.socs');
-  if(socs){
-    const n=socs.children.length;
-    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
-    socs.style.setProperty('--loop',n*4+'s');
-    socs.parentElement.classList.add('loop');
-  }
 
   // Who we are (home only): one person at the front of the stack. The names, the arrows, a swipe and the arrow keys all move it.
   // It also steps on by itself while in view, until the visitor moves it once.

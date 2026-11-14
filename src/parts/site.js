@@ -143,15 +143,6 @@
   // Each audience page opens the contact form on its own tab
   const def=document.querySelector('main').dataset.tab;if(def)show(def);
 
-  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
-  const socs=document.querySelector('.socs');
-  if(socs){
-    const n=socs.children.length;
-    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
-    socs.style.setProperty('--loop',n*4+'s');
-    socs.parentElement.classList.add('loop');
-  }
-
   // Who we are (home only): one person at the front of the stack. The names, the arrows, a swipe and the arrow keys all move it.
   // It also steps on by itself while in view, until the visitor moves it once.
   const stack=document.querySelector('.stack');

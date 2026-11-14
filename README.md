@@ -15,7 +15,7 @@ Draft site for Open Build (Harish + Varun's Sydney go-between for uni societies 
 | A, "The Door": light, editorial, follows the system theme | `src/door.html` | https://claude.ai/artifact/D6ZtBxnj4FDkUa7dMMVq5m |
 | B, "After Hours": dark night-event poster, doorway of light | `src/after-hours.html` | https://claude.ai/artifact/FU8as8bP1RsWwMvcSrjz2T |
 
-To republish from another session, pass the artifact URL as `url`, publish `door.html` and pass `files` for `societies.html`, `partners.html` and any image that changed (`img/*.jpg`, `img/societies/*.webp`).
+To republish from another session, pass the artifact URL as `url`, publish `door.html` and pass `files` for `societies.html`, `partners.html` and any image that changed (`img/*.jpg`).
 
 ## Build
 
@@ -70,7 +70,7 @@ Always edit `src/`, never the built files.
 ## 12 Nov evening changes
 
 - **Section order:** hero → who we work with → events we've run → committees → societies → partners → contact. Societies sit right above the partner wall.
-- **Societies** are a ruled grid of equal cells (logo badge, name, uni), matching the partner wall. Badges live in `img/societies/` (sources in SOURCES.md) and are published as artifact files next to the event photos. Link under it: "Want to be on the list? Collab with us!"
+- **No society is named anywhere on the site** (Harish, 14 Nov): no society names, logos or society-specific stats, and photos must not show society names on screens. The societies page says "Nine societies across UNSW, USYD, UTS and Macquarie" with no list; the committees diagram uses Society A/B/C; team members show only their uni. Event stats (builder counts, prizes) were removed too.
 - **Events:** the Partners / Societies / Where list is gone from every event. On desktop all panels share one grid cell and closed ones stay laid out but invisible, so the box is always as tall as the tallest event.
 
 

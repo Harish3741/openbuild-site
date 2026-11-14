@@ -248,22 +248,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 @media (max-width:520px){.tl-years,.tl-row{grid-template-columns:80px repeat(3,1fr)}}
 
 /* Network */
-/* Societies: a slow, endless carousel of equal cards. JS clones the list once so the loop is seamless (the track moves exactly one copy's width), and sets --loop from the count.
-   Hover pauses it. Without JS or with reduced motion it is a plain row you can scroll sideways. */
-.socs-rail{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.socs-rail::-webkit-scrollbar{display:none}
-.socs{display:flex;width:max-content;list-style:none;margin:0;padding:4px 0}
-.socs li{flex:none;width:clamp(184px,18vw,224px);margin-right:16px;display:grid;gap:16px;align-content:start;padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
-.socs img{width:72px;height:72px;border-radius:18px;box-shadow:0 0 0 1px var(--line)}
-.socs .nm{display:grid;gap:6px;font-weight:600;line-height:1.25;min-height:2.5em}
-.socs .mono{font-size:.7rem}
-.socs-rail.loop{overflow:hidden}
-.socs-rail.loop .socs{animation:marquee var(--loop,40s) linear infinite}
-@media (hover:hover) and (pointer:fine){.socs-rail.loop:hover .socs{animation-play-state:paused}}
-@keyframes marquee{to{transform:translateX(-50%)}}
-/* As a plain scrolling row (no JS, or reduced motion) the cards start at the page gutter */
-.socs-rail:not(.loop) .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}
-@media (prefers-reduced-motion:reduce){.socs-rail.loop{overflow-x:auto}.socs-rail.loop .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}.socs [aria-hidden]{display:none}}
 .missing{margin-top:clamp(40px,5vw,56px)}
 .missing .lbl span{font-weight:400;color:var(--ink-3)}
 
@@ -280,9 +264,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .ev-panel img{width:100%;height:100%;object-fit:cover;display:block}
 .ev-body{display:grid;gap:18px;align-content:start}
 .ev-body>p{color:var(--ink-2)}
-.ev-stats{display:flex;flex-wrap:wrap;gap:10px 28px}
-.ev-stats span{display:grid;gap:6px;font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.ev-stats b{font:800 clamp(2.2rem,1.6rem + 1.6vw,3.2rem)/.9 var(--f-display);letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums;text-transform:none}
 /* All panels share one grid cell; closed ones stay laid out but invisible, so every event is as tall as the tallest */
 @media (min-width:821px){.evx .ev-panel[hidden]{display:grid!important;visibility:hidden}}
 @media (max-width:820px){.evx{display:block}.ev-panel{grid-template-columns:1fr;border-top:0;padding-top:0}}
@@ -467,7 +448,6 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <article class="ev-panel" id="evp-h4h" role="region" aria-labelledby="evr-h4h">
         <figure><img src="img/ev-h4h.jpg" alt="The main floor at Hack for Humanity on day two, every table full of teams building" loading="lazy"></figure>
         <div class="ev-body">
-          <p class="ev-stats"><span><b>170</b>builders</span><span><b>6</b>societies</span><span><b>3</b>non-profits</span></p>
           <p>Teams worked directly with Bipolar Australia, Lou's Place and Save the Children Action Group UNSW, then built prototypes on Base44 without writing code. The winners keep developing their product with their non-profit.</p>
         </div>
       </article>
@@ -475,7 +455,6 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <article class="ev-panel" id="evp-healthhack" role="region" aria-labelledby="evr-healthhack" hidden>
         <figure><img src="img/ev-healthhack.jpg" alt="Teams heads down on their laptops at HealthHack Sydney" loading="lazy"></figure>
         <div class="ev-body">
-          <p class="ev-stats"><span><b>126</b>builders</span><span><b>US$15K+</b>in prizes</span></p>
           <p>Builders, clinicians and industry leaders spent a weekend working on real healthcare problems together.</p>
         </div>
       </article>
@@ -483,8 +462,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <article class="ev-panel" id="evp-debugged" role="region" aria-labelledby="evr-debugged" hidden>
         <figure><img src="img/ev-debugged.jpg" alt="Teams building their apps on the floor at Debugged" loading="lazy"></figure>
         <div class="ev-body">
-          <p class="ev-stats"><span><b>1</b>day, start to finish</span></p>
-          <p>Teams picked a real problem on campus and built a working mini-app for it before the day was out.</p>
+          <p>A one-day build sprint at UNSW Founders, from picking a problem to pitching what you made.</p>
         </div>
       </article>
     </div>
@@ -515,10 +493,10 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <ul class="people">
         <li><button type="button" aria-pressed="true"><b>Harish</b><span>Co-founder</span></button></li>
         <li><button type="button" aria-pressed="false"><b>Varun</b><span>Co-founder</span></button></li>
-        <li><button type="button" aria-pressed="false"><b>Julia</b><span>SoftSoc, USYD</span></button></li>
-        <li><button type="button" aria-pressed="false"><b>Mridula</b><span>TechSoc, UTS</span></button></li>
-        <li><button type="button" aria-pressed="false"><b>Mrinmoy</b><span>MQAIS, Macquarie</span></button></li>
-        <li><button type="button" aria-pressed="false"><b>Parva</b><span>MQAIS, Macquarie</span></button></li>
+        <li><button type="button" aria-pressed="false"><b>Julia</b><span>USYD</span></button></li>
+        <li><button type="button" aria-pressed="false"><b>Mridula</b><span>UTS</span></button></li>
+        <li><button type="button" aria-pressed="false"><b>Mrinmoy</b><span>Macquarie</span></button></li>
+        <li><button type="button" aria-pressed="false"><b>Parva</b><span>Macquarie</span></button></li>
       </ul>
     </div>
   </div>
@@ -729,15 +707,6 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   new ResizeObserver(place).observe(row);document.fonts?.ready.then(place);
   // Each audience page opens the contact form on its own tab
   const def=document.querySelector('main').dataset.tab;if(def)show(def);
-
-  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
-  const socs=document.querySelector('.socs');
-  if(socs){
-    const n=socs.children.length;
-    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
-    socs.style.setProperty('--loop',n*4+'s');
-    socs.parentElement.classList.add('loop');
-  }
 
   // Who we are (home only): one person at the front of the stack. The names, the arrows, a swipe and the arrow keys all move it.
   // It also steps on by itself while in view, until the visitor moves it once.

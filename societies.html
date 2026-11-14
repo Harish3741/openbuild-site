@@ -249,22 +249,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 @media (max-width:520px){.tl-years,.tl-row{grid-template-columns:80px repeat(3,1fr)}}
 
 /* Network */
-/* Societies: a slow, endless carousel of equal cards. JS clones the list once so the loop is seamless (the track moves exactly one copy's width), and sets --loop from the count.
-   Hover pauses it. Without JS or with reduced motion it is a plain row you can scroll sideways. */
-.socs-rail{overflow-x:auto;scrollbar-width:none;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
-.socs-rail::-webkit-scrollbar{display:none}
-.socs{display:flex;width:max-content;list-style:none;margin:0;padding:4px 0}
-.socs li{flex:none;width:clamp(184px,18vw,224px);margin-right:16px;display:grid;gap:16px;align-content:start;padding:24px;border:1px solid var(--line);border-radius:var(--r);background:var(--card)}
-.socs img{width:72px;height:72px;border-radius:18px;box-shadow:0 0 0 1px var(--line)}
-.socs .nm{display:grid;gap:6px;font-weight:600;line-height:1.25;min-height:2.5em}
-.socs .mono{font-size:.7rem}
-.socs-rail.loop{overflow:hidden}
-.socs-rail.loop .socs{animation:marquee var(--loop,40s) linear infinite}
-@media (hover:hover) and (pointer:fine){.socs-rail.loop:hover .socs{animation-play-state:paused}}
-@keyframes marquee{to{transform:translateX(-50%)}}
-/* As a plain scrolling row (no JS, or reduced motion) the cards start at the page gutter */
-.socs-rail:not(.loop) .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}
-@media (prefers-reduced-motion:reduce){.socs-rail.loop{overflow-x:auto}.socs-rail.loop .socs{padding-inline:max(24px,calc((100vw - var(--wrap)) / 2 + 24px))}.socs [aria-hidden]{display:none}}
 .missing{margin-top:clamp(40px,5vw,56px)}
 .missing .lbl span{font-weight:400;color:var(--ink-3)}
 
@@ -281,9 +265,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .ev-panel img{width:100%;height:100%;object-fit:cover;display:block}
 .ev-body{display:grid;gap:18px;align-content:start}
 .ev-body>p{color:var(--ink-2)}
-.ev-stats{display:flex;flex-wrap:wrap;gap:10px 28px}
-.ev-stats span{display:grid;gap:6px;font:500 .7rem var(--f-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3)}
-.ev-stats b{font:800 clamp(2.2rem,1.6rem + 1.6vw,3.2rem)/.9 var(--f-display);letter-spacing:-.04em;color:var(--ink);font-variant-numeric:tabular-nums;text-transform:none}
 /* All panels share one grid cell; closed ones stay laid out but invisible, so every event is as tall as the tallest */
 @media (min-width:821px){.evx .ev-panel[hidden]{display:grid!important;visibility:hidden}}
 @media (max-width:820px){.evx{display:block}.ev-panel{grid-template-columns:1fr;border-top:0;padding-top:0}}
@@ -422,9 +403,9 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <h2>What you get.</h2>
     </div>
     <ul class="shots" data-reveal>
-      <li><figure><img src="img/soc-backers.jpg" alt="A speaker opening HealthHack Sydney in front of a slide of the event's backers" loading="lazy"></figure><h3>Companies that want to back student events.</h3><p class="cap">HealthHack Sydney at Stone &amp; Chalk, July 2026.</p></li>
-      <li><figure><img src="img/soc-mentors.jpg" alt="Three people leaning over a laptop, working through a build together" loading="lazy" style="--at:50% 70%"></figure><h3>Judges, mentors and speakers from industry.</h3><p class="cap">Working through a build at Hack for Humanity, September 2026.</p></li>
-      <li><figure><img src="img/soc-societies.jpg" alt="A lecture theatre screen reading The Organising Societies, with six society logos" loading="lazy"></figure><h3>Societies at other unis to fill the room with you.</h3><p class="cap">Six societies from four unis co-hosted Hack for Humanity.</p></li>
+      <li><figure><img src="img/soc-backers.jpg" alt="A speaker opening HealthHack Sydney in front of a slide of the event's backers" loading="lazy"></figure><h3>Companies that want to back student events.</h3></li>
+      <li><figure><img src="img/soc-mentors.jpg" alt="Three people leaning over a laptop, working through a build together" loading="lazy" style="--at:50% 70%"></figure><h3>Judges, mentors and speakers from industry.</h3></li>
+      <li><figure><img src="img/soc-societies.jpg" alt="Student teams building at long tables in a full room at Hack for Humanity" loading="lazy"></figure><h3>Societies at other unis to fill the room with you.</h3></li>
     </ul>
   </div>
 </section>
@@ -447,23 +428,8 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
     <div class="sec-head" data-reveal>
       <h2>Societies we've built with.</h2>
       <p class="sub">Nine societies across UNSW, USYD, UTS and Macquarie.</p>
+      <a class="txt-link missing" href="#join" data-tab="society" style="margin-top:8px"><span class="lbl">Want to be on the list? <span>Collab with us!</span></span><span class="arr" aria-hidden="true">→</span></a>
     </div>
-  </div>
-  <div class="socs-rail" data-reveal role="region" aria-label="Societies">
-    <ul class="socs">
-      <li><img src="img/societies/ncs.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">No-Code Society<span class="mono">UNSW</span></span></li>
-      <li><img src="img/societies/enactus-unsw.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">Enactus<span class="mono">UNSW</span></span></li>
-      <li><img src="img/societies/unsw-aisoc.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">AI Society<span class="mono">UNSW</span></span></li>
-      <li><img src="img/societies/rapsoc.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">RAPSOC<span class="mono">UNSW</span></span></li>
-      <li><img src="img/societies/softsoc.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">SoftSoc<span class="mono">USYD</span></span></li>
-      <li><img src="img/societies/usyd-wit.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">Women in Tech<span class="mono">USYD</span></span></li>
-      <li><img src="img/societies/uts-techsoc.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">TechSoc<span class="mono">UTS</span></span></li>
-      <li><img src="img/societies/mqais.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">AI &amp; Data Science Society<span class="mono">Macquarie</span></span></li>
-      <li><img src="img/societies/medsoc.webp" alt="" width="72" height="72" loading="lazy"><span class="nm">MedSoc<span class="mono">UNSW</span></span></li>
-    </ul>
-  </div>
-  <div class="wrap">
-    <a class="txt-link missing" data-reveal href="#join" data-tab="society"><span class="lbl">Want to be on the list? <span>Collab with us!</span></span><span class="arr" aria-hidden="true">→</span></a>
   </div>
 </section>
 
@@ -473,9 +439,9 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <h2>What we've run together.</h2>
     </div>
     <ul class="shots" data-reveal>
-      <li><figure><img src="img/soc-ev-h4h.jpg" alt="A full room of student teams at Hack for Humanity" loading="lazy"></figure><p class="mono">Sep 2026</p><h3>Hack for Humanity</h3><p>Six societies from four unis, 170 builders and three non-profits, over two days at UTS.</p></li>
-      <li><figure><img src="img/soc-ev-healthhack.jpg" alt="A UNSW MedSoc speaker addressing the room at HealthHack Sydney" loading="lazy"></figure><p class="mono">Jul 2026</p><h3>HealthHack Sydney</h3><p>No-Code Society and MedSoc with MLAI. 126 builders working on real healthcare problems.</p></li>
-      <li><figure><img src="img/soc-ev-debugged.jpg" alt="Teams filling the UNSW Founders space for the Debugged kick-off" loading="lazy"></figure><p class="mono">Jun 2026</p><h3>Debugged</h3><p>No-Code Society and AI Society with A1Zap and UNSW Founders. One day, start to finish.</p></li>
+      <li><figure><img src="img/soc-ev-h4h.jpg" alt="A full room of student teams at Hack for Humanity" loading="lazy"></figure><p class="mono">Sep 2026</p><h3>Hack for Humanity</h3><p>Societies from four unis, over two days at UTS.</p></li>
+      <li><figure><img src="img/soc-ev-healthhack.jpg" alt="The audience listening to a talk at HealthHack Sydney" loading="lazy"></figure><p class="mono">Jul 2026</p><h3>HealthHack Sydney</h3><p>With MLAI, working on real healthcare problems.</p></li>
+      <li><figure><img src="img/soc-ev-debugged.jpg" alt="Teams filling the UNSW Founders space for the Debugged kick-off" loading="lazy"></figure><p class="mono">Jun 2026</p><h3>Debugged</h3><p>With A1Zap and UNSW Founders. One day, start to finish.</p></li>
     </ul>
     <a class="txt-link missing" data-reveal href="index.html#past"><span class="lbl">See the events</span><span class="arr" aria-hidden="true">→</span></a>
   </div>
@@ -686,15 +652,6 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   new ResizeObserver(place).observe(row);document.fonts?.ready.then(place);
   // Each audience page opens the contact form on its own tab
   const def=document.querySelector('main').dataset.tab;if(def)show(def);
-
-  // Societies carousel: clone the cards once so the loop has no seam, about 4s of travel per society.
-  const socs=document.querySelector('.socs');
-  if(socs){
-    const n=socs.children.length;
-    for(const li of [...socs.children]){const c=li.cloneNode(true);c.setAttribute('aria-hidden','true');socs.append(c);}
-    socs.style.setProperty('--loop',n*4+'s');
-    socs.parentElement.classList.add('loop');
-  }
 
   // Who we are (home only): one person at the front of the stack. The names, the arrows, a swipe and the arrow keys all move it.
   // It also steps on by itself while in view, until the visitor moves it once.
