@@ -159,9 +159,12 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-one{fill:none;stroke:var(--lav-deep);stroke-width:3.5;stroke-linecap:round}
 .d-box{fill:var(--card);stroke:var(--ink-3);stroke-width:1.5}
 .d-glass{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}
-.d-hand{fill:var(--card);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
+.d-gap{fill:none;stroke:var(--paper);stroke-width:2.5;stroke-linecap:round}
+.d-lens{fill:var(--lav-wash)}
 .d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
+/* The labels are drawn in the SVG's own units, so on a phone they shrink with the drawing: make them bigger there */
+@media (max-width:560px){.draw text{font-size:15px}}
 
 /* Photo cards: what the page promises, each beside a photo of it happening (audience pages) */
 .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,3vw,40px) clamp(20px,2.4vw,32px);list-style:none;margin:0;padding:0}
@@ -174,7 +177,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .shots img{width:100%;height:100%;object-fit:cover;object-position:var(--at,50% 50%);display:block}
 .shots h3{font-size:var(--s-h3);line-height:1.12}
 .shots li>p:not(.mono){color:var(--ink-2)}
-.shots .cap{color:var(--ink-3);font-size:.92rem}
 
 /* Who we are: one person at a time. A stack of photo cards on the left (the next two peek out behind), names on the right.
    Arrows, the names themselves, swipe and the arrow keys all move it. Without JS it is the first card and the plain list of names. */
@@ -245,9 +247,10 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .logos{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));list-style:none;margin:0;padding:0;border-top:1px solid var(--line);border-left:1px solid var(--line)}
 @media (max-width:760px){.logos{grid-template-columns:repeat(2,minmax(0,1fr))}}
 .logos li{border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
-.logos a{display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;height:clamp(104px,11vw,148px);padding:0 20px;color:var(--ink-2);transition:color .2s ease,background-color .2s ease,opacity .35s ease}
+.logos a,.logos .cell{display:flex;align-items:center;justify-content:center;text-decoration:none;white-space:nowrap;height:clamp(104px,11vw,148px);padding:0 20px;color:var(--ink-2);transition:color .2s ease,background-color .2s ease,opacity .35s ease}
 .logos svg{height:var(--h);width:calc(var(--h) * var(--r));max-width:100%;display:block;transition:transform .3s var(--ease-out)}
 @media (hover:hover) and (pointer:fine){.logos a:hover{color:var(--ink);background:var(--card)}.logos a:hover svg{transform:scale(1.04)}}
+.logos .cell{color:var(--ink)}
 .logos .add a{font-weight:600;color:var(--ink-3);gap:8px}
 .logos .add .arr{display:inline-block;transition:transform .2s var(--ease-out)}
 @media (hover:hover) and (pointer:fine){.logos .add a:hover{color:var(--lav-deep);background:var(--lav-wash)}.logos .add a:hover .arr{transform:translateX(3px)}}

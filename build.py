@@ -36,6 +36,19 @@ def logo_wall():
     items.append('<li class="add"><a href="#join" data-tab="partner">Partner with us <span class="arr" aria-hidden="true">→</span></a></li>')
     return '<ul class="logos" data-reveal>' + ''.join(items) + '</ul>'
 
+# The four unis as a logo row on the societies page (societies themselves are never named), in the same grid as the partner wall
+UNIS = [('unsw', 'UNSW Sydney', 1.3), ('usyd', 'The University of Sydney', 1.3), ('uts', 'University of Technology Sydney', 1.3), ('macquarie', 'Macquarie University', 1.3)]
+def uni_wall():
+    items = []
+    for slug, name, weight in UNIS:
+        svg = (root / 'img' / 'unis' / f'{slug}.svg').read_text(encoding='utf8').strip()
+        w, h = map(float, re.search(r'viewBox="[-\d.]+ [-\d.]+ ([\d.]+) ([\d.]+)"', svg).groups())
+        r = w / h
+        hh = min(H0 * r ** -K, 44) * weight
+        svg = re.sub(r' xmlns="[^"]*"', '', svg, count=1).replace('<svg ', f'<svg role="img" aria-label="{name}" style="--h:{hh:.1f}px;--r:{r:.3f}" ', 1)
+        items.append(f'<li><span class="cell">{svg}</span></li>')
+    return '<ul class="logos" data-reveal>' + ''.join(items) + '</ul>'
+
 # Uni logos for the drawings: <!--UNI:slug x y w h--> becomes img/unis/<slug>.svg nested at that box, left-aligned and centred vertically.
 def uni_logo(m):
     slug, x, y, w, h = m.group(1), *m.group(2).split()
@@ -79,6 +92,7 @@ def page(out, body_name, title, desc, tab, home):
             + part('contact.html') + '</main>\n\n' + part('footer.html')
             + '\n<script>\n' + part('site.js') + '</script>\n')
     body = body.replace('<!--PARTNERS-->', logo_wall() if '<!--PARTNERS-->' in body else '')
+    body = body.replace('<!--UNIS-->', uni_wall() if '<!--UNIS-->' in body else '')
     body = re.sub(r'<!--UNI:(\S+) ([\d. ]+)-->', uni_logo, body)
     return head, body.replace('{{HOME}}', home)
 
