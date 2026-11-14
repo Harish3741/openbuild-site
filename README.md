@@ -90,3 +90,5 @@ Always edit `src/`, never the built files.
 - Pages open at the top at once: smooth scrolling waits for `html.ready`, and leaving a page fades out and resets the scroll first (`site.js`, top of the file).
 - Choices, other options and what needs Harish's call: `notes/ROUND-13-NOV.md`.
 - Publishing: send `door.html` to the artifact with `societies.html`, `partners.html` and any new `img/` files as extra files.
+
+**Societies head drawing (14 Nov, late):** each of the four figures now shows what it is: sponsor with a coin, speaker with a speech bubble, judge holding up a "10" score card, co-hosts as a pair (ink + lavender, `.d-halo` separates them). Symbols inside the props use `.draw text.d-sym`.

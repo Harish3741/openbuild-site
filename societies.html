@@ -174,9 +174,11 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-lkgap{stroke:var(--paper);stroke-width:21}
 .d-lens{fill:var(--lav-wash)}
 .d-hole{fill:var(--paper)}
+.d-halo{stroke:var(--paper);stroke-width:5;paint-order:stroke}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 /* The labels are drawn in the SVG's own units, so on a phone they shrink with the drawing: make them bigger there */
 .draw text.d-lab{font-size:14.5px;fill:var(--ink-2)}
+.draw text.d-sym{font:700 15px var(--f-body);letter-spacing:0;fill:var(--paper)}
 @media (max-width:560px){.draw text{font-size:15px}}
 
 /* Photo cards: what the page promises, each beside a photo of it happening (audience pages) */
@@ -387,11 +389,11 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <a class="btn btn-ink" href="#join">Add your society</a>
     </div>
     <figure class="draw" data-reveal>
-      <svg viewBox="0 16 520 312" role="img" aria-label="Drawing: sponsors, speakers, judges and co-hosts all reach you through one door, Open Build.">
-        <use href="#d-pawn" class="d-ink" x="8" y="30" width="20.5" height="44"/><text class="d-lab" x="42" y="58">Sponsors</text><path class="d-faint" d="M152 52C206 52 206 190 250 190"/>
-        <use href="#d-pawn" class="d-ink" x="8" y="112" width="20.5" height="44"/><text class="d-lab" x="42" y="140">Speakers</text><path class="d-faint" d="M152 134C206 134 206 190 250 190"/>
-        <use href="#d-pawn" class="d-ink" x="8" y="194" width="20.5" height="44"/><text class="d-lab" x="42" y="222">Judges</text><path class="d-faint" d="M152 216C206 216 206 190 250 190"/>
-        <use href="#d-pawn" class="d-ink" x="8" y="276" width="20.5" height="44"/><text class="d-lab" x="42" y="304">Co-hosts</text><path class="d-faint" d="M152 298C206 298 206 190 250 190"/>
+      <svg viewBox="0 16 520 312" role="img" aria-label="Drawing: a sponsor with a coin, a speaker talking, a judge holding up a score and a pair of co-hosts all reach you through one door, Open Build.">
+        <use href="#d-pawn" class="d-ink" x="4" y="26" width="22.4" height="48"/><circle class="d-you" cx="39" cy="47" r="11.5"/><text class="d-sym" x="39" y="52.3" text-anchor="middle">$</text><text class="d-lab" x="66" y="58">Sponsors</text><path class="d-faint" d="M156 52C208 52 208 190 250 190"/>
+        <use href="#d-pawn" class="d-ink" x="4" y="108" width="22.4" height="48"/><path class="d-you" d="M35 102H50A6 6 0 0 1 56 108V115A6 6 0 0 1 50 121H39L26 125L30.5 117.5A6 6 0 0 1 29 115V108A6 6 0 0 1 35 102Z"/><circle class="d-hole" cx="36.5" cy="111.5" r="1.9"/><circle class="d-hole" cx="42.5" cy="111.5" r="1.9"/><circle class="d-hole" cx="48.5" cy="111.5" r="1.9"/><text class="d-lab" x="66" y="140">Speakers</text><path class="d-faint" d="M156 134C208 134 208 190 250 190"/>
+        <use href="#d-pawn" class="d-ink" x="4" y="190" width="22.4" height="48"/><path class="d-line" style="stroke-width:3" d="M41 205L29 222"/><rect class="d-you" x="30" y="185" width="25" height="20" rx="3.5"/><text class="d-sym" style="font-size:13px" x="42.5" y="199.8" text-anchor="middle">10</text><text class="d-lab" x="66" y="222">Judges</text><path class="d-faint" d="M156 216C208 216 208 190 250 190"/>
+        <use href="#d-pawn" class="d-you" x="24" y="272" width="22.4" height="48"/><use href="#d-pawn" class="d-ink d-halo" x="4" y="272" width="22.4" height="48"/><text class="d-lab" x="66" y="304">Co-hosts</text><path class="d-faint" d="M156 298C208 298 208 190 250 190"/>
         <path class="d-ground" d="M214 262H506"/>
         <path class="d-lav" d="M254 262V118H330V262Z"/>
         <path class="d-frame" d="M254 262V118H330V262"/>
