@@ -167,7 +167,8 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-one{fill:none;stroke:var(--lav-deep);stroke-width:3.5;stroke-linecap:round}
 .d-box{fill:var(--card);stroke:var(--ink-3);stroke-width:1.5}
 .d-glass{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}
-.d-gap{fill:none;stroke:var(--paper);stroke-width:2.5;stroke-linecap:round}
+.d-arm{fill:none;stroke:var(--ink);stroke-width:8;stroke-linecap:round}
+.d-arm2{stroke:var(--lav-deep)}
 .d-lens{fill:var(--lav-wash)}
 .d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
@@ -380,9 +381,11 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
         </svg></figure>
         <h3>We do the searching.</h3><p>We find the right societies across Sydney's unis and set up the collab.</p></li>
       <li>
-        <figure class="draw"><svg viewBox="0 34 320 132" role="img" aria-label="Drawing: two hands meeting in a fist bump, one from a society and one from a partner.">
-          <path class="d-faint" d="M160 62V50M146 66L139 56M174 66L181 56"/>
-          <g transform="translate(160 106)"><path class="d-ink" d="M-132 -15H-40V15H-132Z"/><rect class="d-ink" x="-50" y="-25" width="48" height="50" rx="13"/><path class="d-gap" d="M-22 -12.5H-1M-22 0H-1M-22 12.5H-1M-62 -17V17"/></g><g transform="translate(160 106) scale(-1 1)"><path class="d-you" d="M-132 -15H-40V15H-132Z"/><rect class="d-you" x="-50" y="-25" width="48" height="50" rx="13"/><path class="d-gap" d="M-22 -12.5H-1M-22 0H-1M-22 12.5H-1M-62 -17V17"/></g>
+        <figure class="draw"><svg viewBox="0 34 320 132" role="img" aria-label="Drawing: two people shaking hands, one from a society and one from a partner.">
+          <path class="d-ground" d="M6 148H314"/>
+          <use href="#d-pawn" class="d-ink" x="100.5" y="90" width="27.1" height="58"/><use href="#d-pawn" class="d-you" x="192.5" y="90" width="27.1" height="58"/>
+          <path class="d-arm" d="M121 120L160 127"/><path class="d-arm d-arm2" d="M199 120L160 127"/>
+          <circle class="d-ink" cx="160" cy="127" r="7.5"/><path class="d-you" d="M160 119.5a7.5 7.5 0 0 1 0 15z"/>
         </svg></figure>
         <h3>We keep it steady.</h3><p>Committees change every year. The relationship doesn't.</p></li>
       <li>
