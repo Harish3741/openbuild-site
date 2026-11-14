@@ -115,11 +115,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .next .btn{background:var(--on-lav);color:#F2F0EB;border-color:var(--on-lav);justify-self:start}
 @media (hover:hover) and (pointer:fine){.next .btn:hover{background:#2e2d2a;border-color:#2e2d2a}}
 
-/* Photos */
-.strip{display:grid;grid-template-columns:1.3fr 1fr .8fr;grid-auto-rows:clamp(200px,24vw,340px);gap:16px;margin:clamp(48px,6vw,80px) 0 0}
-.strip figure{margin:0;border-radius:var(--r);overflow:hidden;background:var(--paper-2)}
-.strip img{width:100%;height:100%;object-fit:cover;display:block}
-@media (max-width:700px){.strip{grid-template-columns:1fr 1fr;grid-auto-rows:clamp(150px,42vw,240px)}.strip figure:first-child{grid-column:1/-1}}
 
 /* Two doors: one big button per audience, each opening its own page. Only the name, a small drawing and the arrow. */
 .doors{display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,32px)}
@@ -172,6 +167,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-one{fill:none;stroke:var(--lav-deep);stroke-width:3.5;stroke-linecap:round}
 .d-box{fill:var(--card);stroke:var(--ink-3);stroke-width:1.5}
 .d-glass{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}
+.d-hand{fill:var(--card);stroke:var(--ink);stroke-width:2.5;stroke-linejoin:round}
 .d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
 
@@ -308,8 +304,6 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 @keyframes rise{from{opacity:0;transform:translateY(24px)}}
 @keyframes open{from{transform:perspective(900px) rotateY(0)}}
 @keyframes fade{from{opacity:0}}
-@keyframes wipe{from{clip-path:inset(100% 0 0 0 round var(--r))}to{clip-path:inset(0 0 0 0 round var(--r))}}
-@keyframes settle{from{transform:scale(1.12)}}
 @keyframes unveil{to{transform:scaleX(0)}}
 .hero h1 .ln>span{animation:lineUp 1.4s var(--ease-out) .1s backwards}
 .doorway .frame{animation:fade .9s ease .1s backwards}
@@ -317,11 +311,8 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 .doorway .spill{animation:fade 2.4s ease .1s backwards}
 @media (prefers-reduced-motion:no-preference){
   .js [data-reveal]:not(.in){opacity:0}
-  .js .strip:not(.in) figure{clip-path:inset(100% 0 0 0)}
 }
 [data-reveal].in{animation:rise 1.3s var(--ease-out) backwards}
-.strip.in figure{animation:wipe 1.6s var(--ease-out) backwards}
-.strip.in img{animation:settle 2.2s var(--ease-out) backwards}
 .timeline.in .tl-cover{animation:unveil var(--sweep) var(--ease-sweep) forwards}
 </style>
 <script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>
@@ -597,7 +588,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   // Stages reveal once on scroll-in, and everything inside a stage starts together.
   // A stage already scrolled past (a fast scroll or a nav jump) shows at once rather than waiting to be scrolled back to.
   const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting||e.boundingClientRect.bottom<0){
-    const st=e.target;[st,...st.querySelectorAll('[data-reveal],.strip,.timeline')].forEach(el=>el.classList.add('in'));st.querySelector('.timeline')?.handovers?.();io.unobserve(st);
+    const st=e.target;[st,...st.querySelectorAll('[data-reveal],.timeline')].forEach(el=>el.classList.add('in'));st.querySelector('.timeline')?.handovers?.();io.unobserve(st);
   }},{rootMargin:'0px 0px -15% 0px'});
   document.querySelectorAll('[data-stage]').forEach(el=>io.observe(el));
   // Photo cards are the one exception: each comes in on its own, and cards that scroll in together follow one another

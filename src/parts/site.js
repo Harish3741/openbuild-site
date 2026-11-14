@@ -41,7 +41,7 @@
   // Stages reveal once on scroll-in, and everything inside a stage starts together.
   // A stage already scrolled past (a fast scroll or a nav jump) shows at once rather than waiting to be scrolled back to.
   const io=new IntersectionObserver(es=>{for(const e of es)if(e.isIntersecting||e.boundingClientRect.bottom<0){
-    const st=e.target;[st,...st.querySelectorAll('[data-reveal],.strip,.timeline')].forEach(el=>el.classList.add('in'));st.querySelector('.timeline')?.handovers?.();io.unobserve(st);
+    const st=e.target;[st,...st.querySelectorAll('[data-reveal],.timeline')].forEach(el=>el.classList.add('in'));st.querySelector('.timeline')?.handovers?.();io.unobserve(st);
   }},{rootMargin:'0px 0px -15% 0px'});
   document.querySelectorAll('[data-stage]').forEach(el=>io.observe(el));
   // Photo cards are the one exception: each comes in on its own, and cards that scroll in together follow one another
