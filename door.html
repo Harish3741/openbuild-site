@@ -143,7 +143,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .value .draw>svg{max-width:none}
 
 /* Audience pages open with who the page is for, the promise and what they get */
-.page-head{padding-block:clamp(48px,7vw,104px) 0}
+/* The audience pages' head fills the first screen, like the home hero, so the next section starts below the fold */
+.page-head{--top:77px;min-height:calc(100svh - var(--top) - env(safe-area-inset-top,0px));display:grid;align-content:center;padding-block:clamp(48px,7vw,104px)}
+@media (max-width:860px){.page-head{--top:109px}}
 .page-head .wrap{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:clamp(32px,5vw,80px);align-items:end}
 @media (max-width:900px){.page-head .wrap{grid-template-columns:1fr}}
 .page-head .lead{display:grid;gap:24px;justify-items:start}
@@ -427,7 +429,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
           <rect class="d-lk d-lk2" x="148" y="76" width="100" height="56" rx="28"/>
           <path class="d-lk d-lkgap" d="M153.58 77.69A28 28 0 0 1 165.45 86.00"/><path class="d-lk" d="M146.93 76.15A28 28 0 0 1 169.17 91.73"/>
         </svg></figure>
-        <h3>We keep it steady.</h3><p>Committees change every year. We carry the contacts across, so the partnership doesn't reset.</p></li>
+        <h3>We keep it steady.</h3><p>Committees change every year. We keep the partnership going.</p></li>
       <li>
         <figure class="draw"><svg viewBox="0 34 320 132" role="img" aria-label="Drawing: two gears turning together, a large one and a small one.">
           <!-- the small gear sits up and to the right, with a gap between its teeth facing the large gear's tooth -->
