@@ -164,8 +164,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .d-one{fill:none;stroke:var(--lav-deep);stroke-width:3.5;stroke-linecap:round}
 .d-box{fill:var(--card);stroke:var(--ink-3);stroke-width:1.5}
 .d-glass{fill:none;stroke:var(--ink);stroke-width:5;stroke-linecap:round}
-.d-arm{fill:none;stroke:var(--ink);stroke-width:8;stroke-linecap:round}
-.d-arm2{stroke:var(--lav-deep)}
+.d-lk{fill:none;stroke:var(--ink);stroke-width:13}
+.d-lk2{stroke:var(--lav-deep)}
+.d-lkgap{stroke:var(--paper);stroke-width:21}
 .d-lens{fill:var(--lav-wash)}
 .d-block{fill:var(--lav);stroke:var(--ink);stroke-width:2;stroke-linejoin:round}
 .draw text{font:500 11.5px var(--f-mono);letter-spacing:.07em;fill:var(--ink-3);text-transform:uppercase}
