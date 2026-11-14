@@ -141,9 +141,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .value li>p:not(.mono){color:var(--ink-2)}
 .value .draw{margin-bottom:10px}
 .value .draw>svg{max-width:none}
-.steps{counter-reset:step}
-.steps li{counter-increment:step}
-.steps li::before{content:counter(step);font:500 .75rem var(--f-mono);color:var(--ink-3)}
 
 /* Audience pages open with who the page is for, the promise and what they get */
 .page-head{padding-block:clamp(48px,7vw,104px) 0}
@@ -189,19 +186,31 @@ header.top.scrolled{border-bottom-color:var(--line)}
 /* Photo cards come in one after another, not all at once (Harish, 14 Nov). site.js staggers the ones that scroll in together. */
 @media (prefers-reduced-motion:no-preference){.js .shots>li:not(.in){opacity:0}}
 .shots>li.in{animation:rise 1.3s var(--ease-out) backwards}
-/* What you get: the cards hang off one rail with a dot each, so the row reads as a timeline. Each stretch of rail draws in with its card.
-   On a phone the rail runs down the left. */
-.rail>li{position:relative;padding-top:40px}
-.rail>li::before{content:"";position:absolute;top:6px;left:0;right:calc(-1 * var(--cg));height:1.5px;background:var(--ink);transform-origin:left}
+/* How it works: the three steps hang off one rail, so the row reads as a timeline. It starts at a tick, has a numbered dot above the middle
+   of each photo and ends in an arrowhead. Each stretch of rail draws in with its card. On a phone the rail runs down the left, with the dots beside the photos. */
+.rail{position:relative;counter-reset:step}
+.rail>li{position:relative;padding-top:52px;counter-increment:step}
+.rail>li::before{content:"";position:absolute;top:12px;left:0;right:calc(-1 * var(--cg));height:1.5px;background:var(--ink);transform-origin:left}
 .rail>li:last-child::before{right:0}
-.rail>li::after{content:"";position:absolute;top:0;left:0;width:14px;height:14px;border-radius:50%;background:var(--lav-deep);box-shadow:0 0 0 5px var(--paper)}
-@media (prefers-reduced-motion:no-preference){.rail>li.in::before{animation:draw 1.2s var(--ease-out) backwards;animation-delay:inherit}}
+.rail>li::after{content:counter(step);position:absolute;top:0;left:50%;margin-left:-13px;width:26px;height:26px;border-radius:50%;display:grid;place-items:center;background:var(--lav-deep);color:var(--paper);font:500 .75rem/1 var(--f-mono);box-shadow:0 0 0 5px var(--paper)}
+.rail::before{content:"";position:absolute;top:5px;left:0;width:1.5px;height:16px;background:var(--ink)}
+.rail::after{content:"";position:absolute;top:8px;right:2px;width:10px;height:10px;box-sizing:border-box;border:solid var(--ink);border-width:1.5px 1.5px 0 0;transform:rotate(45deg)}
 @media (max-width:760px){
-  .rail>li{padding:0 0 0 36px}
-  .rail>li::before{left:6px;right:auto;bottom:calc(-1 * var(--rg));width:1.5px;height:auto;transform-origin:top}
+  .rail>li{padding:0 0 0 46px}
+  .rail>li::before{top:0;left:12px;right:auto;bottom:calc(-1 * var(--rg));width:1.5px;height:auto;transform-origin:top}
   .rail>li:last-child::before{right:auto;bottom:0}
-  .rail>li.in::before{animation-name:drawY}
+  /* a margin-top percentage is measured on the card's width, so this lands the dot halfway down the 4:3 photo */
+  .rail>li::after{left:0;margin:calc((100% - 46px) * .375 - 13px) 0 0}
+  .rail::before{top:0;left:5px;width:16px;height:1.5px}
+  .rail::after{top:auto;right:auto;bottom:2px;left:8px;transform:rotate(135deg)}
 }
+@media (prefers-reduced-motion:no-preference){
+  .rail>li.in::before{animation:draw 1.2s var(--ease-out) backwards;animation-delay:inherit}
+  .js .rail:not(:has(>li.in))::before,.js .rail:not(:has(>li:last-child.in))::after{opacity:0}
+  .rail:has(>li.in)::before{animation:fade .4s ease backwards}
+  .rail:has(>li:last-child.in)::after{animation:fade .5s ease 1.3s backwards}
+}
+@media (prefers-reduced-motion:no-preference) and (max-width:760px){.rail>li.in::before{animation-name:drawY}}
 .shots figure{margin:0 0 10px;aspect-ratio:4/3;max-width:100%;border-radius:var(--r);overflow:hidden;background:var(--paper-2)}
 .shots img{width:100%;height:100%;object-fit:cover;object-position:var(--at,50% 50%);display:block}
 .shots h3{font-size:var(--s-h3);line-height:1.12}
