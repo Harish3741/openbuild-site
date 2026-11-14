@@ -44,6 +44,11 @@
     const st=e.target;[st,...st.querySelectorAll('[data-reveal],.strip,.timeline')].forEach(el=>el.classList.add('in'));st.querySelector('.timeline')?.handovers?.();io.unobserve(st);
   }},{rootMargin:'0px 0px -15% 0px'});
   document.querySelectorAll('[data-stage]').forEach(el=>io.observe(el));
+  // Photo cards are the one exception: each comes in on its own, and cards that scroll in together follow one another
+  const cardIO=new IntersectionObserver(es=>{let k=0;for(const e of es)if(e.isIntersecting||e.boundingClientRect.bottom<0){
+    e.target.style.animationDelay=k++*.3+'s';e.target.classList.add('in');cardIO.unobserve(e.target);
+  }},{rootMargin:'0px 0px -15% 0px'});
+  document.querySelectorAll('.shots>li').forEach(li=>cardIO.observe(li));
 
   // The committee timeline (partners page only)
   const tl=document.querySelector('.timeline');

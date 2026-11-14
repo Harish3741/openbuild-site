@@ -179,6 +179,9 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .shots{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(28px,3vw,40px) clamp(20px,2.4vw,32px);list-style:none;margin:0;padding:0}
 @media (max-width:760px){.shots{grid-template-columns:1fr}}
 .shots li{display:grid;gap:8px;align-content:start}
+/* Photo cards come in one after another, not all at once (Harish, 14 Nov). site.js staggers the ones that scroll in together. */
+@media (prefers-reduced-motion:no-preference){.js .shots>li:not(.in){opacity:0}}
+.shots>li.in{animation:rise 1.3s var(--ease-out) backwards}
 .shots figure{margin:0 0 10px;aspect-ratio:4/3;max-width:100%;border-radius:var(--r);overflow:hidden;background:var(--paper-2)}
 .shots img{width:100%;height:100%;object-fit:cover;object-position:var(--at,50% 50%);display:block}
 .shots h3{font-size:var(--s-h3);line-height:1.12}
@@ -331,6 +334,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       <svg class="w" aria-hidden="true"><use href="#ob-word"/></svg>
     </a>
     <ul>
+      <li><a href="index.html#past">Events</a></li>
       <li><a href="societies.html">Societies</a></li>
       <li><a href="partners.html" aria-current="page">Partners</a></li>
     </ul>
@@ -442,7 +446,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
     <div class="sec-head" data-reveal>
       <h2>What you get.</h2>
     </div>
-    <ul class="shots" data-reveal>
+    <ul class="shots">
       <li><figure><img src="img/par-room.jpg" alt="A packed lecture theatre of students at Hack for Humanity" loading="lazy" style="--at:50% 70%"></figure><h3>We pick the societies that fit your audience.</h3><p class="cap">A full room at Hack for Humanity.</p></li>
       <li><figure><img src="img/par-workshop.jpg" alt="A presenter from Crucible Ventures teaching a pitching workshop in front of his slides" loading="lazy" style="--at:80% 50%"></figure><h3>We help plan, promote and run the day.</h3><p class="cap">Crucible Ventures teaching pitching on day two of Hack for Humanity.</p></li>
       <li><figure><img src="img/par-nonprofit.jpg" alt="A Bipolar Australia representative talking a student team through their brief at a computer" loading="lazy" style="--at:30% 50%"></figure><h3>You meet students who build, technical or not.</h3><p class="cap">Bipolar Australia briefing a team at Hack for Humanity.</p></li>
@@ -481,20 +485,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   </div>
 </section>
 
-<section id="together">
-  <div class="wrap" data-stage>
-    <div class="sec-head" data-reveal>
-      <h2>What we've run with partners.</h2>
-    </div>
-    <ul class="shots" data-reveal>
-      <li><figure><img src="img/par-ev-h4h.jpg" alt="The judges' row watching final pitches at Hack for Humanity, with the room full behind them" loading="lazy"></figure><p class="mono">Sep 2026</p><h3>Hack for Humanity</h3><p>With Base44, Crucible Ventures and Wix.</p></li>
-      <li><figure><img src="img/par-ev-healthhack.jpg" alt="A StatDoctor speaker addressing the audience at Stone &amp; Chalk during HealthHack Sydney" loading="lazy"></figure><p class="mono">Jul 2026</p><h3>HealthHack Sydney</h3><p>With MLAI and StatDoctor at Stone &amp; Chalk.</p></li>
-      <li><figure><img src="img/par-ev-debugged.jpg" alt="A speaker with a microphone talking to teams at UNSW Founders during Debugged" loading="lazy"></figure><p class="mono">Jun 2026</p><h3>Debugged</h3><p>With A1Zap and UNSW Founders.</p></li>
-    </ul>
-  </div>
-</section>
-
-<section class="partners" id="partners" style="padding-top:0">
+<section class="partners" id="partners">
   <div class="wrap" data-stage>
     <div class="sec-head" data-reveal>
       <h2>Who we've worked with.</h2>
@@ -609,6 +600,11 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
     const st=e.target;[st,...st.querySelectorAll('[data-reveal],.strip,.timeline')].forEach(el=>el.classList.add('in'));st.querySelector('.timeline')?.handovers?.();io.unobserve(st);
   }},{rootMargin:'0px 0px -15% 0px'});
   document.querySelectorAll('[data-stage]').forEach(el=>io.observe(el));
+  // Photo cards are the one exception: each comes in on its own, and cards that scroll in together follow one another
+  const cardIO=new IntersectionObserver(es=>{let k=0;for(const e of es)if(e.isIntersecting||e.boundingClientRect.bottom<0){
+    e.target.style.animationDelay=k++*.3+'s';e.target.classList.add('in');cardIO.unobserve(e.target);
+  }},{rootMargin:'0px 0px -15% 0px'});
+  document.querySelectorAll('.shots>li').forEach(li=>cardIO.observe(li));
 
   // The committee timeline (partners page only)
   const tl=document.querySelector('.timeline');
