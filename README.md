@@ -63,7 +63,7 @@ Always edit `src/`, never the built files.
 ## To do
 
 1. Harish picks direction A or B (or a mix).
-2. Open Build Luma calendar: Harish will add the link. Swap it into the footer "Luma soon" links and, once it has events, the Next up card.
+2. Open Build Luma calendar: Harish will add the link. The footer's Events / Instagram / LinkedIn links are **hidden since 15 Nov** (Harish) until those accounts exist: they sit between `<!--HIDDEN-->` markers in `src/parts/footer.html` (`build.py` now strips HIDDEN blocks from parts too). Put the real links in, delete the two marker lines, and swap the Luma link into, once it has events, the Next up card.
 3. Wire the forms: Tally/Formspree, or a Supabase table.
 4. Instagram and LinkedIn handles go in the footer.
 5. Buy **openbuild.club** at Porkbun (US$4.12 first year, US$15.96/yr renewal, checked 10 Nov 2026), then deploy (Vercel or Cloudflare Pages) and point DNS.

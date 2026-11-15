@@ -78,13 +78,13 @@ def page(out, body_name, title, desc, tab, home):
             "<script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>\n")
     header = part('header.html').replace(f'href="{out}.html"', f'href="{out}.html" aria-current="page"')
     main = (root / 'src' / 'pages' / f'{body_name}.html').read_text(encoding='utf8')
-    # Anything between <!--HIDDEN ...--> and <!--/HIDDEN--> is left out of the built page
-    main = re.sub(r'<!--HIDDEN.*?<!--/HIDDEN-->\n?', '', main, flags=re.S)
     # Each audience page ends on its own contact form; the other audience's form is cut
     contact = re.sub(r'<!--(\w+)-->\n(.*?)<!--/\1-->\n', lambda m: m.group(2) if m.group(1) == tab else '', part('contact.html'), flags=re.S) if tab else ''
     body = ('\n' + sprite + '\n' + header + '\n<main>\n' + main + '\n\n'
             + contact + '</main>\n\n' + part('footer.html')
             + '\n<script>\n' + part('site.js') + '</script>\n')
+    # Anything between <!--HIDDEN ...--> and <!--/HIDDEN--> (in a page or a part) is left out of the built page
+    body = re.sub(r' *<!--HIDDEN.*?<!--/HIDDEN-->\n?', '', body, flags=re.S)
     # "Get in touch" goes to the page's form, or on the home page to the two audience buttons
     body = body.replace('{{CONTACT}}', '#join' if tab else '#who')
     body = body.replace('<!--PARTNERS-->', logo_wall() if '<!--PARTNERS-->' in body else '')
