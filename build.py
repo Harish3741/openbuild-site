@@ -70,15 +70,15 @@ SKELETON = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
 def part(name):
     return (root / 'src' / 'parts' / name).read_text(encoding='utf8')
 
-def page(out, body_name, title, desc, tab, home):
-    """Return (head, body). `home` is the link back to the main page ('' on the main page itself)."""
+def page(out, body_name, title, desc, tab, home, links={}):
+    """Return (head, body). `home` is the link back to the main page; `links` swaps page links (societies.html → /societies on the live site)."""
     head = (f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
             f'<meta name="description" content="{desc}">\n' + FONTS
             + '<style>\n' + part('style.css') + '</style>\n'
             "<script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>\n")
     header = part('header.html').replace(f'href="{out}.html"', f'href="{out}.html" aria-current="page"')
     if out == 'door':
-        header = header.replace('href="{{HOME}}#top">Home', 'href="{{HOME}}#top" aria-current="page">Home')
+        header = header.replace('href="{{HOME}}">Home', 'href="{{HOME}}" aria-current="page">Home')
     main = (root / 'src' / 'pages' / f'{body_name}.html').read_text(encoding='utf8')
     # Each audience page ends on its own contact form; the other audience's form is cut
     contact = re.sub(r'<!--(\w+)-->\n(.*?)<!--/\1-->\n', lambda m: m.group(2) if m.group(1) == tab else '', part('contact.html'), flags=re.S) if tab else ''
@@ -91,21 +91,26 @@ def page(out, body_name, title, desc, tab, home):
     body = body.replace('{{CONTACT}}', '#join' if tab else '#who')
     body = body.replace('<!--PARTNERS-->', logo_wall() if '<!--PARTNERS-->' in body else '')
     body = re.sub(r'<!--UNI:(\S+) ([\d. ]+)-->', uni_logo, body)
+    for old, new in links.items():
+        body = body.replace(f'href="{old}"', f'href="{new}"')
     return head, body.replace('{{HOME}}', home)
 
-(root / 'preview').mkdir(exist_ok=True)
+# Three builds of each page, differing only in links:
+# - open-build.org (GitHub Pages, repo root): clean addresses. Home is /, the others /societies and /partners (Pages serves societies.html there).
+# - the artifact preview: door.html is its index (no skeleton) and artifact/ holds the other pages, published beside it, linking by file name.
+# - preview/: whole documents for opening locally, where the main page is door.html.
+CLEAN = {'societies.html': '/societies', 'partners.html': '/partners'}
+whole = lambda head, body: SKELETON + head + '</head><body>' + body + '</body></html>\n'
+for d in ('preview', 'artifact'):
+    (root / d).mkdir(exist_ok=True)
 for out, body_name, title, desc, tab in PAGES:
     main_page = out == 'door'
-    # Published: the main page is index.html in the artifact, the others sit beside it
-    head, body = page(out, body_name, title, desc, tab, '' if main_page else 'index.html')
-    (root / f'{out}.html').write_text(head + body if main_page else SKELETON + head + '</head><body>' + body + '</body></html>\n', encoding='utf8')
-    # GitHub Pages: the main page again as a whole document at index.html
-    if main_page:
-        (root / 'index.html').write_text(SKELETON + head + '</head><body>' + body + '</body></html>\n', encoding='utf8')
-    # Local preview: whole documents in preview/, where the main page is door.html
-    head, body = page(out, body_name, title, desc, tab, '' if main_page else 'door.html')
-    doc = SKELETON + head + '</head><body>' + body + '</body></html>\n'
-    (root / 'preview' / f'{out}.html').write_text(doc.replace('src="img/', 'src="../img/'), encoding='utf8')
+    head, body = page(out, body_name, title, desc, tab, '/', CLEAN)
+    (root / ('index.html' if main_page else f'{out}.html')).write_text(whole(head, body).replace('src="img/', 'src="/img/'), encoding='utf8')
+    head, body = page(out, body_name, title, desc, tab, '#top' if main_page else 'index.html')
+    (root / ('door.html' if main_page else f'artifact/{out}.html')).write_text(head + body if main_page else whole(head, body), encoding='utf8')
+    head, body = page(out, body_name, title, desc, tab, '#top' if main_page else 'door.html')
+    (root / 'preview' / f'{out}.html').write_text(whole(head, body).replace('src="img/', 'src="../img/'), encoding='utf8')
     print('built', f'{out}.html')
 
 # Direction B ("After Hours") is one self-contained file, kept for reference

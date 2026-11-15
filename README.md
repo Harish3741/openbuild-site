@@ -15,7 +15,9 @@ Draft site for Open Build (Harish + Varun's Sydney go-between for uni societies 
 | A, "The Door": light, editorial, follows the system theme | `src/door.html` | https://claude.ai/artifact/D6ZtBxnj4FDkUa7dMMVq5m |
 | B, "After Hours": dark night-event poster, doorway of light | `src/after-hours.html` | https://claude.ai/artifact/FU8as8bP1RsWwMvcSrjz2T |
 
-To republish from another session, pass the artifact URL as `url`, publish `door.html` and pass `files` for `societies.html`, `partners.html` and any image that changed (`img/*.jpg`).
+To republish from another session, pass the artifact URL as `url`, publish `door.html` and pass `files` mapping `societies.html` → `artifact/societies.html` and `partners.html` → `artifact/partners.html` (gitignored builds that link by file name), plus any image that changed (`img/*.jpg`).
+
+**Clean addresses on open-build.org (15 Nov, Harish):** the repo-root `index.html`, `societies.html` and `partners.html` are the live site's build: links are `/`, `/societies` and `/partners` (GitHub Pages serves `societies.html` there) and images use `/img/`. `site.js` keeps the address bar clean on the live domain: it rewrites `/index.html`, `*.html` and any `#section` away after landing (old links like `/index.html#past` still scroll to their section first), and a link within the page scrolls there without adding `#section`. `door.html` + `artifact/` (the artifact) and `preview/` (local) keep file-name links.
 
 ## Build
 

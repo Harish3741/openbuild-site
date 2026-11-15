@@ -13,12 +13,27 @@
     for(const t of ['wheel','touchstart','keydown','pointerdown'])addEventListener(t,settle,{once:true,passive:true});
     setTimeout(settle,1500);
   }else root.classList.add('ready');
+  // The same page whatever its address: /, /index.html and /index are one page, as are /societies and /societies.html
+  const page=p=>p.replace(/\.html$/,'').replace(/\/index$/,'/');
+  // On the live site the address bar stays clean: open-build.org/, /societies or /partners, with no index.html, .html or #section
+  // (old links like /index.html#past still land on their section first)
+  if(/(^|\.)open-build\.org$|github\.io$/.test(location.hostname)){
+    const clean=()=>{const p=page(location.pathname);if(p!==location.pathname||location.hash)history.replaceState(history.state,'',p+location.search);};
+    location.hash?addEventListener('load',clean,{once:true}):clean();
+  }
   // Leaving for another page: fade out and go to the top first, so the position carried over is the top
   document.addEventListener('click',e=>{
     const a=e.target.closest('a[href]');
     if(!a||e.defaultPrevented||e.button||e.metaKey||e.ctrlKey||e.shiftKey||e.altKey||a.target)return;
     const u=new URL(a.href,location.href);
-    if(u.origin!==location.origin||u.pathname===location.pathname)return;
+    if(u.origin!==location.origin)return;
+    // A link within this page scrolls there without writing #section into the address bar
+    if(page(u.pathname)===page(location.pathname)){
+      e.preventDefault();
+      const t=u.hash.length>1&&document.getElementById(u.hash.slice(1));
+      t&&t.id!=='top'?t.scrollIntoView():scrollTo({top:0});
+      return;
+    }
     e.preventDefault();root.classList.add('leaving');
     setTimeout(()=>{root.classList.remove('ready');scrollTo({top:0,left:0,behavior:'instant'});location.href=u.href;},still?0:170);
   });
