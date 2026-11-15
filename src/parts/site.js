@@ -174,12 +174,23 @@
     },{threshold:.6}).observe(stack);
   }
 
+  // Forms post to the "Open Build website forms" Apps Script (apps-script/Code.gs), which emails admin@open-build.org
+  // and files society and partner leads under the leads-societies and leads-sponsors Gmail labels
+  const FORM_URL='{{FORM_URL}}';
+  const thanks={society:"Thanks, we've got it. We'll get back to you within two working days.",partner:"Thanks, we've got it. We'll get back to you within two working days.",news:"You're on the list. We'll email you when sign-ups open."};
   for(const f of document.querySelectorAll('form')){
-    f.addEventListener('submit',e=>{
+    const kind=f.id.replace('form-',''),btn=f.querySelector('[type=submit]'),label=btn.textContent;
+    f.addEventListener('submit',async e=>{
       e.preventDefault();
       f.querySelector('.sent')?.remove();
+      btn.disabled=true;btn.textContent='Sending…';
+      const data=new URLSearchParams(new FormData(f));data.set('form',kind);data.set('page',location.pathname);
+      let ok=false;
+      try{ok=(await (await fetch(FORM_URL,{method:'POST',body:data})).text())==='ok';}catch{}
+      btn.disabled=false;btn.textContent=label;
       const p=document.createElement('p');p.className='sent';p.setAttribute('role','status');
-      p.textContent='Thanks, we have your details. This is a preview of the site, so the form is not connected yet.';
+      p.textContent=ok?thanks[kind]:"That didn't send. Please try again, or email us at admin@open-build.org.";
+      if(ok)f.reset();
       f.append(p);
     });
   }

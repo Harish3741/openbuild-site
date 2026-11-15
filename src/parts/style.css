@@ -333,6 +333,8 @@ input:focus,select:focus,textarea:focus{outline:2px solid #B8B2F0;outline-offset
 .form-foot{margin-top:8px}
 .form-foot .btn{background:#B8B2F0;border-color:#B8B2F0;color:#151515}
 @media (hover:hover) and (pointer:fine){.form-foot .btn:hover{background:#d6d2fa;border-color:#d6d2fa}}
+/* Spam trap: a field people never see or reach; bots that fill it in are dropped by the form script */
+.hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
 .sent{grid-column:1/-1;background:var(--night-2);border:1px solid #B8B2F0;border-radius:10px;padding:16px 18px;color:#F2F0EB;animation:formIn .25s var(--ease-out)}
 
 footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 48px}

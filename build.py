@@ -46,6 +46,9 @@ def uni_logo(m):
     svg = re.sub(r' xmlns="[^"]*"', '', svg, count=1)
     return svg.replace('<svg ', f'<svg class="d-uni" x="{x}" y="{y}" width="{w}" height="{h}" preserveAspectRatio="xMinYMid meet" ', 1)
 
+# The forms post here: the "Open Build website forms" Apps Script on admin@open-build.org (source in apps-script/Code.gs)
+FORM_URL = 'https://script.google.com/macros/s/AKfycbxq6PM1tLFZSoM4EO5fF1eR14cDv5BEXwKaNrwaIjZPyVS281Uve2sn2u5Gti2TwkfB/exec'
+
 # The site is three pages built from shared parts (src/parts) and one body each (src/pages).
 # (output name, page body, <title>, description, which contact form the page carries; the home page has none)
 PAGES = [
@@ -91,6 +94,7 @@ def page(out, body_name, title, desc, tab, home, links={}):
     body = body.replace('{{CONTACT}}', '#join' if tab else '#who')
     body = body.replace('<!--PARTNERS-->', logo_wall() if '<!--PARTNERS-->' in body else '')
     body = re.sub(r'<!--UNI:(\S+) ([\d. ]+)-->', uni_logo, body)
+    body = body.replace('{{FORM_URL}}', FORM_URL)
     for old, new in links.items():
         body = body.replace(f'href="{old}"', f'href="{new}"')
     return head, body.replace('{{HOME}}', home)
