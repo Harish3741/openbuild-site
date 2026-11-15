@@ -42,7 +42,7 @@ Always edit `src/`, never the built files.
 - **No partner filter**: the "By event" filter on the logo wall was removed on 11 Nov (Harish: too complex). The wall is a plain grid again.
 - **No "Find your match"**: the optional matcher beside the contact form was removed on 12 Nov (unchecked data, sat above the form on phones). The contact section is now one form per audience page (see the 14 Nov evening round).
 - **No students card** (Harish, 14 Nov). Student sign-up is the email field in the Next up card.
-- **Nav "Events"** goes to "Events we've run" (`#past`). The footer's Events link still points at `#events` (the Next up card) until the Luma link arrives.
+- **Nav is Home / Societies / Partners** (Harish, 15 Nov; "Home" replaced "Events", which jumped to "Events we've run"). Home goes to the top of the main page and is underlined there, like the audience pages' own links (`build.py` marks it). With no section links left in the nav, the scroll spy that underlined the section in view is gone from `site.js`.
 
 ## Content decisions
 

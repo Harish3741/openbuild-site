@@ -28,15 +28,6 @@
   const onScroll=()=>h.classList.toggle('scrolled',scrollY>8);
   addEventListener('scroll',onScroll,{passive:true});onScroll();
 
-  // Nav marks the section in view (only links to sections of this page; the current page's own link is marked in the markup)
-  const links=[...document.querySelectorAll('.nav ul a')].filter(a=>a.getAttribute('href').startsWith('#'));
-  const targets=links.map(a=>document.querySelector(a.hash));
-  const spy=()=>{
-    const y=innerHeight*.4;let cur=-1;
-    targets.forEach((t,i)=>{const r=t.getBoundingClientRect();if(r.top<y&&r.bottom>y)cur=i;});
-    links.forEach((a,i)=>i===cur?a.setAttribute('aria-current','true'):a.removeAttribute('aria-current'));
-  };
-  addEventListener('scroll',spy,{passive:true});spy();
 
   // Stages reveal once on scroll-in, and everything inside a stage starts together.
   // A stage already scrolled past (a fast scroll or a nav jump) shows at once rather than waiting to be scrolled back to.

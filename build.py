@@ -77,6 +77,8 @@ def page(out, body_name, title, desc, tab, home):
             + '<style>\n' + part('style.css') + '</style>\n'
             "<script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>\n")
     header = part('header.html').replace(f'href="{out}.html"', f'href="{out}.html" aria-current="page"')
+    if out == 'door':
+        header = header.replace('href="{{HOME}}#top">Home', 'href="{{HOME}}#top" aria-current="page">Home')
     main = (root / 'src' / 'pages' / f'{body_name}.html').read_text(encoding='utf8')
     # Each audience page ends on its own contact form; the other audience's form is cut
     contact = re.sub(r'<!--(\w+)-->\n(.*?)<!--/\1-->\n', lambda m: m.group(2) if m.group(1) == tab else '', part('contact.html'), flags=re.S) if tab else ''
