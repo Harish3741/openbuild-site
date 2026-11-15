@@ -8,8 +8,8 @@ import json, re, sys, urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 
-# Open Build's Luma calendar: its link (https://luma.com/<name>) or its id (cal-…). Empty until the calendar exists.
-LUMA = ''
+# Open Build's Luma calendar (luma.com/openbuildorg, on admin@open-build.org): its link or its id (cal-…). The id doesn't change if the link does.
+LUMA = 'cal-sRW1HTbUigrclhW'
 
 OUT = Path(__file__).resolve().parent.parent / 'next-event.json'
 UA = {'User-Agent': 'Mozilla/5.0 (open-build.org next event)'}
