@@ -135,6 +135,29 @@
 
   }
 
+  // Next up (home only): the next event on Open Build's Luma calendar, which a GitHub Action (scripts/next_event.py) saves to
+  // next-event.json every few hours. No event, no file (the artifact preview) or one that has ended: the card stays on "We're planning the next one."
+  const next=document.querySelector('.next.tba');
+  if(next)fetch('next-event.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(ev=>{
+    const start=new Date(ev.start),end=new Date(ev.end||ev.start);
+    if(!ev.name||!/^https:\/\/(luma\.com|lu\.ma)\//.test(ev.url||'')||!(end>Date.now()))return;
+    const tz='Australia/Sydney',fmt=(d,o)=>new Intl.DateTimeFormat('en-AU',{timeZone:tz,...o}).format(d);
+    const day=d=>fmt(d,{weekday:'short',day:'numeric',month:'short'}).replace(',','');
+    const time=d=>fmt(d,{hour:'numeric',minute:'2-digit'}).replace(':00','').replace(/\s/g,'');
+    const ymd=d=>Date.parse(fmt(d,{year:'numeric',month:'2-digit',day:'2-digit'}).split('/').reverse().join('-'));
+    const days=Math.round((ymd(start)-ymd(new Date()))/864e5);
+    const pill=start<=Date.now()?'On now':days>1?days+' days to go':days===1?'Tomorrow':'Today';
+    const month=d=>fmt(d,{month:'short'});
+    const when=ymd(start)===ymd(end)?`${day(start)}, ${time(start)}–${time(end)}`
+      :`${month(start)===month(end)?day(start).replace(/ \S+$/,''):day(start)} – ${day(end)}`;
+    const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
+    const head=el('div','head'),tag=el('p','tag','Next up'),dl=el('dl'),go=el('a','btn','RSVP on Luma');
+    tag.append(el('span','pill',pill));head.append(tag,el('h3',null,ev.name));
+    for(const [k,v] of [['When',when],['Where',ev.where||'Sydney, venue to be confirmed']]){const r=el('div');r.append(el('dt',null,k),el('dd',null,v));dl.append(r);}
+    Object.assign(go,{href:ev.url,target:'_blank',rel:'noopener'});
+    next.replaceChildren(head,dl,go);next.classList.remove('tba');
+  }).catch(()=>{});
+
   // Logo carousels (societies, partner rows): repeat each row until half of it covers the widest screen, so the loop has no seam.
   // About 4s of travel per card.
   for(const socs of document.querySelectorAll('.socs')){
@@ -177,7 +200,7 @@
   // Forms post to the "Open Build website forms" Apps Script (apps-script/Code.gs), which emails admin@open-build.org
   // and files society and partner leads under the leads-societies and leads-sponsors Gmail labels
   const FORM_URL='{{FORM_URL}}';
-  const thanks={society:"Thanks, we've got it. We'll get back to you within two working days.",partner:"Thanks, we've got it. We'll get back to you within two working days.",news:"You're on the list. We'll email you when sign-ups open."};
+  const thanks="Thanks, we've got it. We'll get back to you within two working days.";
   for(const f of document.querySelectorAll('form')){
     const kind=f.id.replace('form-',''),btn=f.querySelector('[type=submit]'),label=btn.textContent;
     f.addEventListener('submit',async e=>{
@@ -189,7 +212,7 @@
       try{ok=(await (await fetch(FORM_URL,{method:'POST',body:data})).text())==='ok';}catch{}
       btn.disabled=false;btn.textContent=label;
       const p=document.createElement('p');p.className='sent';p.setAttribute('role','status');
-      p.textContent=ok?thanks[kind]:"That didn't send. Please try again, or email us at admin@open-build.org.";
+      p.textContent=ok?thanks:"That didn't send. Please try again, or email us at admin@open-build.org.";
       if(ok)f.reset();
       f.append(p);
     });

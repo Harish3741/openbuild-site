@@ -1,0 +1,25 @@
+# Keeps next-event.json (the home page's Next up card) in step with Open Build's Luma calendar. See scripts/next_event.py.
+name: Next event from Luma
+on:
+  schedule:
+    - cron: '17 */3 * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: [scripts/next_event.py, .github/workflows/next-event.yml]
+permissions:
+  contents: write
+concurrency: next-event
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/next_event.py
+      - name: Commit if the next event changed
+        run: |
+          git diff --quiet next-event.json && exit 0
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'Next event from Luma' next-event.json
+          git push

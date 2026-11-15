@@ -2,6 +2,9 @@
 <title>Open Build Partners</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <meta name="description" content="For companies and communities: every uni through one contact, and who we have worked with.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/img/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">
@@ -102,7 +105,7 @@ header.top.scrolled{border-bottom-color:var(--line)}
 
 /* Next up */
 .next{margin-top:clamp(48px,6vw,80px);background:color-mix(in srgb,var(--lav) calc(70% + 30% * var(--lit,1)),var(--paper));color:var(--on-lav);border-radius:20px;padding:clamp(28px,4vw,48px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr) auto;gap:28px clamp(32px,4vw,64px);align-items:center}
-.next.tba{grid-template-columns:minmax(0,1fr) auto}
+.next.tba{grid-template-columns:1fr}
 @media (max-width:900px){.next,.next.tba{grid-template-columns:1fr}}
 .next .head{display:grid;gap:16px;justify-items:start}
 .next .tag{display:flex;align-items:center;gap:12px;font-weight:600;font-size:.95rem}
@@ -115,11 +118,6 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .next dd{margin:0}
 .next .btn{background:var(--on-lav);color:#F2F0EB;border-color:var(--on-lav);justify-self:start}
 @media (hover:hover) and (pointer:fine){.next .btn:hover{background:#2e2d2a;border-color:#2e2d2a}}
-.next-form{display:flex;flex-wrap:wrap;gap:10px;max-width:none;width:min(100%,440px)}
-.next-form input{flex:1 1 200px;min-width:0;background:var(--paper);color:var(--ink);border-color:transparent}
-.next-form input::placeholder{color:var(--ink-3)}
-.next-form input:focus{outline-color:var(--on-lav)}
-.next-form .sent{flex:1 1 100%}
 
 
 /* Two doors: one big button per audience, each opening its own page. Only the name, a small drawing and the arrow. */
@@ -713,6 +711,29 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 
   }
 
+  // Next up (home only): the next event on Open Build's Luma calendar, which a GitHub Action (scripts/next_event.py) saves to
+  // next-event.json every few hours. No event, no file (the artifact preview) or one that has ended: the card stays on "We're planning the next one."
+  const next=document.querySelector('.next.tba');
+  if(next)fetch('next-event.json',{cache:'no-cache'}).then(r=>r.ok?r.json():{}).then(ev=>{
+    const start=new Date(ev.start),end=new Date(ev.end||ev.start);
+    if(!ev.name||!/^https:\/\/(luma\.com|lu\.ma)\//.test(ev.url||'')||!(end>Date.now()))return;
+    const tz='Australia/Sydney',fmt=(d,o)=>new Intl.DateTimeFormat('en-AU',{timeZone:tz,...o}).format(d);
+    const day=d=>fmt(d,{weekday:'short',day:'numeric',month:'short'}).replace(',','');
+    const time=d=>fmt(d,{hour:'numeric',minute:'2-digit'}).replace(':00','').replace(/\s/g,'');
+    const ymd=d=>Date.parse(fmt(d,{year:'numeric',month:'2-digit',day:'2-digit'}).split('/').reverse().join('-'));
+    const days=Math.round((ymd(start)-ymd(new Date()))/864e5);
+    const pill=start<=Date.now()?'On now':days>1?days+' days to go':days===1?'Tomorrow':'Today';
+    const month=d=>fmt(d,{month:'short'});
+    const when=ymd(start)===ymd(end)?`${day(start)}, ${time(start)}–${time(end)}`
+      :`${month(start)===month(end)?day(start).replace(/ \S+$/,''):day(start)} – ${day(end)}`;
+    const el=(tag,cls,text)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(text!=null)e.textContent=text;return e;};
+    const head=el('div','head'),tag=el('p','tag','Next up'),dl=el('dl'),go=el('a','btn','RSVP on Luma');
+    tag.append(el('span','pill',pill));head.append(tag,el('h3',null,ev.name));
+    for(const [k,v] of [['When',when],['Where',ev.where||'Sydney, venue to be confirmed']]){const r=el('div');r.append(el('dt',null,k),el('dd',null,v));dl.append(r);}
+    Object.assign(go,{href:ev.url,target:'_blank',rel:'noopener'});
+    next.replaceChildren(head,dl,go);next.classList.remove('tba');
+  }).catch(()=>{});
+
   // Logo carousels (societies, partner rows): repeat each row until half of it covers the widest screen, so the loop has no seam.
   // About 4s of travel per card.
   for(const socs of document.querySelectorAll('.socs')){
@@ -755,7 +776,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
   // Forms post to the "Open Build website forms" Apps Script (apps-script/Code.gs), which emails admin@open-build.org
   // and files society and partner leads under the leads-societies and leads-sponsors Gmail labels
   const FORM_URL='https://script.google.com/macros/s/AKfycbxq6PM1tLFZSoM4EO5fF1eR14cDv5BEXwKaNrwaIjZPyVS281Uve2sn2u5Gti2TwkfB/exec';
-  const thanks={society:"Thanks, we've got it. We'll get back to you within two working days.",partner:"Thanks, we've got it. We'll get back to you within two working days.",news:"You're on the list. We'll email you when sign-ups open."};
+  const thanks="Thanks, we've got it. We'll get back to you within two working days.";
   for(const f of document.querySelectorAll('form')){
     const kind=f.id.replace('form-',''),btn=f.querySelector('[type=submit]'),label=btn.textContent;
     f.addEventListener('submit',async e=>{
@@ -767,7 +788,7 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
       try{ok=(await (await fetch(FORM_URL,{method:'POST',body:data})).text())==='ok';}catch{}
       btn.disabled=false;btn.textContent=label;
       const p=document.createElement('p');p.className='sent';p.setAttribute('role','status');
-      p.textContent=ok?thanks[kind]:"That didn't send. Please try again, or email us at admin@open-build.org.";
+      p.textContent=ok?thanks:"That didn't send. Please try again, or email us at admin@open-build.org.";
       if(ok)f.reset();
       f.append(p);
     });

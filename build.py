@@ -63,6 +63,10 @@ FONTS = ('<link rel="preconnect" href="https://fonts.googleapis.com">\n'
          '<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>\n'
          '<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,700;12..96,800'
          '&family=Figtree:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap">\n')
+# The door mark on a dark tile (favicon.svg; the PNGs are renders of it for browsers and home screens that don't take SVG)
+ICONS = ('<link rel="icon" href="favicon.svg" type="image/svg+xml">\n'
+         '<link rel="icon" href="img/favicon-32.png" sizes="32x32" type="image/png">\n'
+         '<link rel="apple-touch-icon" href="img/apple-touch-icon.png">\n')
 # What the Artifact tool wraps the main page in; the other pages and the previews are whole documents, so they carry it themselves.
 SKELETON = ('<!doctype html><html lang="en"><head><meta charset="utf-8">'
             '<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">'
@@ -76,7 +80,7 @@ def part(name):
 def page(out, body_name, title, desc, tab, home, links={}):
     """Return (head, body). `home` is the link back to the main page; `links` swaps page links (societies.html → /societies on the live site)."""
     head = (f'<title>{title}</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n'
-            f'<meta name="description" content="{desc}">\n' + FONTS
+            f'<meta name="description" content="{desc}">\n' + ICONS + FONTS
             + '<style>\n' + part('style.css') + '</style>\n'
             "<script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>\n")
     header = part('header.html').replace(f'href="{out}.html"', f'href="{out}.html" aria-current="page"')
@@ -110,11 +114,13 @@ for d in ('preview', 'artifact'):
 for out, body_name, title, desc, tab in PAGES:
     main_page = out == 'door'
     head, body = page(out, body_name, title, desc, tab, '/', CLEAN)
-    (root / ('index.html' if main_page else f'{out}.html')).write_text(whole(head, body).replace('src="img/', 'src="/img/'), encoding='utf8')
+    html = whole(head, body).replace('src="img/', 'src="/img/').replace('href="img/', 'href="/img/').replace('href="favicon.svg"', 'href="/favicon.svg"')
+    (root / ('index.html' if main_page else f'{out}.html')).write_text(html, encoding='utf8')
     head, body = page(out, body_name, title, desc, tab, '#top' if main_page else 'index.html')
     (root / ('door.html' if main_page else f'artifact/{out}.html')).write_text(head + body if main_page else whole(head, body), encoding='utf8')
     head, body = page(out, body_name, title, desc, tab, '#top' if main_page else 'door.html')
-    (root / 'preview' / f'{out}.html').write_text(whole(head, body).replace('src="img/', 'src="../img/'), encoding='utf8')
+    html = whole(head, body).replace('src="img/', 'src="../img/').replace('href="img/', 'href="../img/').replace('href="favicon.svg"', 'href="../favicon.svg"')
+    (root / 'preview' / f'{out}.html').write_text(html, encoding='utf8')
     print('built', f'{out}.html')
 
 # Direction B ("After Hours") is one self-contained file, kept for reference
