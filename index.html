@@ -278,6 +278,15 @@ header.top.scrolled{border-bottom-color:var(--line)}
 .tl-ob .bar{grid-column:2/-1;height:34px;border-radius:6px;background:var(--lav)}
 .tl-note{margin-top:10px;color:var(--ink-3);font-size:.9rem}
 @media (max-width:520px){.tl-years,.tl-row{grid-template-columns:80px repeat(3,1fr)}}
+/* The maze (societies page): three grey routes set off together and each hits a dead end, the maze fades back, then the Open Build line goes
+   straight through to the company, which turns lavender. The walls and routes are generated (seeded), so redraw them as a set, not by hand. */
+.mz-wall{fill:none;stroke:var(--ink-3);stroke-width:2;stroke-linecap:round;opacity:.7}
+.mz-try{fill:none;stroke:var(--ink);stroke-width:4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:1 2}
+.mz-g{opacity:.2}
+.mz-go{fill:none;stroke:var(--lav-deep);stroke-width:4;stroke-linecap:round;stroke-dasharray:1 2}
+.mz-head{fill:none;stroke:var(--lav-deep);stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+.draw text.mz-lab{paint-order:stroke;stroke:var(--paper);stroke-width:8px;fill:var(--lav-deep)}
+.mz-co{fill:var(--lav)}
 
 /* Network */
 /* Societies: a slow, endless carousel of equal cards. JS clones the list once so the loop is seamless (the track moves exactly one copy's width), and sets --loop from the count.
@@ -352,6 +361,9 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 @keyframes open{from{transform:perspective(900px) rotateY(0)}}
 @keyframes fade{from{opacity:0}}
 @keyframes unveil{to{transform:scaleX(0)}}
+@keyframes trace{from{stroke-dashoffset:1}}
+@keyframes dim{from{opacity:1}}
+@keyframes lit{from{fill:var(--ink)}}
 .hero h1 .ln>span{animation:lineUp 1.4s var(--ease-out) .1s backwards}
 .doorway .frame{animation:fade .9s ease .1s backwards}
 .doorway .leaf{animation:open 2.4s var(--ease-in-out) .1s backwards}
@@ -361,6 +373,12 @@ footer{background:var(--night);color:#F2F0EB;padding-block:clamp(40px,6vw,96px) 
 }
 [data-reveal].in{animation:rise 1.3s var(--ease-out) backwards}
 .timeline.in .tl-cover{animation:unveil var(--sweep) var(--ease-sweep) forwards}
+.maze.in .mz-try{animation:trace var(--t) linear .5s backwards}
+.maze.in .mz-g{animation:dim .6s ease 2.2s backwards}
+.maze.in .mz-go{animation:trace .9s var(--ease-in-out) 2.4s backwards}
+.maze.in .mz-head{animation:fade .2s ease 3.2s backwards}
+.maze.in .mz-lab{animation:fade .5s ease 2.9s backwards}
+.maze.in .mz-co{animation:lit .5s ease 3.2s backwards}
 </style>
 <script>document.documentElement.classList.add('js');if(!location.hash){try{history.scrollRestoration='manual'}catch(e){}scrollTo(0,0)}</script>
 </head><body>
